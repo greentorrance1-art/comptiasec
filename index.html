@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SEC+ ADAPTIVE ENGINE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;800&display=swap');
+
+:root {
+  --bg: #06080f;
+  --surface: #0c0f1a;
+  --card: #111520;
+  --card2: #161b2e;
+  --border: #1e2540;
+  --border2: #2a3260;
+  --accent: #00e5ff;
+  --accent-dim: rgba(0,229,255,0.15);
+  --red: #ff3355;
+  --red-dim: rgba(255,51,85,0.12);
+  --green: #00ff9d;
+  --green-dim: rgba(0,255,157,0.12);
+  --yellow: #ffc107;
+  --yellow-dim: rgba(255,193,7,0.12);
+  --purple: #7c5cfc;
+  --orange: #ff7d3b;
+  --text: #e8eaf2;
+  --text2: #9ba3c4;
+  --text3: #5a6380;
+  --glow-blue: 0 0 24px rgba(0,229,255,0.25);
+  --glow-green: 0 0 20px rgba(0,255,157,0.3);
+  --glow-red: 0 0 20px rgba(255,51,85,0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Noise texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* =================== MODE SELECT SCREEN =================== */
+#modeScreen {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 20px 40px;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-top: 20px;
+}
+
+.brand-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--accent);
+  text-shadow: var(--glow-blue);
+  line-height: 1;
+}
+
+.brand-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 3px;
+  margin-top: 6px;
+}
+
+.brand-bar {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 12px auto 0;
+}
+
+.mode-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 3px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.mode-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
+
+.mode-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform 0.2s;
+  border-radius: 0 2px 2px 0;
+}
+
+.mode-card:active { transform: scale(0.98); }
+.mode-card:hover::before, .mode-card:active::before { transform: scaleY(1); }
+.mode-card:hover { border-color: var(--accent); background: rgba(0,229,255,0.04); }
+
+.mc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.mc-icon { font-size: 22px; }
+.mc-title { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
+.mc-desc { font-size: 13px; color: var(--text2); line-height: 1.4; margin-left: 34px; }
+
+.domain-select-panel {
+  display: none;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.domain-select-panel.open { display: block; }
+
+.domain-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.domain-opt:hover { background: var(--card2); color: var(--text); }
+.domain-opt input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+.start-btn {
+  display: none;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-btn.visible { display: block; animation: fadeUp 0.3s ease; }
+.start-btn:active { transform: scale(0.98); }
+
+/* =================== GAME SCREEN =================== */
+#gameScreen { padding: 0; }
+
+/* Top HUD */
+.hud {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.hud-left { display: flex; align-items: center; gap: 8px; }
+
+.hud-logo {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.mode-pill {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+
+.hud-stats { display: flex; gap: 8px; }
+
+.hud-stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px;
+  text-align: center;
+  min-width: 44px;
+}
+
+.hud-stat .sv {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+
+.hud-stat .sl {
+  font-size: 8px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* XP strip */
+.xp-strip {
+  height: 3px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--accent));
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Game body */
+.game-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+
+/* Checkpoint banner */
+.checkpoint {
+  background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(0,229,255,0.1));
+  border: 1px solid var(--purple);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+
+.checkpoint.show { display: block; }
+
+.cp-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.cp-bars { display: flex; flex-direction: column; gap: 6px; }
+
+.cp-row { display: flex; align-items: center; gap: 8px; }
+.cp-label { font-size: 11px; color: var(--text2); width: 110px; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; }
+.cp-bar-bg { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.cp-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.cp-pct { font-family: 'Share Tech Mono', monospace; font-size: 11px; width: 32px; text-align: right; color: var(--text); }
+
+/* Category / meta */
+.q-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.q-cat {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 1px;
+}
+
+.q-diff {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.diff-easy { color: var(--green); }
+.diff-med { color: var(--yellow); }
+.diff-hard { color: var(--red); }
+
+/* Question card */
+.q-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.q-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--accent));
+}
+
+.q-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.q-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.q-text b, .q-text strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.q-text em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.choose-two-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,193,7,0.12);
+  border: 1px solid rgba(255,193,7,0.4);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--yellow);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.choose-two-badge.show { display: inline-flex; }
+
+/* Options */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+
+.opt-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  width: 100%;
+}
+
+.opt-btn:hover:not(:disabled) {
+  border-color: rgba(0,229,255,0.5);
+  background: rgba(0,229,255,0.04);
+}
+
+.opt-btn:active:not(:disabled) { transform: scale(0.99); }
+.opt-btn:disabled { cursor: default; }
+
+.opt-letter {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.opt-btn.selected:not(.revealed) {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.opt-btn.selected:not(.revealed) .opt-letter { background: var(--accent); color: #000; border-color: var(--accent); }
+
+.opt-btn.correct-ans {
+  border-color: var(--green);
+  background: var(--green-dim);
+}
+.opt-btn.correct-ans .opt-letter { background: var(--green); color: #000; border-color: var(--green); }
+.opt-btn.correct-ans { animation: popIn 0.3s ease; }
+
+.opt-btn.wrong-ans {
+  border-color: var(--red);
+  background: var(--red-dim);
+}
+.opt-btn.wrong-ans .opt-letter { background: var(--red); color: #fff; border-color: var(--red); }
+.opt-btn.wrong-ans { animation: shakeIt 0.35s ease; }
+
+.opt-btn.dimmed { opacity: 0.35; }
+
+@keyframes popIn {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shakeIt {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  60% { transform: translateX(5px); }
+}
+
+/* Submit btn for choose-two */
+.submit-btn {
+  width: 100%;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #000;
+  cursor: pointer;
+  display: none;
+  margin-bottom: 12px;
+  transition: opacity 0.2s;
+}
+.submit-btn.show { display: block; }
+.submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* Feedback */
+.feedback {
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+
+.feedback.show { display: block; }
+
+.fb-correct {
+  background: var(--green-dim);
+  border: 1.5px solid rgba(0,255,157,0.35);
+}
+
+.fb-wrong {
+  background: var(--red-dim);
+  border: 1.5px solid rgba(255,51,85,0.35);
+}
+
+.fb-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.fb-icon { font-size: 22px; }
+
+.fb-status {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.fb-correct .fb-status { color: var(--green); }
+.fb-wrong .fb-status { color: var(--red); }
+
+.fb-correct-answer {
+  background: rgba(0,255,157,0.1);
+  border: 1px solid rgba(0,255,157,0.3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 600;
+  display: none;
+}
+
+.fb-correct-answer.show { display: block; }
+.fb-correct-answer span { color: var(--green); }
+
+.fb-explain {
+  font-size: 13px;
+  color: #c8cfe8;
+  line-height: 1.55;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.fb-explain strong { color: #ffffff; font-weight: 700; }
+
+.fb-rule {
+  background: rgba(124,92,252,0.12);
+  border: 1px solid rgba(124,92,252,0.35);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #c4b8ff;
+  line-height: 1.5;
+}
+
+.fb-rule::before { content: '⚡ '; color: var(--yellow); }
+
+/* Next btn */
+.next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--purple), var(--accent));
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #000;
+  cursor: pointer;
+  display: none;
+  transition: opacity 0.2s;
+}
+
+.next-btn.show { display: block; animation: fadeUp 0.25s ease; }
+.next-btn:active { opacity: 0.9; transform: scale(0.99); }
+
+/* Combo overlay */
+.combo-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 500;
+}
+
+.combo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--yellow);
+  text-shadow: 0 0 40px rgba(255,193,7,0.8), 0 0 80px rgba(255,193,7,0.4);
+  opacity: 0;
+  transform: scale(0.5);
+  letter-spacing: 4px;
+  transition: none;
+}
+
+.combo-text.pop {
+  animation: comboPop 0.9s ease forwards;
+}
+
+@keyframes comboPop {
+  0% { opacity: 0; transform: scale(0.4) translateY(20px); }
+  30% { opacity: 1; transform: scale(1.1) translateY(0); }
+  70% { opacity: 1; transform: scale(1) translateY(-10px); }
+  100% { opacity: 0; transform: scale(0.8) translateY(-40px); }
+}
+
+/* Trap badge */
+.trap-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,125,59,0.12);
+  border: 1px solid rgba(255,125,59,0.3);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: none;
+}
+.trap-badge.show { display: inline-flex; }
+
+/* =================== SCORE SCREEN =================== */
+#scoreScreen {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 20px 48px;
+}
+
+.score-header {
+  text-align: center;
+  margin-bottom: 28px;
+  padding-top: 16px;
+}
+
+.score-ring-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+}
+
+.score-svg { transform: rotate(-90deg); }
+
+.score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+.score-ring-fg { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+.score-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.score-pct {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-pct-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 2px;
+}
+
+.score-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.score-msg {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.score-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.sc-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+}
+
+.sc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.sc-row:last-child { border-bottom: none; }
+.sc-row .lbl { color: var(--text2); font-weight: 400; }
+.sc-row .val { font-family: 'Share Tech Mono', monospace; font-weight: 700; font-size: 15px; }
+.val-green { color: var(--green); }
+.val-red { color: var(--red); }
+.val-yellow { color: var(--yellow); }
+.val-accent { color: var(--accent); }
+
+/* Domain breakdown */
+.domain-bars { display: flex; flex-direction: column; gap: 10px; }
+
+.db-row { display: flex; flex-direction: column; gap: 4px; }
+.db-top { display: flex; justify-content: space-between; }
+.db-name { font-size: 12px; color: var(--text2); font-weight: 600; }
+.db-pct { font-family: 'Share Tech Mono', monospace; font-size: 11px; }
+.db-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.db-bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s ease; }
+
+.score-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
+
+.btn-primary {
+  width: 100%;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #000;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-secondary {
+  width: 100%;
+  background: transparent;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary:active, .btn-secondary:active { transform: scale(0.99); }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeUp 0.3s ease; }
+
+/* Progress dots row */
+.dots-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.pdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border2);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.pdot.ok { background: var(--green); }
+.pdot.fail { background: var(--red); }
+.pdot.cur { background: var(--accent); transform: scale(1.4); box-shadow: 0 0 6px var(--accent); }
+
+/* Streak bar */
+.streak-row {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(255,125,59,0.1), rgba(255,193,7,0.08));
+  border: 1px solid rgba(255,125,59,0.3);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+  animation: fadeUp 0.3s ease;
+}
+
+.streak-row.show { display: flex; }
+.streak-fire { font-size: 20px; animation: pulse 0.7s infinite alternate; }
+@keyframes pulse { to { transform: scale(1.15); } }
+.streak-info { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; }
+.streak-num { color: var(--orange); font-size: 20px; }
+.streak-lbl { color: var(--text2); font-size: 12px; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="combo-overlay"><div class="combo-text" id="comboText"></div></div>
+
+<!-- =================== MODE SELECT =================== -->
+<div class="screen active" id="modeScreen">
+  <div class="brand">
+    <div class="brand-title">SEC+ ENGINE</div>
+    <div class="brand-sub">SY0-701 · ADAPTIVE TRAINING</div>
+    <div class="brand-bar"></div>
+  </div>
+
+  <div class="mode-label">SELECT TRAINING MODE</div>
+
+  <div class="mode-grid">
+
+    <div class="mode-card" onclick="selectMode('full')">
+      <div class="mc-top"><span class="mc-icon">🎯</span><span class="mc-title">FULL EXAM MODE</span></div>
+      <div class="mc-desc">All 5 domains mixed. Adaptive difficulty. Closest to real exam conditions.</div>
+    </div>
+
+    <div class="mode-card" id="domainCard" onclick="toggleDomainPanel()">
+      <div class="mc-top"><span class="mc-icon">📚</span><span class="mc-title">DOMAIN-SPECIFIC</span></div>
+      <div class="mc-desc">Choose one or more domains to drill.</div>
+      <div class="domain-select-panel" id="domainPanel">
+        <div class="domain-opt"><input type="checkbox" value="d1" id="d1"><label for="d1">Domain 1 — Security Concepts</label></div>
+        <div class="domain-opt"><input type="checkbox" value="d2" id="d2"><label for="d2">Domain 2 — Threats & Attacks</label></div>
+        <div class="domain-opt"><input type="checkbox" value="d3" id="d3"><label for="d3">Domain 3 — Architecture & Design</label></div>
+        <div class="domain-opt"><input type="checkbox" value="d4" id="d4"><label for="d4">Domain 4 — IAM & Operations</label></div>
+        <div class="domain-opt"><input type="checkbox" value="d5" id="d5"><label for="d5">Domain 5 — GRC & Incident Response</label></div>
+      </div>
+    </div>
+
+    <div class="mode-card" onclick="selectMode('weak')">
+      <div class="mc-top"><span class="mc-icon">🔥</span><span class="mc-title">WEAK AREAS ONLY</span></div>
+      <div class="mc-desc">Hammers your known weak spots: Network tools, Cloud, Crypto/PKI, Ports, IR.</div>
+    </div>
+
+    <div class="mode-card" onclick="selectMode('custom')">
+      <div class="mc-top"><span class="mc-icon">⚙️</span><span class="mc-title">RAPID FIRE</span></div>
+      <div class="mc-desc">Fast-paced mixed questions. No pausing. Pure pattern recognition training.</div>
+    </div>
+
+  </div>
+
+  <button class="start-btn" id="startBtn" onclick="startDomainMode()">START TRAINING →</button>
+</div>
+
+<!-- =================== GAME =================== -->
+<div class="screen" id="gameScreen">
+  <div class="hud">
+    <div class="hud-left">
+      <div class="hud-logo">SEC+</div>
+      <div class="mode-pill" id="modePill">FULL EXAM</div>
+    </div>
+    <div class="hud-stats">
+      <div class="hud-stat"><span class="sv" id="hudScore">0</span><span class="sl">SCORE</span></div>
+      <div class="hud-stat"><span class="sv" id="hudAcc">--%</span><span class="sl">ACC</span></div>
+      <div class="hud-stat"><span class="sv" id="hudStreak">0🔥</span><span class="sl">STREAK</span></div>
+    </div>
+  </div>
+  <div class="xp-strip"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <div class="dots-row" id="dotsRow"></div>
+
+  <div class="game-body">
+    <div class="checkpoint" id="checkpoint">
+      <div class="cp-title">📊 CHECKPOINT — Q<span id="cpNum">5</span> OF <span id="cpTotal">20</span></div>
+      <div class="cp-bars" id="cpBars"></div>
+    </div>
+
+    <div class="streak-row" id="streakRow">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-info">
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-lbl">STREAK</div>
+      </div>
+    </div>
+
+    <div class="q-meta">
+      <div class="q-cat" id="qCat">DOMAIN 3</div>
+      <div class="q-diff" id="qDiff"></div>
+    </div>
+
+    <div class="trap-badge" id="trapBadge">⚠ COMMON EXAM TRAP</div>
+    <div class="choose-two-badge" id="chooseTwoBadge">✦ SELECT TWO ANSWERS</div>
+
+    <div class="q-card fade-in" id="qCard">
+      <div class="q-num" id="qNum">QUESTION 1 OF 20</div>
+      <div class="q-text" id="qText">Loading question...</div>
+    </div>
+
+    <div class="options" id="optionsEl"></div>
+    <button class="submit-btn" id="submitBtn" onclick="submitChooseTwo()" disabled>SUBMIT ANSWERS</button>
+
+    <div class="feedback" id="feedbackEl">
+      <div class="fb-head">
+        <span class="fb-icon" id="fbIcon"></span>
+        <span class="fb-status" id="fbStatus"></span>
+      </div>
+      <div class="fb-correct-answer" id="fbCorrectAns"></div>
+      <div class="fb-explain" id="fbExplain"></div>
+      <div class="fb-rule" id="fbRule"></div>
+    </div>
+
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">NEXT →</button>
+  </div>
+</div>
+
+<!-- =================== SCORE =================== -->
+<div class="screen" id="scoreScreen">
+  <div style="width:100%;max-width:420px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-direction:column;align-items:center;gap:0">
+
+    <div class="score-header" style="width:100%">
+      <div class="score-ring-wrap">
+        <svg class="score-svg" width="160" height="160" viewBox="0 0 160 160">
+          <circle class="score-ring-bg" cx="80" cy="80" r="68"/>
+          <circle class="score-ring-fg" id="scoreRingFg" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
+        </svg>
+        <div class="score-inner">
+          <div class="score-pct" id="scorePct">0%</div>
+          <div class="score-pct-label">ACCURACY</div>
+        </div>
+      </div>
+      <div class="score-title" id="scoreTitle">MISSION COMPLETE</div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+
+    <div class="score-card" style="margin-top:20px">
+      <div class="sc-title">SESSION STATS</div>
+      <div class="sc-row"><span class="lbl">Correct</span><span class="val val-green" id="scCorrect">0</span></div>
+      <div class="sc-row"><span class="lbl">Wrong</span><span class="val val-red" id="scWrong">0</span></div>
+      <div class="sc-row"><span class="lbl">Best Streak</span><span class="val val-yellow" id="scStreak">0</span></div>
+      <div class="sc-row"><span class="lbl">Questions</span><span class="val val-accent" id="scTotal">0</span></div>
+    </div>
+
+    <div class="score-card">
+      <div class="sc-title">DOMAIN BREAKDOWN</div>
+      <div class="domain-bars" id="domainBars"></div>
+    </div>
+
+    <div class="score-actions" style="margin-top:4px">
+      <button class="btn-primary" onclick="restartSame()">↺ SAME MODE AGAIN</button>
+      <button class="btn-secondary" onclick="goHome()">← CHANGE MODE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// QUESTION BANK — 60 questions covering all 5 domains
+// ============================================================
+const QB = [
+  // --- DOMAIN 3: NETWORK ARCHITECTURE (WEAK AREA) ---
+  {
+    id:'n1', domain:'d3', cat:'🛡️ Network Tools', diff:1, trap:true,
+    text:'A company\'s web application is being hit with <strong>SQL injection and XSS attacks</strong>. The team wants to <strong>filter malicious HTTP traffic before it reaches the server</strong>. Which tool should be deployed <em>FIRST</em>?',
+    opts:['IDS','IPS','WAF','SIEM'], correct:[2],
+    wrong:'IDS only alerts — it cannot block. IPS blocks network threats but does not understand HTTP/web app context.',
+    right:'WAF (Layer 7) is specifically built to inspect and block web attacks like SQLi and XSS inline.',
+    rule:'Web app + SQL injection/XSS = WAF. Every time. IDS never blocks anything.'
+  },
+  {
+    id:'n2', domain:'d3', cat:'🛡️ Network Tools', diff:1, trap:false,
+    text:'An analyst detects unusual outbound connections from internal hosts. The org wants to <strong>automatically block</strong> the traffic at the <strong>network level without human action</strong>. What is <em>MOST</em> appropriate?',
+    opts:['SIEM','IDS','IPS','WAF'], correct:[2],
+    wrong:'SIEM alerts — humans respond. IDS detects only. WAF is web application specific.',
+    right:'IPS sits inline and drops malicious packets automatically in real time.',
+    rule:'Automatically block + network level = IPS. SIEM and IDS never block.'
+  },
+  {
+    id:'n3', domain:'d3', cat:'🛡️ Network Tools', diff:1, trap:true,
+    text:'An org wants only <strong>authorized and compliant devices</strong> to connect to the network. <strong>Unpatched endpoints must be denied automatically</strong>. Which technology is <em>BEST</em>?',
+    opts:['IPS','Firewall','NAC','VPN'], correct:[2],
+    wrong:'IPS checks traffic content for attacks — it has zero awareness of device compliance. Firewalls filter by IP/port, not device health.',
+    right:'NAC (Network Access Control) performs posture assessment before granting network access.',
+    rule:'Device compliance + posture check + authorized access = NAC. Not IPS. Not firewall.'
+  },
+  {
+    id:'n4', domain:'d3', cat:'🛡️ Network Tools', diff:2, trap:false,
+    text:'A security engineer wants to <strong>passively monitor all traffic</strong> on a network segment and <strong>generate alerts</strong> for suspicious activity — but <strong>must not interfere with traffic flow</strong>. Which solution fits?',
+    opts:['IPS','NAC','IDS','WAF'], correct:[2],
+    wrong:'IPS is inline and actively blocks — it does interfere with traffic. NAC is for device admission. WAF is web specific.',
+    right:'IDS operates in passive/monitor mode. It mirrors traffic and alerts without interfering.',
+    rule:'Passive monitoring + alerts only + no interference = IDS. Inline + blocking = IPS.'
+  },
+  {
+    id:'n5', domain:'d3', cat:'🛡️ Network Tools', diff:2, trap:true,
+    text:'A company wants to prevent <strong>sensitive files from being emailed or uploaded</strong> to external sites by employees. Which tool addresses this <em>BEST</em>?',
+    opts:['IPS','SIEM','NAC','DLP'], correct:[3],
+    wrong:'IPS blocks network attacks, not content-based data exfiltration. SIEM detects but cannot prevent. NAC is for device access control.',
+    right:'DLP (Data Loss Prevention) monitors and blocks sensitive data from leaving via email, USB, or web upload.',
+    rule:'Prevent data leaving the org = DLP. Sensitive content exfiltration = DLP.'
+  },
+  {
+    id:'n6', domain:'d3', cat:'🌐 Segmentation', diff:2, trap:false,
+    text:'A hospital wants to isolate its <strong>medical devices</strong> so they cannot communicate with the corporate network or internet, reducing the attack surface. Which technique is <em>BEST</em>?',
+    opts:['VPN tunneling','Network segmentation / VLAN','DLP','IDS deployment'], correct:[1],
+    wrong:'VPN encrypts traffic but does not isolate devices. DLP prevents data loss. IDS monitors but does not isolate.',
+    right:'Network segmentation (VLANs) logically isolates device groups, preventing lateral movement between zones.',
+    rule:'Isolate devices / reduce lateral movement = Network segmentation / VLAN.'
+  },
+  {
+    id:'n7', domain:'d3', cat:'🌐 Ports & Protocols', diff:1, trap:false,
+    text:'A sysadmin needs to <strong>securely and remotely manage a Linux server</strong>. Which port must be open?',
+    opts:['23','3389','22','443'], correct:[2],
+    wrong:'Port 23 = Telnet (unencrypted — never use). Port 3389 = RDP (Windows). Port 443 = HTTPS.',
+    right:'Port 22 = SSH. Encrypted remote shell access for Linux/Unix systems.',
+    rule:'SSH = 22. Telnet = 23 (unencrypted). RDP = 3389 (Windows).'
+  },
+  {
+    id:'n8', domain:'d3', cat:'🌐 Ports & Protocols', diff:1, trap:false,
+    text:'A firewall rule must allow <strong>DNS resolution traffic</strong> to flow outbound. Which port/protocol combination must be permitted?',
+    opts:['TCP 80','UDP 161','TCP/UDP 53','TCP 443'], correct:[2],
+    wrong:'TCP 80 = HTTP. UDP 161 = SNMP. TCP 443 = HTTPS.',
+    right:'DNS uses port 53 — UDP for standard queries, TCP for zone transfers and large responses.',
+    rule:'DNS = port 53 (UDP standard, TCP zone transfer). This must be instant recall.'
+  },
+  {
+    id:'n9', domain:'d3', cat:'🌐 Ports & Protocols', diff:2, trap:false,
+    text:'A security team needs to allow <strong>encrypted web traffic</strong> through the firewall. Which port should be opened?',
+    opts:['80','8080','443','21'], correct:[2],
+    wrong:'Port 80 = HTTP (unencrypted). Port 8080 = HTTP alternate/proxy. Port 21 = FTP.',
+    right:'Port 443 = HTTPS. Encrypted web traffic over TLS.',
+    rule:'HTTPS = 443. HTTP = 80. FTP = 21. SFTP = 22.'
+  },
+  {
+    id:'n10', domain:'d3', cat:'🌐 Ports & Protocols', diff:2, trap:true,
+    text:'An attacker scans a network and finds port <strong>3389</strong> open on several Windows machines. What service is <em>MOST likely</em> running?',
+    opts:['SSH','HTTPS','Telnet','RDP'], correct:[3],
+    wrong:'SSH = 22. HTTPS = 443. Telnet = 23.',
+    right:'Port 3389 = RDP (Remote Desktop Protocol) — Windows remote management. A common attack target.',
+    rule:'3389 = RDP (Windows remote). Open 3389 = prime target for credential attacks.'
+  },
+  {
+    id:'n11', domain:'d3', cat:'🌐 Ports & Protocols', diff:2, trap:false,
+    text:'Which TWO ports are associated with <strong>email protocols</strong>? (Choose TWO)',
+    opts:['Port 25 (SMTP)','Port 80 (HTTP)','Port 143 (IMAP)','Port 53 (DNS)'], correct:[0,2], choosetwo:true,
+    wrong:'Port 80 = HTTP. Port 53 = DNS. Neither is an email protocol.',
+    right:'Port 25 = SMTP (sending email). Port 143 = IMAP (receiving/reading email). Port 110 = POP3.',
+    rule:'Email ports: SMTP=25, IMAP=143, POP3=110, Secure SMTP=587/465.'
+  },
+
+  // --- DOMAIN 3: CLOUD MODELS (WEAK AREA) ---
+  {
+    id:'c1', domain:'d3', cat:'☁️ Cloud Models', diff:1, trap:false,
+    text:'A company uses <strong>Microsoft 365 for email and Office apps</strong>. They manage NO servers, OS, or code. Which cloud model is this?',
+    opts:['IaaS','PaaS','SaaS','Hybrid'], correct:[2],
+    wrong:'IaaS = you manage VMs and up. PaaS = you manage application code.',
+    right:'SaaS = vendor manages everything. You just log in and use the application.',
+    rule:'Just log in and use it = SaaS. You write code = PaaS. You manage VMs = IaaS.'
+  },
+  {
+    id:'c2', domain:'d3', cat:'☁️ Cloud Models', diff:1, trap:false,
+    text:'A dev team uses a vendor\'s platform to <strong>build and deploy their own applications</strong>. The vendor manages the OS and runtime. The team only manages their <strong>code and data</strong>. This is which model?',
+    opts:['IaaS','SaaS','PaaS','FaaS'], correct:[2],
+    wrong:'IaaS = you also manage OS. SaaS = vendor manages the application too. FaaS = serverless functions.',
+    right:'PaaS = vendor handles OS/runtime/middleware. You bring your code. (e.g., Heroku, Azure App Service)',
+    rule:'Vendor manages OS, you manage code = PaaS.'
+  },
+  {
+    id:'c3', domain:'d3', cat:'☁️ Cloud Models', diff:1, trap:true,
+    text:'In which cloud model does the <strong>customer bear the MOST security responsibility</strong>?',
+    opts:['SaaS','PaaS','IaaS','All equal'], correct:[2],
+    wrong:'SaaS = vendor manages almost everything. PaaS = vendor manages infrastructure and runtime.',
+    right:'IaaS = you manage OS, patches, apps, middleware, runtime. Maximum control = maximum responsibility.',
+    rule:'More control = more responsibility. IaaS > PaaS > SaaS for customer burden.'
+  },
+  {
+    id:'c4', domain:'d3', cat:'☁️ Cloud Models', diff:2, trap:true,
+    text:'A company migrates to IaaS. Under the <strong>shared responsibility model</strong>, which component remains the <strong>vendor\'s responsibility</strong>?',
+    opts:['Operating system patches','Application security','Physical hardware & hypervisor','User data'], correct:[2],
+    wrong:'In IaaS, OS patches, application security, and user data are ALL customer responsibilities.',
+    right:'In IaaS, the cloud provider only owns physical hardware, networking, and the hypervisor layer.',
+    rule:'IaaS vendor = physical + hypervisor only. Everything above = your problem.'
+  },
+  {
+    id:'c5', domain:'d3', cat:'☁️ Cloud Models', diff:2, trap:false,
+    text:'Which cloud deployment model involves infrastructure shared among <strong>several organizations with similar requirements</strong> (e.g., government agencies)?',
+    opts:['Public cloud','Private cloud','Community cloud','Hybrid cloud'], correct:[2],
+    wrong:'Public = open to all. Private = single org. Hybrid = mix of on-prem and cloud.',
+    right:'Community cloud is shared by organizations with common needs (regulations, mission). Costs split among members.',
+    rule:'Shared by similar orgs (e.g., gov agencies) = Community cloud.'
+  },
+
+  // --- DOMAIN 2: CRYPTO / PKI (WEAK AREA) ---
+  {
+    id:'k1', domain:'d2', cat:'🔐 Cryptography', diff:1, trap:false,
+    text:'A user encrypts a message using a colleague\'s <strong>public key</strong>. The colleague decrypts with their <strong>private key</strong>. This is which type of encryption?',
+    opts:['Symmetric','Hashing','Asymmetric','Steganography'], correct:[2],
+    wrong:'Symmetric = same key both ways. Hashing = one-way, not encryption. Steganography = hides data, doesn\'t encrypt.',
+    right:'Asymmetric encryption: public key encrypts, private key decrypts. RSA is the primary example.',
+    rule:'Public encrypts → private decrypts = Asymmetric (RSA). Same key both ways = Symmetric (AES).'
+  },
+  {
+    id:'k2', domain:'d2', cat:'🔐 Cryptography', diff:1, trap:false,
+    text:'An org needs to encrypt <strong>large volumes of data at rest</strong> efficiently. Which algorithm is <em>BEST</em>?',
+    opts:['RSA','ECC','SHA-256','AES'], correct:[3],
+    wrong:'RSA = asymmetric, slow, used for key exchange. ECC = asymmetric. SHA-256 = hashing, NOT encryption.',
+    right:'AES = symmetric, extremely fast. Standard for bulk data encryption at rest and in transit.',
+    rule:'Bulk data encryption = AES (symmetric, fast). Key exchange/signatures = RSA (asymmetric, slow).'
+  },
+  {
+    id:'k3', domain:'d2', cat:'🔐 Cryptography', diff:1, trap:true,
+    text:'A user wants to verify a downloaded file <strong>was not modified</strong> after publishing. Which mechanism confirms this?',
+    opts:['Encryption','Digital certificate','Digital signature','Hashing'], correct:[3],
+    wrong:'Encryption = confidentiality. Certificate = identity binding. Digital signature = authenticity + integrity (uses hashing internally, but pure integrity check = hash).',
+    right:'Hashing produces a fixed digest. If one bit changes, the hash changes. Compare published vs downloaded hash = integrity check.',
+    rule:'Verify integrity / detect tampering = Hashing. Authenticity + Integrity together = Digital Signature.'
+  },
+  {
+    id:'k4', domain:'d2', cat:'🔐 PKI', diff:2, trap:false,
+    text:'Before the CA issues a certificate, a separate entity <strong>verifies the identity of the requester</strong>. What is this entity?',
+    opts:['CA','CRL','CSR','RA'], correct:[3],
+    wrong:'CA = issues and signs certs. CRL = list of revoked certs. CSR = the request submitted by the applicant.',
+    right:'RA (Registration Authority) verifies identity on behalf of the CA. CA trusts RA\'s verification, then issues the cert.',
+    rule:'CA = issues certs. RA = verifies identity BEFORE CA issues. CRL = revoked list. CSR = cert request.'
+  },
+  {
+    id:'k5', domain:'d2', cat:'🔐 PKI', diff:2, trap:true,
+    text:'A developer publishes software and wants receivers to confirm it <strong>genuinely came from them AND was not tampered with</strong>. Which provides BOTH?',
+    opts:['AES encryption','Hashing only','Digital signature','Certificate pinning'], correct:[2],
+    wrong:'AES = confidentiality only. Hashing alone = integrity but proves nothing about the sender. Certificate pinning = prevents cert substitution.',
+    right:'Digital signature = hash encrypted with sender\'s private key. Proves authenticity (who) AND integrity (unchanged). Verified with sender\'s public key.',
+    rule:'Authenticity + Integrity = Digital Signature. Integrity only = Hash. Confidentiality = Encryption.'
+  },
+  {
+    id:'k6', domain:'d2', cat:'🔐 PKI', diff:2, trap:false,
+    text:'A certificate has been <strong>compromised before its expiration date</strong>. What mechanism immediately notifies clients the cert is no longer valid?',
+    opts:['CSR','CRL / OCSP','CA reissuance','PKI renewal'], correct:[1],
+    wrong:'CSR = cert signing request. CA reissuance = new cert, doesn\'t revoke old one. PKI renewal = normal expiry process.',
+    right:'CRL (Certificate Revocation List) and OCSP (Online Certificate Status Protocol) both allow clients to check if a cert has been revoked before expiry.',
+    rule:'Compromised cert before expiry = revoke via CRL or OCSP. Both serve same purpose — OCSP is real-time.'
+  },
+  {
+    id:'k7', domain:'d2', cat:'🔐 Cryptography', diff:3, trap:true,
+    text:'Which TWO statements about hashing are TRUE? (Choose TWO)',
+    opts:['Hashing is reversible with the right key','A hash always produces the same output for the same input','Hashing provides confidentiality','Hashing detects data tampering'], correct:[1,3], choosetwo:true,
+    wrong:'Hashing is NOT reversible (one-way function). Hashing does NOT encrypt and therefore does NOT provide confidentiality.',
+    right:'Hashing is deterministic (same input = same hash always) and is used for integrity checking (any change = different hash).',
+    rule:'Hash = one-way, deterministic, integrity check. NOT reversible. NOT confidentiality.'
+  },
+  {
+    id:'k8', domain:'d2', cat:'🔐 Cryptography', diff:2, trap:false,
+    text:'Which encryption algorithm is <strong>asymmetric and commonly used for secure key exchange</strong>?',
+    opts:['AES','3DES','RSA','SHA-512'], correct:[2],
+    wrong:'AES = symmetric. 3DES = symmetric. SHA-512 = hashing algorithm (not encryption).',
+    right:'RSA is asymmetric and widely used for key exchange and digital signatures. Slow — not used for bulk data.',
+    rule:'RSA = asymmetric, key exchange, digital signatures, slow. AES = symmetric, bulk data, fast.'
+  },
+
+  // --- DOMAIN 1: SECURITY CONCEPTS ---
+  {
+    id:'s1', domain:'d1', cat:'🔑 IAM', diff:1, trap:false,
+    text:'A company grants access to resources based on <strong>job function</strong>. A manager gets manager-level access; an intern gets intern-level access. This describes which access control model?',
+    opts:['DAC','MAC','RBAC','ABAC'], correct:[2],
+    wrong:'DAC = owner sets permissions. MAC = labels and clearances (military). ABAC = uses attributes like time, location, device.',
+    right:'RBAC (Role-Based Access Control) assigns permissions based on job role/function. Most common enterprise model.',
+    rule:'Access by job role/function = RBAC. Access by clearance labels = MAC. Access by multiple attributes = ABAC.'
+  },
+  {
+    id:'s2', domain:'d1', cat:'🔑 IAM', diff:2, trap:true,
+    text:'An organization implements access control based on <strong>time of day, location, and device type</strong> — not just job role. This describes which model?',
+    opts:['RBAC','DAC','MAC','ABAC'], correct:[3],
+    wrong:'RBAC = role only. DAC = owner-controlled. MAC = security labels.',
+    right:'ABAC (Attribute-Based Access Control) uses multiple attributes — time, location, device, role — for fine-grained decisions.',
+    rule:'Multiple attributes (time, location, device) driving access decisions = ABAC.'
+  },
+  {
+    id:'s3', domain:'d1', cat:'🔑 MFA', diff:1, trap:false,
+    text:'Which of the following is an example of <strong>multifactor authentication (MFA)</strong>?',
+    opts:['Username + password','Password + security question','Password + fingerprint scan','PIN + backup PIN'], correct:[2],
+    wrong:'Username + password = single factor (something you know). Password + security question = still just two "something you know" factors.',
+    right:'Password (something you know) + fingerprint (something you are) = two DIFFERENT factor types = true MFA.',
+    rule:'MFA requires factors from different categories: Know + Have + Are. Two passwords is NOT MFA.'
+  },
+  {
+    id:'s4', domain:'d1', cat:'🔑 IAM', diff:2, trap:true,
+    text:'An admin account is discovered with excessive permissions beyond what the role requires. This violates which principle?',
+    opts:['Defense in depth','Least privilege','Separation of duties','Need to know'], correct:[1],
+    wrong:'Defense in depth = layered security. Separation of duties = splitting tasks. Need to know = information access only.',
+    right:'Least privilege = users/systems get ONLY the minimum permissions needed. Excess permissions = violation.',
+    rule:'Too many permissions = violates Least Privilege. Split tasks between people = Separation of Duties.'
+  },
+  {
+    id:'s5', domain:'d1', cat:'🛡️ Control Types', diff:2, trap:false,
+    text:'A security camera in a server room is an example of which type of control?',
+    opts:['Preventive','Detective','Corrective','Deterrent'], correct:[1],
+    wrong:'Preventive = stops an event before it happens. Corrective = fixes after an incident. Deterrent = discourages (camera sign, not camera itself).',
+    right:'Detective controls identify or record events AFTER they occur. A camera records — it detects and documents.',
+    rule:'Camera = Detective. Camera WARNING SIGN = Deterrent. Lock on door = Preventive. Backup = Corrective/Recovery.'
+  },
+  {
+    id:'s6', domain:'d1', cat:'🛡️ Control Types', diff:2, trap:true,
+    text:'A "No Trespassing" sign outside a data center is an example of which control type?',
+    opts:['Preventive','Detective','Deterrent','Compensating'], correct:[2],
+    wrong:'Preventive actually stops entry (like a locked door). Detective records/detects (like a camera). Compensating substitutes for another control.',
+    right:'Deterrent controls discourage bad behavior. The sign itself does not stop anyone — it discourages.',
+    rule:'Sign = Deterrent. Lock = Preventive. Camera = Detective. Backup system = Compensating/Recovery.'
+  },
+
+  // --- DOMAIN 2: THREATS & ATTACKS ---
+  {
+    id:'t1', domain:'d2', cat:'⚠️ Threat Actors', diff:1, trap:false,
+    text:'An attacker is motivated by <strong>financial gain</strong> and uses ransomware against corporations. Which threat actor category is <em>MOST likely</em>?',
+    opts:['Nation-state','Hacktivist','Cybercriminal','Insider threat'], correct:[2],
+    wrong:'Nation-state = espionage/disruption for government goals. Hacktivist = ideological/political. Insider = internal employee.',
+    right:'Cybercriminals are primarily motivated by financial gain — ransomware, fraud, and theft are their primary tools.',
+    rule:'Financial motivation = Cybercriminal. Political/ideological = Hacktivist. Government-sponsored = Nation-state.'
+  },
+  {
+    id:'t2', domain:'d2', cat:'⚠️ Social Engineering', diff:1, trap:false,
+    text:'An attacker calls an employee pretending to be <strong>IT support</strong> and convinces them to reset their password and share it. This is which attack?',
+    opts:['Phishing','Vishing','Smishing','Spear phishing'], correct:[1],
+    wrong:'Phishing = email-based. Smishing = SMS-based. Spear phishing = targeted email at specific individual.',
+    right:'Vishing = voice phishing. Attacker calls the target and uses social engineering over the phone.',
+    rule:'Phone call = Vishing. Email = Phishing. SMS = Smishing. Targeted email = Spear phishing.'
+  },
+  {
+    id:'t3', domain:'d2', cat:'⚠️ Credential Attacks', diff:1, trap:true,
+    text:'An attacker uses a list of <strong>previously breached username/password pairs</strong> to attempt login across multiple unrelated sites. This is which attack?',
+    opts:['Brute force','Password spraying','Credential stuffing','Dictionary attack'], correct:[2],
+    wrong:'Brute force = tries all combinations. Spraying = one password against many accounts. Dictionary = wordlist of common passwords.',
+    right:'Credential stuffing uses LEAKED credential pairs from previous breaches — betting users reuse passwords across sites.',
+    rule:'Leaked breach data reused elsewhere = Credential stuffing. One password + many accounts = Spraying. All combos = Brute force.'
+  },
+  {
+    id:'t4', domain:'d2', cat:'⚠️ Malware', diff:1, trap:false,
+    text:'Malware that <strong>appears legitimate</strong> but contains hidden malicious code is called a:',
+    opts:['Worm','Rootkit','Trojan','Ransomware'], correct:[2],
+    wrong:'Worm = self-propagates across networks. Rootkit = hides itself in OS. Ransomware = encrypts and demands payment.',
+    right:'Trojan = disguised as legitimate software. Users install it willingly, not knowing it\'s malicious.',
+    rule:'Disguised as legit software = Trojan. Self-spreads = Worm. Hides in OS = Rootkit. Encrypts files = Ransomware.'
+  },
+  {
+    id:'t5', domain:'d2', cat:'⚠️ Malware', diff:2, trap:true,
+    text:'Malware that <strong>hides its presence and grants persistent admin-level access</strong> to an attacker by modifying the OS is a:',
+    opts:['Trojan','Spyware','Ransomware','Rootkit'], correct:[3],
+    wrong:'Trojan = disguises itself but doesn\'t necessarily modify the OS or hide. Spyware = collects data secretly. Ransomware = encrypts files.',
+    right:'Rootkit embeds deep into the OS (often kernel-level) to hide itself and maintain persistent privileged access.',
+    rule:'Hides in OS + persistent admin access = Rootkit. Disguised install = Trojan.'
+  },
+  {
+    id:'t6', domain:'d2', cat:'⚠️ Vulnerabilities', diff:2, trap:false,
+    text:'A vulnerability is discovered in software <strong>before the vendor is aware of it</strong> and before a patch exists. This is called a:',
+    opts:['CVE','Zero-day vulnerability','Logic bomb','Race condition'], correct:[1],
+    wrong:'CVE = identifier assigned to known vulnerabilities. Logic bomb = triggers on condition. Race condition = timing flaw.',
+    right:'Zero-day = vulnerability unknown to the vendor, with no patch available. Most dangerous because there\'s no immediate fix.',
+    rule:'Unknown to vendor + no patch = Zero-day. Known + patched = CVE/vulnerability.'
+  },
+  {
+    id:'t7', domain:'d2', cat:'⚠️ Social Engineering', diff:2, trap:true,
+    text:'An attacker sends a highly personalized email to a <strong>specific CFO</strong> requesting a wire transfer to a fraudulent account. This is called:',
+    opts:['Phishing','Vishing','Whaling','Smishing'], correct:[2],
+    wrong:'Phishing = broad email to many. Vishing = phone. Smishing = SMS.',
+    right:'Whaling is spear phishing specifically targeting high-value executives (CEO, CFO, etc.). Same technique, high-value target.',
+    rule:'CEO/CFO targeted = Whaling. Specific individual targeted = Spear phishing. Mass email = Phishing.'
+  },
+
+  // --- DOMAIN 4: IAM & SECURITY OPERATIONS ---
+  {
+    id:'o1', domain:'d4', cat:'📊 SIEM & Logs', diff:2, trap:false,
+    text:'A security team wants a <strong>centralized platform to collect, correlate, and analyze logs</strong> from firewalls, servers, and endpoints — then generate alerts. Which tool is <em>BEST</em>?',
+    opts:['DLP','NAC','SIEM','IPS'], correct:[2],
+    wrong:'DLP = data exfiltration prevention. NAC = device admission. IPS = inline network blocking.',
+    right:'SIEM (Security Information and Event Management) aggregates logs from all sources, correlates events, and generates alerts.',
+    rule:'Centralized log collection + correlation + alerting = SIEM. SIEM sees everything but blocks nothing directly.'
+  },
+  {
+    id:'o2', domain:'d4', cat:'📊 SIEM & Logs', diff:3, trap:true,
+    text:'After a SIEM alert fires, an analyst investigates and confirms a real attack. The <em>NEXT</em> step in the IR process is:',
+    opts:['Eradication','Lessons learned','Containment','Recovery'], correct:[2],
+    wrong:'Eradication removes the threat but comes AFTER containment. Recovery restores systems. Lessons learned is last.',
+    right:'After Identification/Detection, CONTAIN first — stop the bleeding before anything else. Then eradicate, then recover.',
+    rule:'IR order: Prepare → Identify → CONTAIN → Eradicate → Recover → Lessons Learned.'
+  },
+  {
+    id:'o3', domain:'d4', cat:'🔒 Authentication', diff:2, trap:false,
+    text:'A company wants employees to authenticate using <strong>smart cards</strong>. This is an example of which authentication factor?',
+    opts:['Something you know','Something you have','Something you are','Somewhere you are'], correct:[1],
+    wrong:'Something you know = password, PIN. Something you are = biometrics. Somewhere you are = geolocation.',
+    right:'Something you have = physical possession of an object (smart card, hardware token, phone).',
+    rule:'Smart card/token/phone = Something you HAVE. Password/PIN = Something you KNOW. Fingerprint = Something you ARE.'
+  },
+  {
+    id:'o4', domain:'d4', cat:'🔒 Authentication', diff:2, trap:false,
+    text:'Which authentication protocol allows users to <strong>authenticate once and access multiple applications</strong> without re-entering credentials?',
+    opts:['MFA','SSO','LDAP','RADIUS'], correct:[1],
+    wrong:'MFA = additional verification factors. LDAP = directory service. RADIUS = AAA for network access.',
+    right:'SSO (Single Sign-On) = one authentication event grants access to multiple connected systems.',
+    rule:'One login → many apps = SSO. Additional verification layers = MFA. Network device AAA = RADIUS.'
+  },
+  {
+    id:'o5', domain:'d4', cat:'🔒 Privilege Management', diff:2, trap:true,
+    text:'An org uses a dedicated account for privileged admin tasks and a <strong>separate standard account</strong> for daily tasks like email. This practice is called:',
+    opts:['Separation of duties','Least privilege','Account hardening','Privileged Access Management (PAM)'], correct:[3],
+    wrong:'Separation of duties = splitting tasks between MULTIPLE people. Least privilege = minimum permissions. Hardening = reducing attack surface.',
+    right:'PAM (Privileged Access Management) — using separate privileged accounts for admin tasks reduces risk if the daily account is compromised.',
+    rule:'Separate admin account from daily use account = PAM. Tasks split between people = Separation of duties.'
+  },
+
+  // --- DOMAIN 5: GRC & INCIDENT RESPONSE ---
+  {
+    id:'r1', domain:'d5', cat:'🚨 Incident Response', diff:1, trap:false,
+    text:'Active ransomware is spreading across the network. What should the security team do <em>FIRST</em>?',
+    opts:['Eradicate the malware','Notify management','Document the incident','Contain / isolate affected systems'], correct:[3],
+    wrong:'Eradication comes AFTER containment. Notification is important but not the first technical step. Documentation follows containment.',
+    right:'CONTAIN first — isolate infected systems immediately to stop lateral spread. Then eradicate.',
+    rule:'Active incident FIRST action = CONTAIN. Stop the spread before everything else.'
+  },
+  {
+    id:'r2', domain:'d5', cat:'🚨 Incident Response', diff:2, trap:true,
+    text:'After resolving an incident, the team meets to review what happened, what worked, and what to improve. Which IR phase is this?',
+    opts:['Identification','Containment','Recovery','Lessons Learned'], correct:[3],
+    wrong:'Identification = detecting the incident. Containment = stopping spread. Recovery = restoring systems.',
+    right:'Lessons Learned (Post-Incident Review) is the final IR phase — analyzing what happened to improve future response.',
+    rule:'IR final phase = Lessons Learned / Post-Incident Review. Comes after recovery.'
+  },
+  {
+    id:'r3', domain:'d5', cat:'⚖️ Risk', diff:2, trap:false,
+    text:'An org decides <strong>not to perform an activity</strong> because the risks outweigh the benefits. This is which risk response?',
+    opts:['Risk transference','Risk mitigation','Risk acceptance','Risk avoidance'], correct:[3],
+    wrong:'Transference = shift risk (insurance). Mitigation = reduce risk. Acceptance = accept the risk and proceed.',
+    right:'Risk avoidance = choosing NOT to engage in the risky activity entirely.',
+    rule:'Stop doing the risky thing = Avoidance. Reduce the risk = Mitigation. Insurance = Transference. Accept and proceed = Acceptance.'
+  },
+  {
+    id:'r4', domain:'d5', cat:'⚖️ Risk', diff:2, trap:true,
+    text:'A company purchases <strong>cyber liability insurance</strong> to cover potential breach costs. This is which risk strategy?',
+    opts:['Risk avoidance','Risk acceptance','Risk transference','Risk mitigation'], correct:[2],
+    wrong:'Avoidance = stop the activity. Acceptance = proceed knowing the risk. Mitigation = reduce probability/impact.',
+    right:'Transference = shifting financial impact to a third party (insurance company).',
+    rule:'Insurance = Risk transference. Stop doing it = Avoidance. Reduce impact = Mitigation. Proceed anyway = Acceptance.'
+  },
+  {
+    id:'r5', domain:'d5', cat:'📋 Compliance', diff:2, trap:false,
+    text:'A healthcare organization must protect patient medical records and comply with federal law. Which regulation applies?',
+    opts:['PCI-DSS','GDPR','HIPAA','SOX'], correct:[2],
+    wrong:'PCI-DSS = payment card data. GDPR = EU personal data. SOX = financial reporting.',
+    right:'HIPAA (Health Insurance Portability and Accountability Act) governs the privacy and security of protected health information (PHI) in the US.',
+    rule:'Healthcare / patient data / PHI = HIPAA. Payment cards = PCI-DSS. EU data = GDPR. Finance = SOX.'
+  },
+  {
+    id:'r6', domain:'d5', cat:'📋 Compliance', diff:2, trap:false,
+    text:'An e-commerce company stores and processes <strong>credit card numbers</strong>. Which standard must they comply with?',
+    opts:['HIPAA','SOX','NIST CSF','PCI-DSS'], correct:[3],
+    wrong:'HIPAA = healthcare. SOX = publicly traded company financials. NIST CSF = cybersecurity framework, not mandatory.',
+    right:'PCI-DSS (Payment Card Industry Data Security Standard) is mandatory for any org that stores, processes, or transmits cardholder data.',
+    rule:'Credit card data = PCI-DSS. Healthcare = HIPAA. EU personal data = GDPR.'
+  },
+  {
+    id:'r7', domain:'d5', cat:'🚨 Incident Response', diff:3, trap:true,
+    text:'A forensic analyst must collect evidence from a running server. Which principle determines the ORDER in which data should be collected?',
+    opts:['Chain of custody','Order of volatility','Least privilege','Data classification'], correct:[1],
+    wrong:'Chain of custody = documents who handled evidence and when. Least privilege = access control. Data classification = sensitivity labels.',
+    right:'Order of volatility = collect most volatile (disappears first) data first: RAM, then swap/pagefile, then disk, then logs.',
+    rule:'Evidence collection order = Order of Volatility. RAM first (most volatile), disk last.'
+  },
+  {
+    id:'r8', domain:'d5', cat:'🔁 Business Continuity', diff:2, trap:false,
+    text:'The <strong>maximum amount of time</strong> a system or business process can be down before causing unacceptable damage is called:',
+    opts:['RPO','MTD / RTO','MTBF','SLA'], correct:[1],
+    wrong:'RPO = max data loss acceptable (how far back you can restore). MTBF = mean time between failures. SLA = service level agreement.',
+    right:'RTO (Recovery Time Objective) = max tolerable downtime before recovery must be complete. MTD = Maximum Tolerable Downtime (related concept).',
+    rule:'Max downtime = RTO. Max data loss = RPO. Both are business continuity planning targets.'
+  },
+
+  // --- HARDER MIXED QUESTIONS ---
+  {
+    id:'m1', domain:'d3', cat:'🌐 Network Security', diff:3, trap:true,
+    text:'A company wants to allow employees to connect remotely to the internal network securely. Which technology creates an <strong>encrypted tunnel</strong> over the internet?',
+    opts:['NAC','VPN','VLAN','IPS'], correct:[1],
+    wrong:'NAC = device admission control. VLAN = network segmentation. IPS = threat blocking.',
+    right:'VPN (Virtual Private Network) creates an encrypted tunnel over an untrusted network (internet) to the corporate network.',
+    rule:'Encrypted remote access tunnel = VPN. Device compliance at network entry = NAC.'
+  },
+  {
+    id:'m2', domain:'d1', cat:'🔑 Zero Trust', diff:3, trap:false,
+    text:'An organization implements a policy: <em>"Never trust, always verify"</em> — no user or device is trusted by default, even inside the network. This describes which framework?',
+    opts:['Defense in depth','Zero Trust','Least privilege','Segmentation'], correct:[1],
+    wrong:'Defense in depth = multiple layered controls. Least privilege = minimum access. Segmentation = network zones.',
+    right:'Zero Trust assumes no implicit trust. Every access request must be verified regardless of location or prior access.',
+    rule:'"Never trust, always verify" = Zero Trust. Layered defenses = Defense in depth.'
+  },
+  {
+    id:'m3', domain:'d2', cat:'⚠️ Application Attacks', diff:3, trap:true,
+    text:'An attacker inserts malicious SQL code into a web form to <strong>retrieve unauthorized data</strong> from the backend database. Which attack is this?',
+    opts:['Cross-site scripting (XSS)','Buffer overflow','SQL injection','Command injection'], correct:[2],
+    wrong:'XSS = injects client-side script into a page viewed by others. Buffer overflow = writes past memory boundary. Command injection = OS-level commands.',
+    right:'SQL injection = inserting SQL syntax into input fields to manipulate database queries.',
+    rule:'Malicious SQL in form field = SQL injection. Malicious script in web page = XSS.'
+  },
+  {
+    id:'m4', domain:'d2', cat:'⚠️ Application Attacks', diff:3, trap:false,
+    text:'An attacker injects malicious JavaScript into a website that is then <strong>executed in other users\' browsers</strong> when they visit the page. This is:',
+    opts:['SQL injection','CSRF','XSS','Session hijacking'], correct:[2],
+    wrong:'SQL injection = targets the database. CSRF = tricks user\'s browser into making requests. Session hijacking = steals session tokens.',
+    right:'XSS (Cross-Site Scripting) = attacker plants malicious script in a trusted site; runs in victims\' browsers.',
+    rule:'Script runs in other users\' browsers = XSS. Tricks browser into unwanted requests = CSRF.'
+  },
+  {
+    id:'m5', domain:'d4', cat:'📊 Monitoring', diff:3, trap:false,
+    text:'A security analyst needs to capture and analyze <strong>raw network packet data</strong> for forensic investigation. Which tool is MOST appropriate?',
+    opts:['SIEM','Vulnerability scanner','Protocol/packet analyzer (e.g. Wireshark)','IDS'], correct:[2],
+    wrong:'SIEM = log aggregation/correlation. Vulnerability scanner = finds weaknesses. IDS = detects intrusions but doesn\'t give full packet data.',
+    right:'Protocol/packet analyzer (Wireshark) captures raw packet-level traffic for deep forensic inspection.',
+    rule:'Raw packet capture and analysis = Protocol analyzer / Wireshark. Log aggregation = SIEM.'
+  },
+  {
+    id:'m6', domain:'d5', cat:'⚖️ Risk', diff:3, trap:true,
+    text:'A risk assessment finds a threat with a <strong>high likelihood but low impact</strong>. Compared to a threat with <strong>low likelihood but catastrophic impact</strong>, which should be prioritized for mitigation resources?',
+    opts:['High likelihood, low impact','Low likelihood, catastrophic impact','Both equally','Neither — accept both'], correct:[1],
+    wrong:'High likelihood/low impact risks are frequent but manageable. Low likelihood/catastrophic risks can be existential.',
+    right:'Catastrophic/existential risks typically drive more mitigation investment even if rare — the potential damage is unacceptable.',
+    rule:'Risk priority = Likelihood × Impact. Catastrophic impact often overrides frequency in prioritization.'
+  },
+  {
+    id:'m7', domain:'d3', cat:'🛡️ Firewalls', diff:3, trap:true,
+    text:'A next-generation firewall (NGFW) differs from a traditional firewall because it can:',
+    opts:['Only filter by IP address and port','Inspect traffic at Layer 7 and identify applications','Automatically patch vulnerabilities','Replace the need for IDS/IPS'], correct:[1],
+    wrong:'Traditional firewalls work at Layer 3/4 (IP/port). NGFWs don\'t patch systems. NGFWs can include IDS/IPS but they don\'t eliminate need for dedicated solutions.',
+    right:'NGFW = deep packet inspection at Layer 7, application awareness, user identity, and integrated threat intelligence.',
+    rule:'NGFW = Layer 7 + application aware + deep packet inspection. Traditional FW = Layer 3/4 IP/port only.'
+  },
+  {
+    id:'m8', domain:'d2', cat:'⚠️ Cryptography', diff:3, trap:false,
+    text:'Which of the following provides <strong>forward secrecy</strong> — ensuring that compromising a long-term private key does not expose past session traffic?',
+    opts:['RSA key exchange','AES-256','Diffie-Hellman Ephemeral (DHE / ECDHE)','MD5 hashing'], correct:[2],
+    wrong:'RSA key exchange = static keys, no forward secrecy. AES-256 = symmetric encryption. MD5 = hashing (broken).',
+    right:'DHE/ECDHE generates unique session keys per session. Even if long-term key is later stolen, past sessions stay encrypted.',
+    rule:'Forward secrecy = DHE / ECDHE. Each session gets unique keys. Compromise today ≠ expose past traffic.'
+  }
+];
+
+// ============================================================
+// GAME STATE
+// ============================================================
+let mode = '';
+let queue = [];
+let wrongPool = [];
+let qIndex = 0;
+let correct = 0;
+let streak = 0;
+let bestStreak = 0;
+let xp = 0;
+let answered = false;
+let chooseTwoSelected = [];
+let domainStats = { d1:{q:0,c:0}, d2:{q:0,c:0}, d3:{q:0,c:0}, d4:{q:0,c:0}, d5:{q:0,c:0} };
+let totalAnswered = 0;
+
+// ============================================================
+// MODE SELECTION
+// ============================================================
+function toggleDomainPanel() {
+  const panel = document.getElementById('domainPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    document.getElementById('startBtn').classList.add('visible');
+  }
+}
+
+function selectMode(m) {
+  mode = m;
+  if (m === 'full') {
+    buildQueue(QB);
+    startGame();
+  } else if (m === 'weak') {
+    const weak = QB.filter(q => ['d3','d2'].includes(q.domain) || ['n1','n2','n3','n4','n5','c1','c2','c3','c4','k1','k2','k3','k4','k5','r1','r2'].includes(q.id));
+    buildQueue(weak.length >= 10 ? weak : QB);
+    startGame();
+  } else if (m === 'custom') {
+    // Rapid fire — shuffle all, max speed
+    buildQueue(QB);
+    startGame();
+  }
+}
+
+function startDomainMode() {
+  const checked = [...document.querySelectorAll('#domainPanel input:checked')].map(i => i.value);
+  if (checked.length === 0) { alert('Please select at least one domain.'); return; }
+  const filtered = QB.filter(q => checked.includes(q.domain));
+  buildQueue(filtered.length >= 5 ? filtered : QB);
+  mode = 'domain';
+  startGame();
+}
+
+function buildQueue(pool) {
+  // Weight weak areas: appear more frequently
+  let q = [...pool];
+  // Shuffle
+  for (let i = q.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [q[i], q[j]] = [q[j], q[i]];
+  }
+  // Target 20 questions per session
+  queue = q.slice(0, Math.min(20, q.length));
+}
+
+function startGame() {
+  qIndex = 0; correct = 0; streak = 0; bestStreak = 0; xp = 0; totalAnswered = 0;
+  wrongPool = [];
+  domainStats = { d1:{q:0,c:0}, d2:{q:0,c:0}, d3:{q:0,c:0}, d4:{q:0,c:0}, d5:{q:0,c:0} };
+
+  document.getElementById('modeScreen').classList.remove('active');
+  document.getElementById('scoreScreen').classList.remove('active');
+  document.getElementById('gameScreen').classList.add('active');
+
+  const pills = { full:'FULL EXAM', weak:'WEAK AREAS', domain:'DOMAIN', custom:'RAPID FIRE' };
+  document.getElementById('modePill').textContent = pills[mode] || 'FULL EXAM';
+
+  buildProgressDots();
+  renderQ();
+  window.scrollTo(0,0);
+}
+
+function buildProgressDots() {
+  const row = document.getElementById('dotsRow');
+  row.innerHTML = '';
+  queue.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i === 0 ? ' cur' : '');
+    d.id = 'pdot' + i;
+    row.appendChild(d);
+  });
+}
+
+function updateDot(i, ok) {
+  const d = document.getElementById('pdot' + i);
+  if (d) d.className = 'pdot ' + (ok ? 'ok' : 'fail');
+  const n = document.getElementById('pdot' + (i + 1));
+  if (n) n.className = 'pdot cur';
+}
+
+// ============================================================
+// RENDER QUESTION
+// ============================================================
+function renderQ() {
+  answered = false;
+  chooseTwoSelected = [];
+
+  if (qIndex >= queue.length) { showScore(); return; }
+
+  const q = queue[qIndex];
+
+  // Update HUD
+  document.getElementById('hudScore').textContent = correct + '/' + qIndex;
+  document.getElementById('hudAcc').textContent = qIndex === 0 ? '--%' : Math.round((correct / qIndex) * 100) + '%';
+  document.getElementById('hudStreak').textContent = streak + '🔥';
+
+  // XP bar
+  document.getElementById('xpFill').style.width = (xp % 100) + '%';
+
+  // Diff label
+  const diffs = ['', '🟢 STANDARD', '🟡 INTERMEDIATE', '🔴 ADVANCED'];
+  const diffCls = ['', 'diff-easy', 'diff-med', 'diff-hard'];
+  document.getElementById('qDiff').textContent = diffs[q.diff] || '';
+  document.getElementById('qDiff').className = 'q-diff ' + (diffCls[q.diff] || '');
+
+  document.getElementById('qCat').textContent = q.cat;
+  document.getElementById('qNum').textContent = 'QUESTION ' + (qIndex + 1) + ' OF ' + queue.length;
+  document.getElementById('qText').innerHTML = q.text;
+
+  // Trap badge
+  document.getElementById('trapBadge').className = 'trap-badge' + (q.trap ? ' show' : '');
+
+  // Choose two badge
+  document.getElementById('chooseTwoBadge').className = 'choose-two-badge' + (q.choosetwo ? ' show' : '');
+
+  // Checkpoint every 5
+  if (qIndex > 0 && qIndex % 5 === 0) showCheckpoint();
+  else document.getElementById('checkpoint').className = 'checkpoint';
+
+  // Streak row
+  if (streak >= 3) {
+    document.getElementById('streakRow').className = 'streak-row show';
+    document.getElementById('streakNum').textContent = streak;
+  } else {
+    document.getElementById('streakRow').className = 'streak-row';
+  }
+
+  // Options
+  const optEl = document.getElementById('optionsEl');
+  optEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.id = 'opt' + i;
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    if (q.choosetwo) {
+      btn.onclick = () => toggleChooseTwo(i);
+    } else {
+      btn.onclick = () => selectAnswer(i);
+    }
+    optEl.appendChild(btn);
+  });
+
+  // Submit btn for choose-two
+  document.getElementById('submitBtn').className = q.choosetwo ? 'submit-btn show' : 'submit-btn';
+  document.getElementById('submitBtn').disabled = true;
+
+  // Reset feedback / next
+  document.getElementById('feedbackEl').className = 'feedback';
+  document.getElementById('nextBtn').className = 'next-btn';
+  document.getElementById('fbCorrectAns').className = 'fb-correct-answer';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// ANSWER HANDLING
+// ============================================================
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = queue[qIndex];
+  const isCorrect = q.correct.includes(idx);
+
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (q.correct.includes(i)) btn.classList.add('correct-ans');
+    else if (i === idx && !isCorrect) btn.classList.add('wrong-ans');
+    else btn.classList.add('dimmed');
+  });
+
+  processResult(isCorrect, q);
+}
+
+function toggleChooseTwo(idx) {
+  if (answered) return;
+  const btn = document.getElementById('opt' + idx);
+  const pos = chooseTwoSelected.indexOf(idx);
+  if (pos === -1) {
+    if (chooseTwoSelected.length >= 2) return;
+    chooseTwoSelected.push(idx);
+    btn.classList.add('selected');
+  } else {
+    chooseTwoSelected.splice(pos, 1);
+    btn.classList.remove('selected');
+  }
+  document.getElementById('submitBtn').disabled = chooseTwoSelected.length !== 2;
+}
+
+function submitChooseTwo() {
+  if (answered || chooseTwoSelected.length !== 2) return;
+  answered = true;
+
+  const q = queue[qIndex];
+  const sortSel = [...chooseTwoSelected].sort().join(',');
+  const sortCor = [...q.correct].sort().join(',');
+  const isCorrect = sortSel === sortCor;
+
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (q.correct.includes(i)) btn.classList.add('correct-ans');
+    else if (chooseTwoSelected.includes(i) && !q.correct.includes(i)) btn.classList.add('wrong-ans');
+    else btn.classList.add('dimmed');
+  });
+
+  document.getElementById('submitBtn').style.display = 'none';
+  processResult(isCorrect, q);
+}
+
+function processResult(isCorrect, q) {
+  totalAnswered++;
+  domainStats[q.domain].q++;
+
+  if (isCorrect) {
+    correct++;
+    streak++;
+    xp += 10 + (streak >= 3 ? 5 : 0);
+    if (streak > bestStreak) bestStreak = streak;
+    domainStats[q.domain].c++;
+    showFeedback(true, q);
+    if (streak >= 3) triggerCombo(streak);
+  } else {
+    streak = 0;
+    showFeedback(false, q);
+    // Re-queue this question later if queue has room
+    if (!wrongPool.includes(q.id)) wrongPool.push(q.id);
+  }
+
+  document.getElementById('hudScore').textContent = correct + '/' + (qIndex + 1);
+  document.getElementById('hudAcc').textContent = Math.round((correct / (qIndex + 1)) * 100) + '%';
+  document.getElementById('hudStreak').textContent = streak + '🔥';
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function showFeedback(ok, q) {
+  const fb = document.getElementById('feedbackEl');
+  fb.className = 'feedback show ' + (ok ? 'fb-correct' : 'fb-wrong');
+
+  document.getElementById('fbIcon').textContent = ok ? (streak >= 3 ? '🔥' : '✅') : '❌';
+
+  const statusEl = document.getElementById('fbStatus');
+  if (ok) {
+    const msgs = ['CORRECT.', 'LOCKED IN.', 'GOOD.', 'EXACTLY RIGHT.', streak >= 3 ? streak + 'X STREAK!' : 'CORRECT.'];
+    statusEl.textContent = streak >= 3 ? streak + 'X STREAK!' : msgs[Math.floor(Math.random() * msgs.length)];
+  } else {
+    const msgs = ["THAT'S A TRAP.", 'NOT QUITE.', 'COMMON MISTAKE.', 'CLOSE — BUT NO.'];
+    statusEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+  }
+
+  // Show correct answer clearly when wrong
+  const ca = document.getElementById('fbCorrectAns');
+  if (!ok) {
+    const letters = ['A','B','C','D'];
+    const correctLabels = q.correct.map(i => `<span>${letters[i]}. ${q.opts[i]}</span>`).join(', ');
+    ca.innerHTML = '✓ CORRECT ANSWER: ' + correctLabels;
+    ca.className = 'fb-correct-answer show';
+  }
+
+  document.getElementById('fbExplain').innerHTML = ok ? q.right : `<strong>Why wrong:</strong> ${q.wrong}<br><br><strong>Why the right answer wins:</strong> ${q.right}`;
+  document.getElementById('fbRule').textContent = q.rule;
+}
+
+function triggerCombo(n) {
+  const el = document.getElementById('comboText');
+  el.textContent = n + 'X STREAK!';
+  el.classList.add('pop');
+  setTimeout(() => el.classList.remove('pop'), 950);
+}
+
+function nextQ() {
+  qIndex++;
+
+  // Inject missed questions near end of queue
+  if (qIndex === queue.length - 3 && wrongPool.length > 0) {
+    const missed = QB.filter(q => wrongPool.includes(q.id)).map(q => ({
+      ...q,
+      text: q.text + ' <em style="font-size:11px;color:#5a6380">(reviewed)</em>',
+      _retry: true
+    }));
+    queue = [...queue, ...missed.slice(0, 3)];
+    buildProgressDots();
+  }
+
+  renderQ();
+}
+
+// ============================================================
+// CHECKPOINT (every 5 questions)
+// ============================================================
+function showCheckpoint() {
+  const cp = document.getElementById('checkpoint');
+  cp.className = 'checkpoint show';
+  document.getElementById('cpNum').textContent = qIndex;
+  document.getElementById('cpTotal').textContent = queue.length;
+
+  const domainNames = { d1:'Security Concepts', d2:'Threats & Attacks', d3:'Architecture', d4:'IAM & Ops', d5:'GRC & IR' };
+  const colors = { d1:'#7c5cfc', d2:'#ff3355', d3:'#00e5ff', d4:'#ffc107', d5:'#00ff9d' };
+
+  const bars = document.getElementById('cpBars');
+  bars.innerHTML = '';
+  Object.entries(domainStats).forEach(([d, stat]) => {
+    if (stat.q === 0) return;
+    const pct = Math.round((stat.c / stat.q) * 100);
+    bars.innerHTML += `
+      <div class="cp-row">
+        <div class="cp-label">${domainNames[d]}</div>
+        <div class="cp-bar-bg"><div class="cp-bar-fill" style="width:${pct}%;background:${colors[d]}"></div></div>
+        <div class="cp-pct" style="color:${colors[d]}">${pct}%</div>
+      </div>`;
+  });
+}
+
+// ============================================================
+// SCORE SCREEN
+// ============================================================
+function showScore() {
+  document.getElementById('gameScreen').classList.remove('active');
+  const ss = document.getElementById('scoreScreen');
+  ss.classList.add('active');
+
+  const total = qIndex;
+  const pct = total === 0 ? 0 : Math.round((correct / total) * 100);
+
+  // Score ring
+  const circumference = 427;
+  const offset = circumference - (circumference * pct / 100);
+  const ring = document.getElementById('scoreRingFg');
+  ring.style.strokeDashoffset = circumference;
+  const ringColor = pct >= 85 ? '#00ff9d' : pct >= 70 ? '#ffc107' : '#ff3355';
+  ring.style.stroke = ringColor;
+  setTimeout(() => { ring.style.strokeDashoffset = offset; }, 200);
+
+  document.getElementById('scorePct').textContent = pct + '%';
+  document.getElementById('scorePct').style.color = ringColor;
+
+  let title, msg;
+  if (pct >= 90) { title = '🏆 EXAM READY'; msg = 'You\'re consistently above passing threshold. Maintain this accuracy and you\'ll clear 800+.'; }
+  else if (pct >= 80) { title = '⚡ ALMOST THERE'; msg = 'Strong performance. Review the missed questions — those points are yours to take back.'; }
+  else if (pct >= 70) { title = '🎯 BUILDING MOMENTUM'; msg = 'Good foundation. Target the wrong answers specifically — pattern recognition is developing.'; }
+  else { title = '🔄 GRIND MODE'; msg = 'Keep pushing. Every wrong answer is a pattern you\'ll now recognize. Retry immediately.'; }
+
+  document.getElementById('scoreTitle').textContent = title;
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('scCorrect').textContent = correct;
+  document.getElementById('scWrong').textContent = total - correct;
+  document.getElementById('scStreak').textContent = bestStreak;
+  document.getElementById('scTotal').textContent = total;
+
+  // Domain breakdown
+  const domainNames = { d1:'Security Concepts', d2:'Threats & Attacks', d3:'Architecture', d4:'IAM & Ops', d5:'GRC & IR' };
+  const colors = { d1:'#7c5cfc', d2:'#ff3355', d3:'#00e5ff', d4:'#ffc107', d5:'#00ff9d' };
+  const dbars = document.getElementById('domainBars');
+  dbars.innerHTML = '';
+  Object.entries(domainStats).forEach(([d, stat]) => {
+    if (stat.q === 0) return;
+    const p = Math.round((stat.c / stat.q) * 100);
+    dbars.innerHTML += `
+      <div class="db-row">
+        <div class="db-top">
+          <span class="db-name">${domainNames[d]}</span>
+          <span class="db-pct" style="color:${colors[d]}">${p}% (${stat.c}/${stat.q})</span>
+        </div>
+        <div class="db-bar-bg"><div class="db-bar-fill" style="width:0%;background:${colors[d]}" data-w="${p}"></div></div>
+      </div>`;
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.db-bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+  }, 300);
+
+  window.scrollTo(0, 0);
+}
+
+function restartSame() {
+  buildQueue(mode === 'weak' ?
+    QB.filter(q => ['d3','d2'].includes(q.domain)) :
+    QB
+  );
+  startGame();
+}
+
+function goHome() {
+  document.getElementById('scoreScreen').classList.remove('active');
+  document.getElementById('modeScreen').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
