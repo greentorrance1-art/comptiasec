@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SEC+ COMMAND CENTER</title>
+<title>SEC+ COMMAND CENTER v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#05070f;--surface:#090c18;--card:#0e1220;--card2:#141828;--border:#1a2035;--border2:#242d4a;--accent:#00e5ff;--red:#ff2d55;--green:#00ff9d;--yellow:#ffc107;--purple:#7c5cfc;--orange:#ff7d3b;--text:#e8eaf2;--text2:#8892b0;--text3:#3d4a6b;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-/* HEADER */
 .hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
 .logo{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--accent);letter-spacing:3px;text-shadow:0 0 20px rgba(0,229,255,.4);}
 .logo-sub{font-size:9px;color:var(--text3);letter-spacing:2px;font-family:'Share Tech Mono',monospace;}
@@ -21,25 +20,23 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .cdpill{background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(255,125,59,.1));border:1px solid rgba(255,45,85,.4);border-radius:7px;padding:3px 9px;text-align:center;cursor:pointer;}
 .cdpill .v{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--red);display:block;}
 .cdpill .l{font-size:8px;color:var(--text3);letter-spacing:1px;font-family:'Share Tech Mono',monospace;}
-/* NAV */
 .nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:190;overflow-x:auto;scrollbar-width:none;}
 .nav::-webkit-scrollbar{display:none;}
 .ntab{flex:1;min-width:52px;padding:9px 4px;text-align:center;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);font-size:9px;letter-spacing:1px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s;}
 .ntab .ic{font-size:15px;}
 .ntab.active{color:var(--accent);border-bottom-color:var(--accent);}
-/* PANELS */
 .panel{display:none;padding:14px 14px 90px;position:relative;z-index:1;}
 .panel.active{display:block;animation:fadeUp .25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-/* CARDS */
 .card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden;}
 .ctitle{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--text3);letter-spacing:3px;margin-bottom:12px;}
-/* BUTTONS */
 .btn{display:block;width:100%;padding:14px;border:none;border-radius:11px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;text-align:center;}
 .btn:active{transform:scale(.98);}
 .btn-primary{background:var(--accent);color:#000;}
 .btn-sec{background:transparent;border:1.5px solid var(--border2);color:var(--text2);}
 .btn-sm{padding:10px;font-size:13px;border-radius:9px;}
+/* NEW: v2 badge */
+.v2badge{display:inline-block;background:linear-gradient(135deg,var(--purple),var(--accent));color:#000;font-family:'Share Tech Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:1px;margin-left:6px;vertical-align:middle;}
 /* DASHBOARD */
 .ring-wrap{position:relative;width:130px;height:130px;margin:0 auto 14px;}
 .ring-bg{fill:none;stroke:var(--border);stroke-width:9;}
@@ -96,7 +93,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .flash-back-face{background:linear-gradient(135deg,var(--card),var(--card2));border:1.5px solid var(--purple);transform:rotateY(180deg);}
 .flash-face-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;margin-bottom:10px;}
 .flash-term-text{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--accent);}
-.flash-def-text{font-size:14px;color:var(--text2);line-height:1.55;}
+.flash-def-text{font-size:13px;color:var(--text2);line-height:1.5;}
 .flash-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px;}
 .flash-prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));transition:width .4s ease;}
 .flash-ctr{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text3);text-align:center;margin-bottom:12px;}
@@ -134,6 +131,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .port-table th{background:var(--card2);color:var(--text3);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:8px 10px;text-align:left;}
 .port-table td{padding:8px 10px;border-top:1px solid var(--border);}
 .port-table td:first-child{font-family:'Share Tech Mono',monospace;color:var(--accent);}
+.port-table tr.insecure td{color:var(--red);}
+.port-table tr.secure td:first-child{color:var(--green);}
 .port-table tr:hover td{background:var(--card2);}
 .roadmap-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
 .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;}
@@ -141,10 +140,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="hdr">
   <div>
-    <div class="logo">SEC+</div>
+    <div class="logo">SEC+ <span class="v2badge">v2</span></div>
     <div class="logo-sub">SY0-701 COMMAND CENTER</div>
   </div>
   <div class="hstats">
@@ -154,7 +152,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <div class="ntab active" data-p="dash"><span class="ic">📊</span>DASH</div>
   <div class="ntab" data-p="quiz"><span class="ic">🎯</span>QUIZ</div>
@@ -164,11 +161,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="ntab" data-p="ref"><span class="ic">📚</span>REF</div>
 </div>
 
-<!-- ===================== DASHBOARD ===================== -->
+<!-- DASHBOARD -->
 <div id="dash" class="panel active">
   <div class="card" style="text-align:center">
     <div class="ring-wrap">
-      <svg width="130" height="130" class="ring-svg" style="transform:rotate(-90deg)">
+      <svg width="130" height="130" style="transform:rotate(-90deg)">
         <circle class="ring-bg" cx="65" cy="65" r="52"/>
         <circle class="ring-fg-el" id="ringFg" cx="65" cy="65" r="52" stroke-dasharray="327" stroke-dashoffset="327"/>
       </svg>
@@ -179,12 +176,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div id="ringStatus" style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--text3)">START STUDYING</div>
   </div>
-
   <div class="card">
     <div class="ctitle">DOMAIN BREAKDOWN</div>
     <div id="domainBars"></div>
   </div>
-
   <div class="card">
     <div class="ctitle">STREAK</div>
     <div style="display:flex;gap:16px;margin-bottom:10px">
@@ -193,16 +188,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="cal-grid" id="calGrid"></div>
   </div>
-
   <div class="card">
     <div class="ctitle">RECENT SESSIONS</div>
     <div id="sessionLog"><div style="color:var(--text3);font-size:13px;text-align:center;padding:10px">No sessions yet — start a quiz!</div></div>
   </div>
 </div>
 
-<!-- ===================== QUIZ ===================== -->
+<!-- QUIZ -->
 <div id="quiz" class="panel">
-  <!-- SETUP -->
   <div id="quizSetup">
     <div class="card">
       <div class="ctitle">QUIZ MODE</div>
@@ -210,6 +203,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <button class="mbtn active" data-m="full">📋 FULL EXAM</button>
         <button class="mbtn" data-m="domain">🎯 DOMAIN</button>
         <button class="mbtn" data-m="weak">⚠️ WEAK AREAS</button>
+        <button class="mbtn" data-m="modern">☁️ MODERN</button>
         <button class="mbtn" data-m="rapid">⚡ RAPID</button>
       </div>
       <div id="domainWrap" style="display:none">
@@ -223,10 +217,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
       </div>
     </div>
+    <div class="card" style="background:rgba(124,92,252,.06);border-color:rgba(124,92,252,.3)">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">☁️ NEW IN v2</div>
+      <div style="font-size:13px;color:var(--text2)">85 questions total · CASB · SASE · SOAR · UEBA · CSPM · SAST/DAST · Supply Chain · ATT&CK phases · RPO · OCSP/CRL · RA/CA · API security · Log pattern recognition</div>
+    </div>
     <button class="btn btn-primary" id="startBtn">START QUIZ →</button>
   </div>
-
-  <!-- GAME -->
   <div id="quizGame" style="display:none">
     <div class="ckpt-banner" id="ckptBanner"></div>
     <div class="qprog-track"><div class="qprog-fill" id="qProgFill" style="width:0%"></div></div>
@@ -242,8 +238,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <button class="btn btn-primary" id="qNextBtn" style="display:none;margin-top:4px">NEXT →</button>
   </div>
-
-  <!-- SCORE -->
   <div id="quizScore" style="display:none;text-align:center">
     <div class="card">
       <div class="score-ring-wrap">
@@ -267,7 +261,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- ===================== FLASHCARDS ===================== -->
+<!-- FLASHCARDS -->
 <div id="flash" class="panel">
   <div id="flashSelect">
     <div class="card"><div class="ctitle">CHOOSE DECK</div>
@@ -275,6 +269,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="deck-btn" data-deck="crypto"><span class="deck-icon">🔐</span><div class="deck-info"><div class="dn">CRYPTO & PKI</div><div class="dc">15 cards — encryption fundamentals</div></div></button>
       <button class="deck-btn" data-deck="attacks"><span class="deck-icon">⚔️</span><div class="deck-info"><div class="dn">ATTACK TYPES</div><div class="dc">20 cards — every attack on the exam</div></div></button>
       <button class="deck-btn" data-deck="iam"><span class="deck-icon">👤</span><div class="deck-info"><div class="dn">IAM & ACCESS CONTROL</div><div class="dc">15 cards — auth, authz, AAA</div></div></button>
+      <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)"><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
     </div>
   </div>
   <div id="flashGame" style="display:none">
@@ -301,12 +296,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- ===================== ACRONYMS ===================== -->
+<!-- ACRONYMS -->
 <div id="acr" class="panel">
   <div id="acrStart">
     <div class="card" style="text-align:center">
       <div class="ctitle">ACRONYM DRILL</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:16px">57 acronyms. Type the full name. Hit Enter or Submit. The exam tests these constantly.</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">76 acronyms including all SY0-701 modern terms. Type the full name.</div>
+      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: UEBA · SASE · CSPM · CVSS · OCSP · CRL · NGFW · SAST · DAST · SCA + more</div>
       <button class="btn btn-primary" id="acrStartBtn">START DRILL →</button>
     </div>
   </div>
@@ -314,7 +310,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="acrprogbar" style="margin-bottom:4px">
       <div class="acr-pbar"><div class="acr-pfill" id="acrFill" style="width:0%"></div></div>
     </div>
-    <div class="acr-ctr" id="acrCtr">1 / 57</div>
+    <div class="acr-ctr" id="acrCtr">1 / 76</div>
     <div class="card">
       <div class="acr-q" id="acrQ">AAA</div>
       <input class="acr-inp" id="acrInp" type="text" placeholder="Type the full name..." autocomplete="off" autocorrect="off" spellcheck="false"/>
@@ -327,12 +323,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- ===================== PBQ ===================== -->
+<!-- PBQ -->
 <div id="pbq" class="panel">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <div class="ctitle" style="margin:0" id="pbqTitle">PBQ SIMULATION</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3)" id="pbqCtr">1/5</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3)" id="pbqCtr">1/9</div>
     </div>
     <div style="font-size:13px;color:var(--text2);margin-bottom:14px" id="pbqDesc"></div>
     <div id="pbqContent"></div>
@@ -344,7 +340,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- ===================== REFERENCE ===================== -->
+<!-- REFERENCE -->
 <div id="ref" class="panel">
   <div class="rsec-title">🎓 FREE STUDY</div>
   <a class="rlink" href="https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/" target="_blank">
@@ -353,459 +349,418 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <a class="rlink" href="https://www.reddit.com/r/CompTIA/" target="_blank">
     <span class="rlink-icon">💬</span><div><div class="rlink-name">r/CompTIA</div><div class="rlink-desc">Search "passed security+" — real strategies from recent passers.</div></div><span class="rtag rtag-free">FREE</span>
   </a>
-  <a class="rlink" href="https://www.professormesser.com/security-plus/sy0-701/sy0-701-study-groups/" target="_blank">
-    <span class="rlink-icon">👥</span><div><div class="rlink-name">Messer Study Groups</div><div class="rlink-desc">Free live study sessions and community Q&A.</div></div><span class="rtag rtag-free">FREE</span>
-  </a>
-
-  <div class="rsec-title">🏆 PRACTICE EXAMS</div>
-  <a class="rlink" href="https://www.udemy.com/course/comptia-security-practice-exams/" target="_blank">
-    <span class="rlink-icon">🏆</span><div><div class="rlink-name">Jason Dion — Practice Exams</div><div class="rlink-desc">Closest phrasing to the real exam. Get when you're hitting 75%+ here. Usually $15 on sale.</div></div><span class="rtag rtag-key">HIGH VALUE</span>
-  </a>
   <a class="rlink" href="https://home.pearsonvue.com/comptia" target="_blank">
-    <span class="rlink-icon">📅</span><div><div class="rlink-name">Pearson VUE — Book Exam</div><div class="rlink-desc">Book 3–4 weeks out and pay. That deadline is everything.</div></div><span class="rtag rtag-key">BOOK NOW</span>
+    <span class="rlink-icon">📅</span><div><div class="rlink-name">Pearson VUE — Book Exam</div><div class="rlink-desc">Book now. A real deadline changes everything.</div></div><span class="rtag rtag-key">BOOK NOW</span>
+  </a>
+  <a class="rlink" href="https://www.udemy.com/course/comptia-security-practice-exams/" target="_blank">
+    <span class="rlink-icon">🏆</span><div><div class="rlink-name">Jason Dion — Practice Exams</div><div class="rlink-desc">Closest phrasing to the real exam. ~$15 on sale.</div></div><span class="rtag rtag-key">HIGH VALUE</span>
   </a>
 
-  <div class="rsec-title">🔌 KEY PORTS</div>
+  <div class="rsec-title">🔌 PORTS YOU MUST KNOW COLD</div>
   <div class="card" style="padding:0;overflow:hidden">
     <table class="port-table">
       <thead><tr><th>PORT</th><th>PROTOCOL</th><th>NOTES</th></tr></thead>
       <tbody>
-        <tr><td>20/21</td><td>FTP</td><td>Unencrypted file transfer</td></tr>
-        <tr><td>22</td><td>SSH/SFTP/SCP</td><td>Encrypted remote + file</td></tr>
-        <tr><td>23</td><td>Telnet</td><td>NEVER — unencrypted shell</td></tr>
+        <tr class="insecure"><td>20/21</td><td>FTP</td><td>Unencrypted — use SFTP</td></tr>
+        <tr class="secure"><td>22</td><td>SSH/SFTP/SCP</td><td>Encrypted remote + file</td></tr>
+        <tr class="insecure"><td>23</td><td>Telnet</td><td>NEVER — cleartext shell</td></tr>
         <tr><td>25</td><td>SMTP</td><td>Send email (outbound)</td></tr>
-        <tr><td>53</td><td>DNS</td><td>UDP queries / TCP zone xfer</td></tr>
+        <tr><td>53</td><td>DNS</td><td>UDP queries / TCP zone xfer — poisoning target</td></tr>
         <tr><td>67/68</td><td>DHCP</td><td>IP assignment</td></tr>
-        <tr><td>80</td><td>HTTP</td><td>Unencrypted web</td></tr>
-        <tr><td>88</td><td>Kerberos</td><td>AD authentication</td></tr>
-        <tr><td>110</td><td>POP3</td><td>Receive email (download)</td></tr>
-        <tr><td>123</td><td>NTP</td><td>Time sync — critical for Kerberos</td></tr>
-        <tr><td>143</td><td>IMAP</td><td>Receive email (sync)</td></tr>
-        <tr><td>161/162</td><td>SNMP</td><td>Network device monitoring</td></tr>
-        <tr><td>389</td><td>LDAP</td><td>Directory services</td></tr>
-        <tr><td>443</td><td>HTTPS</td><td>Encrypted web (TLS)</td></tr>
-        <tr><td>445</td><td>SMB</td><td>Windows file sharing — WannaCry</td></tr>
-        <tr><td>465/587</td><td>SMTPS</td><td>Secure email send</td></tr>
-        <tr><td>636</td><td>LDAPS</td><td>Secure LDAP</td></tr>
-        <tr><td>993</td><td>IMAPS</td><td>Secure IMAP</td></tr>
-        <tr><td>995</td><td>POP3S</td><td>Secure POP3</td></tr>
-        <tr><td>3306</td><td>MySQL</td><td>Database</td></tr>
-        <tr><td>3389</td><td>RDP</td><td>Remote Desktop — prime target</td></tr>
+        <tr class="insecure"><td>80</td><td>HTTP</td><td>Unencrypted web — use HTTPS</td></tr>
+        <tr><td>88</td><td>Kerberos</td><td>AD auth — requires NTP sync</td></tr>
+        <tr><td>110</td><td>POP3</td><td>Email download · POP3S=995</td></tr>
+        <tr><td>123</td><td>NTP</td><td>Time sync — critical for Kerberos + logs</td></tr>
+        <tr><td>143</td><td>IMAP</td><td>Email sync across devices · IMAPS=993</td></tr>
+        <tr><td>161/162</td><td>SNMP v3</td><td>Device monitoring — v1/v2 insecure</td></tr>
+        <tr class="insecure"><td>389</td><td>LDAP</td><td>Directory — cleartext, use LDAPS</td></tr>
+        <tr class="secure"><td>443</td><td>HTTPS</td><td>Encrypted web (TLS) — always prefer</td></tr>
+        <tr><td>445</td><td>SMB</td><td>Windows file sharing — WannaCry / EternalBlue</td></tr>
+        <tr class="secure"><td>636</td><td>LDAPS</td><td>Encrypted LDAP — use over 389</td></tr>
+        <tr><td>993</td><td>IMAPS</td><td>Encrypted IMAP</td></tr>
+        <tr><td>995</td><td>POP3S</td><td>Encrypted POP3</td></tr>
+        <tr><td>3306</td><td>MySQL</td><td>Database server</td></tr>
+        <tr><td>3389</td><td>RDP</td><td>Remote Desktop — prime attack target</td></tr>
       </tbody>
     </table>
   </div>
 
+  <div class="rsec-title">⚡ SCENARIO QUICK REFERENCE</div>
+  <div class="card">
+    <div style="font-size:11px;color:var(--text3);font-family:'Share Tech Mono',monospace;margin-bottom:10px">IF SCENARIO SAYS → CHOOSE</div>
+    <div id="scenarioRef"></div>
+  </div>
+
   <div class="rsec-title">📋 4-WEEK ROADMAP</div>
   <div class="card">
-    <div class="roadmap-step"><div class="step-num" style="background:var(--accent);color:#000">1</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 1 — FOUNDATION</div><div style="font-size:13px;color:var(--text2)">Messer: Domains 1 & 2. Acronym drill daily. Flashcards: Attacks + IAM.</div></div></div>
-    <div class="roadmap-step"><div class="step-num" style="background:var(--purple);color:#fff">2</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 2 — TECH LAYER</div><div style="font-size:13px;color:var(--text2)">Messer: Domain 3 (crypto, cloud, network). Port flashcards. Domain drill daily.</div></div></div>
-    <div class="roadmap-step"><div class="step-num" style="background:var(--yellow);color:#000">3</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 3 — OPERATIONS</div><div style="font-size:13px;color:var(--text2)">Messer: Domains 4 & 5. PBQ simulations. Full exam mode. Target 75%+.</div></div></div>
-    <div class="roadmap-step" style="margin:0"><div class="step-num" style="background:var(--green);color:#000">4</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 4 — EXAM PREP</div><div style="font-size:13px;color:var(--text2)">Full exam only. Hit 85%+ consistently. Add Dion if borderline. SIT THE EXAM.</div></div></div>
+    <div class="roadmap-step"><div class="step-num" style="background:var(--accent);color:#000">1</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 1 — FOUNDATION</div><div style="font-size:13px;color:var(--text2)">Messer Domains 1 & 2. Acronym drill daily. Flashcards: Attacks + IAM.</div></div></div>
+    <div class="roadmap-step"><div class="step-num" style="background:var(--purple);color:#fff">2</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 2 — TECH LAYER</div><div style="font-size:13px;color:var(--text2)">Messer Domain 3. Port flashcards. Modern Cloud deck. Domain drill daily.</div></div></div>
+    <div class="roadmap-step"><div class="step-num" style="background:var(--yellow);color:#000">3</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 3 — OPERATIONS</div><div style="font-size:13px;color:var(--text2)">Messer Domains 4 & 5. PBQ simulations. Full exam mode. Target 75%+.</div></div></div>
+    <div class="roadmap-step" style="margin:0"><div class="step-num" style="background:var(--green);color:#000">4</div><div><div style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700">WEEK 4 — EXAM KILL</div><div style="font-size:13px;color:var(--text2)">Full exam + Modern mode only. Hit 85%+ consistently. SIT THE EXAM.</div></div></div>
   </div>
 </div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────
-const DOMS = ['Threats','Architecture','Implementation','Operations','Governance'];
-const DOM_COLORS = ['#ff2d55','#ff7d3b','#ffc107','#00e5ff','#7c5cfc'];
+const DOMS=['Threats','Architecture','Implementation','Operations','Governance'];
+const DOM_COLORS=['#ff2d55','#ff7d3b','#ffc107','#00e5ff','#7c5cfc'];
 
-let S = {
-  totalQ:0, correct:0, streak:0, best:0,
-  domains:{ Threats:{q:0,c:0}, Architecture:{q:0,c:0}, Implementation:{q:0,c:0}, Operations:{q:0,c:0}, Governance:{q:0,c:0} },
-  sessions:[], studyDays:{}, examDate:null
-};
+let S={totalQ:0,correct:0,streak:0,best:0,
+  domains:{Threats:{q:0,c:0},Architecture:{q:0,c:0},Implementation:{q:0,c:0},Operations:{q:0,c:0},Governance:{q:0,c:0}},
+  sessions:[],studyDays:{},examDate:null};
 
-function loadS(){ try{ const d=JSON.parse(localStorage.getItem('spc6')||'null'); if(d) Object.assign(S,d); }catch(e){} }
-function saveS(){ try{ localStorage.setItem('spc6',JSON.stringify(S)); }catch(e){} }
+function loadS(){try{const d=JSON.parse(localStorage.getItem('spc7')||'null');if(d)Object.assign(S,d);}catch(e){}}
+function saveS(){try{localStorage.setItem('spc7',JSON.stringify(S));}catch(e){}}
 
-// ── NAV ───────────────────────────────────────────────────
 function showPanel(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelector(`.ntab[data-p="${id}"]`).classList.add('active');
-  if(id==='dash') refreshDash();
+  if(id==='dash')refreshDash();
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.ntab').forEach(t=>t.addEventListener('click',()=>showPanel(t.dataset.p)));
 
-// ── COUNTDOWN ─────────────────────────────────────────────
 function initCd(){
-  const v=document.getElementById('cdVal'), l=document.getElementById('cdLbl');
+  const v=document.getElementById('cdVal'),l=document.getElementById('cdLbl');
   if(!S.examDate){v.textContent='—';l.textContent='SET DATE';return;}
-  const d=Math.ceil((new Date(S.examDate)-new Date())/(864e5));
-  v.textContent=d>0?d+'D':'TODAY!';
-  l.textContent=d>0?'TO EXAM':'EXAM DAY';
+  const d=Math.ceil((new Date(S.examDate)-new Date())/864e5);
+  v.textContent=d>0?d+'D':'TODAY!';l.textContent=d>0?'TO EXAM':'EXAM DAY';
 }
 function setExamDate(){
   const d=prompt('Exam date (YYYY-MM-DD):');
-  if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){ S.examDate=d; saveS(); initCd(); }
+  if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){S.examDate=d;saveS();initCd();}
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────
 function refreshDash(){
-  const pct = S.totalQ ? Math.round(S.correct/S.totalQ*100) : 0;
-  const circ = 2*Math.PI*52;
-  const fg = document.getElementById('ringFg');
-  const col = pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';
-  fg.style.stroke = col;
-  fg.style.strokeDasharray = circ;
-  fg.style.strokeDashoffset = circ - circ*pct/100;
-  document.getElementById('ringPct').textContent = pct+'%';
-  document.getElementById('ringPct').style.color = col;
-  const rs = document.getElementById('ringStatus');
-  rs.textContent = pct>=85?'✅ EXAM READY':pct>=70?'📈 PROGRESSING':'🔁 KEEP DRILLING';
-  rs.style.color = col;
-  document.getElementById('hTotal').textContent = S.totalQ;
-  document.getElementById('hAcc').textContent = (S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';
-
-  // domain bars
-  const db = document.getElementById('domainBars');
-  db.innerHTML = DOMS.map((d,i)=>{
-    const dd=S.domains[d]; const p=dd.q?Math.round(dd.c/dd.q*100):0;
-    return `<div class="dm-row"><div class="dm-name">${d}</div><div class="dm-track"><div class="dm-fill" style="width:${p}%;background:${DOM_COLORS[i]}"></div></div><div class="dm-pct" style="color:${DOM_COLORS[i]}">${p}%</div></div>`;
+  const pct=S.totalQ?Math.round(S.correct/S.totalQ*100):0;
+  const circ=2*Math.PI*52;
+  const fg=document.getElementById('ringFg');
+  const col=pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';
+  fg.style.stroke=col;fg.style.strokeDasharray=circ;fg.style.strokeDashoffset=circ-circ*pct/100;
+  document.getElementById('ringPct').textContent=pct+'%';document.getElementById('ringPct').style.color=col;
+  const rs=document.getElementById('ringStatus');
+  rs.textContent=pct>=85?'✅ EXAM READY':pct>=70?'📈 PROGRESSING':'🔁 KEEP DRILLING';rs.style.color=col;
+  document.getElementById('hTotal').textContent=S.totalQ;
+  document.getElementById('hAcc').textContent=(S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';
+  document.getElementById('domainBars').innerHTML=DOMS.map((d,i)=>{
+    const dd=S.domains[d];const p=dd.q?Math.round(dd.c/dd.q*100):0;
+    return`<div class="dm-row"><div class="dm-name">${d}</div><div class="dm-track"><div class="dm-fill" style="width:${p}%;background:${DOM_COLORS[i]}"></div></div><div class="dm-pct" style="color:${DOM_COLORS[i]}">${p}%</div></div>`;
   }).join('');
-
-  // streak
-  document.getElementById('streakCur').textContent = S.streak;
-  document.getElementById('streakBest').textContent = S.best;
-
-  // calendar
-  const cg = document.getElementById('calGrid'); cg.innerHTML='';
-  for(let i=13;i>=0;i--){
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const k=d.toISOString().slice(0,10);
-    const el=document.createElement('div');
-    el.className='cal-cell';
-    el.style.background=S.studyDays[k]?'var(--accent)':'var(--border)';
-    el.style.opacity=S.studyDays[k]?'1':'0.4';
-    el.title=k; cg.appendChild(el);
-  }
-
-  // sessions
-  const sl = document.getElementById('sessionLog');
-  if(!S.sessions.length){ sl.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:10px">No sessions yet</div>'; return; }
-  sl.innerHTML = S.sessions.slice(-5).reverse().map(s=>`
-    <div class="slog-row">
-      <div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700">${s.mode}</div><div style="font-size:11px;color:var(--text3);font-family:'Share Tech Mono',monospace">${s.date}</div></div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:16px;color:${s.pct>=75?'#00ff9d':s.pct>=60?'#ffc107':'#ff2d55'}">${s.pct}%</div>
-    </div>`).join('');
+  document.getElementById('streakCur').textContent=S.streak;document.getElementById('streakBest').textContent=S.best;
+  const cg=document.getElementById('calGrid');cg.innerHTML='';
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().slice(0,10);const el=document.createElement('div');el.className='cal-cell';el.style.background=S.studyDays[k]?'var(--accent)':'var(--border)';el.style.opacity=S.studyDays[k]?'1':'0.4';el.title=k;cg.appendChild(el);}
+  const sl=document.getElementById('sessionLog');
+  if(!S.sessions.length){sl.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:10px">No sessions yet</div>';return;}
+  sl.innerHTML=S.sessions.slice(-5).reverse().map(s=>`<div class="slog-row"><div><div style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700">${s.mode}</div><div style="font-size:11px;color:var(--text3);font-family:'Share Tech Mono',monospace">${s.date}</div></div><div style="font-family:'Share Tech Mono',monospace;font-size:16px;color:${s.pct>=75?'#00ff9d':s.pct>=60?'#ffc107':'#ff2d55'}">${s.pct}%</div></div>`).join('');
 }
 
-// ── QUESTION BANK ─────────────────────────────────────────
+// Scenario reference
+const SCENARIOS=[
+  ['Data exfiltration suspected','SIEM + Containment + NAC'],
+  ['Web app attack (XSS/SQLi)','WAF + input validation'],
+  ['Insider / unusual user behavior','UEBA + audit logs'],
+  ['Cloud SaaS policy violation','CASB'],
+  ['Remote workers + cloud access','SASE / ZTNA'],
+  ['Alert fatigue / automate response','SOAR'],
+  ['Cloud misconfiguration detected','CSPM'],
+  ['Container/VM workload security','CWPP'],
+  ['Malicious software update/vendor','Supply Chain — verify integrity'],
+  ['Scan code before deployment','SAST'],
+  ['Test running application','DAST'],
+  ['Check open-source library CVEs','SCA'],
+  ['Encrypt data at rest','AES (Symmetric)'],
+  ['Encrypt data in transit','TLS / HTTPS'],
+  ['Real-time cert revocation check','OCSP'],
+  ['Verify identity before cert issued','RA'],
+  ['EU user data compliance','GDPR'],
+  ['Healthcare PHI compliance','HIPAA'],
+  ['Payment card compliance','PCI-DSS'],
+  ['Detect + alert only','IDS'],
+  ['Detect + block inline','IPS'],
+  ['Protect web apps from XSS/SQLi','WAF'],
+  ['First step after breach detected','Identification → Containment'],
+  ['Trust nothing, verify everything','Zero Trust'],
+];
+document.getElementById('scenarioRef').innerHTML=SCENARIOS.map(([s,a])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span style="color:var(--text2)">${s}</span><span style="color:var(--green);font-weight:700;text-align:right;margin-left:8px">${a}</span></div>`).join('');
+
+// QUESTION BANK — 85 total
 const QB=[
-  {q:"An attacker sends millions of requests to crash a web server. What attack is this?",a:2,o:["MitM","SQL Injection","DoS","Phishing"],dom:"Threats",d:1,ex:"DoS (Denial of Service) overwhelms a system with traffic until it's unavailable. DDoS uses multiple sources."},
-  {q:"A user receives a fake IT email asking for their password. What attack is this?",a:3,o:["Vishing","Tailgating","Watering hole","Phishing"],dom:"Threats",d:1,ex:"Phishing uses deceptive emails to steal credentials or deliver malware. Mass scale, not targeted."},
+  // Original 60
+  {q:"An attacker sends millions of requests to crash a web server. What attack is this?",a:2,o:["MitM","SQL Injection","DoS","Phishing"],dom:"Threats",d:1,ex:"DoS overwhelms a system with traffic until unavailable. DDoS uses multiple sources."},
+  {q:"A user receives a fake IT email asking for their password. What attack is this?",a:3,o:["Vishing","Tailgating","Watering hole","Phishing"],dom:"Threats",d:1,ex:"Phishing uses deceptive emails to steal credentials or deliver malware."},
   {q:"Malware that encrypts files and demands payment is called:",a:1,o:["Spyware","Ransomware","Rootkit","Worm"],dom:"Threats",d:1,ex:"Ransomware encrypts victim data and demands crypto payment for the decryption key."},
   {q:"An attacker intercepts communication between two parties without their knowledge. This is:",a:0,o:["Man-in-the-Middle","Pharming","Vishing","Replay"],dom:"Threats",d:2,ex:"MitM positions the attacker between two communicating parties to intercept or alter data."},
-  {q:"Which attack tricks authenticated users into submitting malicious requests to another site?",a:2,o:["XSS","SQL Injection","CSRF","Clickjacking"],dom:"Threats",d:2,ex:"CSRF (Cross-Site Request Forgery) exploits the trust a site has in an authenticated user's browser."},
+  {q:"Which attack tricks authenticated users into submitting malicious requests to another site?",a:2,o:["XSS","SQL Injection","CSRF","Clickjacking"],dom:"Threats",d:2,ex:"CSRF exploits the trust a site has in an authenticated user's browser."},
   {q:"An attacker injects malicious scripts into a website viewed by other users. This is:",a:1,o:["CSRF","XSS","Buffer Overflow","Race Condition"],dom:"Threats",d:2,ex:"XSS injects client-side scripts into pages, stealing session cookies or redirecting users."},
-  {q:"Which malware hides at the kernel level to maintain persistent, hidden root access?",a:3,o:["Worm","Trojan","Spyware","Rootkit"],dom:"Threats",d:2,ex:"Rootkits operate at the OS kernel level, hiding processes and giving attackers persistent elevated access."},
-  {q:"An attacker calls pretending to be IT support. This is:",a:0,o:["Vishing","Phishing","Smishing","Whaling"],dom:"Threats",d:1,ex:"Vishing = voice phishing. Phone-based social engineering to extract credentials or info."},
-  {q:"Which attack specifically targets C-suite executives with personalized phishing?",a:2,o:["Spear phishing","Vishing","Whaling","Smishing"],dom:"Threats",d:2,ex:"Whaling targets high-value executives. Spear phishing targets specific individuals. Phishing is mass scale."},
-  {q:"A zero-day vulnerability is:",a:1,o:["A bug fixed immediately","A flaw with no patch available yet","A vulnerability exploited daily","An old unpatched system"],dom:"Threats",d:2,ex:"Zero-day = unknown to the vendor, no patch exists. Extremely dangerous. Sold on dark web."},
+  {q:"Which malware hides at the kernel level to maintain persistent, hidden root access?",a:3,o:["Worm","Trojan","Spyware","Rootkit"],dom:"Threats",d:2,ex:"Rootkits operate at OS kernel level, hiding processes and giving persistent elevated access."},
+  {q:"An attacker calls pretending to be IT support. This is:",a:0,o:["Vishing","Phishing","Smishing","Whaling"],dom:"Threats",d:1,ex:"Vishing = voice phishing. Phone-based social engineering to extract credentials."},
+  {q:"Which attack specifically targets C-suite executives with personalized phishing?",a:2,o:["Spear phishing","Vishing","Whaling","Smishing"],dom:"Threats",d:2,ex:"Whaling = exec targeting. Spear phishing = any specific individual. Phishing = mass scale."},
+  {q:"A zero-day vulnerability is:",a:1,o:["A bug fixed immediately","A flaw with no patch available yet","A vulnerability exploited daily","An old unpatched system"],dom:"Threats",d:2,ex:"Zero-day = unknown to vendor, no patch exists. Extremely dangerous and valuable."},
   {q:"An attacker compromises a website frequently visited by targets to deliver malware. This is:",a:3,o:["Spear phishing","Vishing","Drive-by download","Watering hole"],dom:"Threats",d:3,ex:"Watering hole attacks compromise sites the target group visits, infecting them passively."},
-  {q:"What is a replay attack?",a:0,o:["Capturing and retransmitting valid data to gain unauthorized access","Flooding a target with traffic","Injecting SQL commands","Spoofing DNS responses"],dom:"Threats",d:2,ex:"Replay attacks retransmit captured valid auth packets. Defense: timestamps, nonces, session tokens."},
-  {q:"Which malware self-replicates across networks without any user interaction?",a:2,o:["Trojan","Virus","Worm","Spyware"],dom:"Threats",d:1,ex:"Worms self-propagate automatically. Viruses need a host file. Trojans disguise themselves as legitimate software."},
-  {q:"An APT threat actor infiltrates, stays dormant for months, and exfiltrates data. This describes:",a:1,o:["Script kiddie","APT","Hacktivist","Insider threat"],dom:"Threats",d:2,ex:"APT (Advanced Persistent Threat) actors infiltrate quietly, persist long-term, and exfiltrate slowly to avoid detection."},
-  {q:"SQL injection is most effective against applications that fail to:",a:3,o:["Use HTTPS","Use a firewall","Implement MFA","Sanitize/validate user input"],dom:"Threats",d:2,ex:"SQL injection exploits insufficient input validation, allowing attackers to manipulate database queries directly."},
-  {q:"What security model operates on 'never trust, always verify'?",a:1,o:["Defense in depth","Zero Trust","DMZ","Segmentation"],dom:"Architecture",d:2,ex:"Zero Trust assumes no implicit trust based on network location. Every request is verified regardless of origin."},
-  {q:"A DMZ is used to:",a:2,o:["Encrypt all traffic","Store backups","Host public-facing servers isolated from the internal network","Block all external traffic"],dom:"Architecture",d:2,ex:"A DMZ places public-facing servers (web, email) between two firewalls, protecting the internal network."},
-  {q:"Using multiple overlapping security layers so no single failure compromises everything is:",a:0,o:["Defense in depth","Zero Trust","Least privilege","Segmentation"],dom:"Architecture",d:1,ex:"Defense in depth layers controls so one bypass doesn't expose everything. No single point of failure."},
-  {q:"The principle of least privilege means:",a:2,o:["Admin access by default","Data is always encrypted","Users get only the minimum access needed for their job","Passwords rotate daily"],dom:"Architecture",d:1,ex:"Least privilege minimizes damage if an account is compromised by limiting what each user can access."},
+  {q:"What is a replay attack?",a:0,o:["Capturing and retransmitting valid data to gain unauthorized access","Flooding a target with traffic","Injecting SQL commands","Spoofing DNS responses"],dom:"Threats",d:2,ex:"Replay attacks retransmit captured valid auth packets. Defense: timestamps, nonces."},
+  {q:"Which malware self-replicates across networks without any user interaction?",a:2,o:["Trojan","Virus","Worm","Spyware"],dom:"Threats",d:1,ex:"Worms self-propagate. Viruses need a host file. Trojans disguise as legitimate software."},
+  {q:"SQL injection is most effective against applications that fail to:",a:3,o:["Use HTTPS","Use a firewall","Implement MFA","Sanitize/validate user input"],dom:"Threats",d:2,ex:"SQL injection exploits insufficient input validation, allowing DB query manipulation."},
+  {q:"What security model operates on 'never trust, always verify'?",a:1,o:["Defense in depth","Zero Trust","DMZ","Segmentation"],dom:"Architecture",d:2,ex:"Zero Trust assumes no implicit trust based on network location. Every request is verified."},
+  {q:"A DMZ is used to:",a:2,o:["Encrypt all traffic","Store backups","Host public-facing servers isolated from the internal network","Block all external traffic"],dom:"Architecture",d:2,ex:"DMZ places public-facing servers between two firewalls, protecting the internal network."},
+  {q:"Using multiple overlapping security layers so no single failure compromises everything is:",a:0,o:["Defense in depth","Zero Trust","Least privilege","Segmentation"],dom:"Architecture",d:1,ex:"Defense in depth layers controls so one bypass doesn't expose everything."},
+  {q:"The principle of least privilege means:",a:2,o:["Admin access by default","Data is always encrypted","Users get only the minimum access needed for their job","Passwords rotate daily"],dom:"Architecture",d:1,ex:"Least privilege minimizes damage if an account is compromised."},
   {q:"Network segmentation limits an attacker's ability to:",a:1,o:["Steal passwords","Move laterally across the network","Access the internet","Log in remotely"],dom:"Architecture",d:2,ex:"Segmentation divides networks into zones, containing breaches and preventing lateral movement."},
-  {q:"An air-gapped system:",a:3,o:["Uses only wireless","Has no firewall","Is VPN-connected only","Has no connection to external networks"],dom:"Architecture",d:2,ex:"Air-gapped systems are completely isolated. Used for ICS/SCADA, classified systems, nuclear controls."},
-  {q:"Which cloud model gives the customer the most control over infrastructure?",a:0,o:["Private cloud","Public cloud","Hybrid cloud","SaaS"],dom:"Architecture",d:1,ex:"Private cloud = dedicated infrastructure for one org. Maximum control but highest cost."},
-  {q:"What is the purpose of a honeypot?",a:1,o:["Block malicious traffic","Attract and detect attackers using a decoy system","Encrypt network traffic","Store sensitive data safely"],dom:"Architecture",d:2,ex:"Honeypots are intentionally vulnerable decoy systems to attract attackers and study their TTPs."},
-  {q:"In IaaS, the customer is responsible for managing:",a:2,o:["Physical hardware","The hypervisor","The OS and everything above","Only their data"],dom:"Architecture",d:2,ex:"IaaS: provider manages hardware/hypervisor. Customer manages: OS, middleware, runtime, apps, data."},
-  {q:"Separation of duties means:",a:3,o:["Users share accounts","One admin handles everything","Logging all user actions","No single person has complete control over a critical process"],dom:"Architecture",d:2,ex:"Separation of duties requires collusion to misuse a system — no one person can complete a sensitive transaction alone."},
-  {q:"Which encryption algorithm uses the same key for both encryption and decryption?",a:0,o:["Symmetric","Asymmetric","Hashing","PKI"],dom:"Implementation",d:2,ex:"Symmetric (AES, 3DES) uses one shared key. Fast. Main challenge: secure key distribution."},
-  {q:"RSA is an example of:",a:2,o:["Symmetric encryption","Hashing","Asymmetric encryption","Stream cipher"],dom:"Implementation",d:1,ex:"RSA is asymmetric — uses a public/private key pair for encryption and digital signatures."},
-  {q:"A digital signature provides:",a:1,o:["Confidentiality","Non-repudiation and integrity","Availability","Anonymity"],dom:"Implementation",d:2,ex:"Digital signatures: sender encrypts hash with private key. Provides non-repudiation + integrity. Not confidentiality."},
-  {q:"Which protocol provides encrypted web communication?",a:3,o:["HTTP","FTP","SMTP","TLS/HTTPS"],dom:"Implementation",d:1,ex:"TLS (Transport Layer Security) encrypts web traffic. HTTPS = HTTP over TLS. Port 443."},
-  {q:"A Certificate Authority (CA) is responsible for:",a:0,o:["Issuing and signing digital certificates","Blocking malware","Encrypting hard drives","Monitoring network traffic"],dom:"Implementation",d:2,ex:"CAs are trusted third parties that issue digital certificates, binding public keys to verified identities."},
-  {q:"Which hashing algorithm is the current standard and produces a 256-bit output?",a:2,o:["MD5","SHA-1","SHA-256","RC4"],dom:"Implementation",d:2,ex:"SHA-256 is current standard. MD5 (128-bit) and SHA-1 are deprecated due to collision vulnerabilities."},
-  {q:"Which wireless security protocol is the most current?",a:1,o:["WEP","WPA3","WPA2","TKIP"],dom:"Implementation",d:1,ex:"WPA3 is current. WEP is completely broken. WPA2 still common. TKIP was WPA1's encryption."},
-  {q:"Salting passwords before hashing prevents:",a:3,o:["Brute force via lockouts","Dictionary attacks via MFA","Phishing attacks","Rainbow table attacks"],dom:"Implementation",d:2,ex:"Salting adds a unique random value before hashing. Same password → different hash. Defeats precomputed tables."},
-  {q:"Which type of firewall tracks the state of active network connections?",a:0,o:["Stateful inspection","Packet filter","Proxy","WAF"],dom:"Implementation",d:2,ex:"Stateful firewalls track connection state and make decisions based on session context, not just individual packets."},
-  {q:"An IPS differs from an IDS because it can:",a:2,o:["Only monitor traffic","Use signature detection","Actively block threats inline","Require more hardware"],dom:"Implementation",d:2,ex:"IDS = detect and alert. IPS = detect AND block. Key exam distinction. IPS sits inline."},
-  {q:"Port 22 is used by:",a:1,o:["FTP","SSH","Telnet","SMTP"],dom:"Implementation",d:1,ex:"SSH = port 22. Encrypted remote access, SFTP, SCP. Telnet (23) is unencrypted — never use."},
-  {q:"DNS uses port:",a:3,o:["80","443","25","53"],dom:"Implementation",d:1,ex:"DNS = port 53 (UDP for queries, TCP for zone transfers). Know all major ports cold."},
+  {q:"An air-gapped system:",a:3,o:["Uses only wireless","Has no firewall","Is VPN-connected only","Has no connection to external networks"],dom:"Architecture",d:2,ex:"Air-gapped systems are completely isolated. Used for ICS/SCADA, classified systems."},
+  {q:"What is the purpose of a honeypot?",a:1,o:["Block malicious traffic","Attract and detect attackers using a decoy system","Encrypt network traffic","Store sensitive data safely"],dom:"Architecture",d:2,ex:"Honeypots are intentionally vulnerable decoy systems to attract attackers and study TTPs."},
+  {q:"In IaaS, the customer is responsible for managing:",a:2,o:["Physical hardware","The hypervisor","The OS and everything above","Only their data"],dom:"Architecture",d:2,ex:"IaaS: provider manages hardware/hypervisor. Customer manages: OS, middleware, apps, data."},
+  {q:"Separation of duties means:",a:3,o:["Users share accounts","One admin handles everything","Logging all user actions","No single person has complete control over a critical process"],dom:"Architecture",d:2,ex:"Separation of duties requires collusion to misuse a system."},
+  {q:"Which encryption algorithm uses the same key for both encryption and decryption?",a:0,o:["Symmetric","Asymmetric","Hashing","PKI"],dom:"Implementation",d:2,ex:"Symmetric (AES, 3DES) uses one shared key. Fast. Key distribution is the main challenge."},
+  {q:"RSA is an example of:",a:2,o:["Symmetric encryption","Hashing","Asymmetric encryption","Stream cipher"],dom:"Implementation",d:1,ex:"RSA is asymmetric — public/private key pair for encryption and digital signatures."},
+  {q:"A digital signature provides:",a:1,o:["Confidentiality","Non-repudiation and integrity","Availability","Anonymity"],dom:"Implementation",d:2,ex:"Digital signatures: non-repudiation + integrity. NOT confidentiality."},
+  {q:"Which protocol provides encrypted web communication?",a:3,o:["HTTP","FTP","SMTP","TLS/HTTPS"],dom:"Implementation",d:1,ex:"TLS encrypts web traffic. HTTPS = HTTP over TLS. Port 443."},
+  {q:"A Certificate Authority (CA) is responsible for:",a:0,o:["Issuing and signing digital certificates","Blocking malware","Encrypting hard drives","Monitoring network traffic"],dom:"Implementation",d:2,ex:"CAs are trusted third parties that issue digital certificates, binding public keys to identities."},
+  {q:"Which hashing algorithm is current standard producing 256-bit output?",a:2,o:["MD5","SHA-1","SHA-256","RC4"],dom:"Implementation",d:2,ex:"SHA-256 is current. MD5 (128-bit) and SHA-1 deprecated due to collision vulnerabilities."},
+  {q:"Salting passwords before hashing prevents:",a:3,o:["Brute force via lockouts","Dictionary attacks via MFA","Phishing attacks","Rainbow table attacks"],dom:"Implementation",d:2,ex:"Salt adds random value before hashing. Same password → different hash. Defeats precomputed tables."},
+  {q:"Which type of firewall tracks the state of active network connections?",a:0,o:["Stateful inspection","Packet filter","Proxy","WAF"],dom:"Implementation",d:2,ex:"Stateful firewalls track connection state, making decisions based on session context."},
+  {q:"An IPS differs from an IDS because it can:",a:2,o:["Only monitor traffic","Use signature detection","Actively block threats inline","Require more hardware"],dom:"Implementation",d:2,ex:"IDS = detect and alert. IPS = detect AND block. IPS sits inline."},
+  {q:"Port 22 is used by:",a:1,o:["FTP","SSH","Telnet","SMTP"],dom:"Implementation",d:1,ex:"SSH = port 22. Encrypted remote access, SFTP, SCP. Telnet (23) is unencrypted."},
+  {q:"DNS uses port:",a:3,o:["80","443","25","53"],dom:"Implementation",d:1,ex:"DNS = port 53 (UDP for queries, TCP for zone transfers)."},
   {q:"VPNs protect traffic by:",a:0,o:["Creating an encrypted tunnel between endpoints","Blocking malicious IPs","Scanning for malware","Rate limiting connections"],dom:"Implementation",d:1,ex:"VPNs tunnel encrypted traffic over untrusted networks. Protects confidentiality in transit."},
-  {q:"DNSSEC protects against:",a:2,o:["DDoS attacks","Email spam","DNS cache poisoning and spoofing","Brute force attacks"],dom:"Implementation",d:3,ex:"DNSSEC adds cryptographic signatures to DNS records, validating responses and preventing poisoning/spoofing."},
-  {q:"Which protocol replaced SSL for secure web communications?",a:1,o:["HTTPS","TLS","IPsec","SSH"],dom:"Implementation",d:2,ex:"TLS replaced SSL. SSL is deprecated and vulnerable. TLS 1.2 and 1.3 are current versions."},
-  {q:"The correct order of incident response phases is:",a:0,o:["Preparation → Identification → Containment → Eradication → Recovery → Lessons Learned","Identification → Preparation → Containment → Recovery → Eradication → Lessons Learned","Containment → Identification → Preparation → Eradication → Recovery → Lessons Learned","Recovery → Identification → Containment → Eradication → Preparation → Lessons Learned"],dom:"Operations",d:2,ex:"PICERL: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned. Tattoo this."},
-  {q:"First log source to check when investigating a potential brute-force attack:",a:2,o:["Application logs","Network flow logs","Authentication/event logs","Firewall logs"],dom:"Operations",d:2,ex:"Auth logs (Windows Event Logs, /var/log/auth.log) capture failed login attempts — primary brute-force evidence."},
-  {q:"A SIEM aggregates and correlates logs to:",a:1,o:["Encrypt sensitive files","Detect and alert on security events across the environment","Block network attacks","Scan for vulnerabilities"],dom:"Operations",d:2,ex:"SIEM = Security Info & Event Mgmt. Centralizes logs, correlates events, triggers alerts, enables forensics."},
-  {q:"Correct order of volatility (most volatile first) for digital forensics:",a:3,o:["Hard drive, RAM, CPU cache, Network traffic","Network traffic, Hard drive, RAM, CPU cache","CPU cache, Hard drive, RAM, Network traffic","CPU registers/cache, RAM, Network traffic, Hard drive"],dom:"Operations",d:3,ex:"Order: CPU registers → RAM → Network traffic → Disk → Removable media → Backups. Collect most volatile first."},
+  {q:"Which protocol replaced SSL for secure web communications?",a:1,o:["HTTPS","TLS","IPsec","SSH"],dom:"Implementation",d:2,ex:"TLS replaced SSL. SSL deprecated and vulnerable. TLS 1.2 and 1.3 are current."},
+  {q:"The correct order of incident response phases is:",a:0,o:["Preparation → Identification → Containment → Eradication → Recovery → Lessons Learned","Identification → Preparation → Containment → Recovery → Eradication → Lessons Learned","Containment → Identification → Preparation → Eradication → Recovery → Lessons Learned","Recovery → Identification → Containment → Eradication → Preparation → Lessons Learned"],dom:"Operations",d:2,ex:"PICERL: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned."},
+  {q:"First log source to check when investigating a potential brute-force attack:",a:2,o:["Application logs","Network flow logs","Authentication/event logs","Firewall logs"],dom:"Operations",d:2,ex:"Auth logs capture failed login attempts — primary brute-force evidence."},
+  {q:"A SIEM aggregates and correlates logs to:",a:1,o:["Encrypt sensitive files","Detect and alert on security events across the environment","Block network attacks","Scan for vulnerabilities"],dom:"Operations",d:2,ex:"SIEM = Security Info & Event Mgmt. Centralizes logs, correlates events, triggers alerts."},
   {q:"Chain of custody in forensics ensures:",a:0,o:["Evidence integrity and legal admissibility","Data encryption","Log integrity","Current backups"],dom:"Operations",d:2,ex:"Chain of custody documents who handled evidence, when, and how — critical for court admissibility."},
-  {q:"RTO (Recovery Time Objective) defines:",a:1,o:["Maximum data loss acceptable","Maximum acceptable downtime","Backup frequency","Failover speed"],dom:"Operations",d:2,ex:"RTO = max acceptable downtime. RPO = max acceptable data loss. Both critical for DR planning."},
-  {q:"Threat hunting is:",a:0,o:["Proactively searching for threats not detected by automated tools","Responding to IDS alerts","Running vulnerability scans","Penetration testing"],dom:"Operations",d:2,ex:"Threat hunting uses hypotheses and analyst intuition to find threats that automated tools missed."},
-  {q:"A vulnerability scan differs from a penetration test in that it:",a:2,o:["Is more thorough","Simulates a real attacker","Identifies weaknesses without exploiting them","Requires physical access"],dom:"Operations",d:2,ex:"Vuln scans identify potential weaknesses. Pen tests actively exploit them to prove impact. Different goals."},
-  {q:"A false positive in security monitoring means:",a:1,o:["A real threat was missed","A legitimate event was flagged as malicious","An attack was blocked","Logs were corrupted"],dom:"Operations",d:2,ex:"False positive = benign event triggered alert. False negative = real threat not detected. FN is usually worse."},
-  {q:"The primary purpose of a Business Continuity Plan (BCP) is to:",a:2,o:["Prevent all cyberattacks","Encrypt sensitive data","Ensure critical operations continue during a disaster","Train employees on security policy"],dom:"Operations",d:1,ex:"BCP ensures critical business functions survive and continue through disruptions. DRP is the technical subset."},
-  {q:"Which framework provides a risk management approach with 5 functions: Identify, Protect, Detect, Respond, Recover?",a:1,o:["ISO 9001","NIST CSF","PCI DSS","HIPAA"],dom:"Governance",d:2,ex:"NIST CSF = Cybersecurity Framework. Five functions: Identify → Protect → Detect → Respond → Recover."},
-  {q:"GDPR primarily protects:",a:3,o:["US company data","Payment card data","Medical records","Personal data of EU residents"],dom:"Governance",d:2,ex:"GDPR (EU General Data Protection Regulation) applies to any org processing personal data of EU residents."},
-  {q:"PCI DSS applies to organizations that:",a:0,o:["Process, store, or transmit payment card data","Store medical records","Operate in the EU","Use cloud services"],dom:"Governance",d:2,ex:"PCI DSS applies to any entity handling cardholder data. Non-compliance means fines and loss of ability to accept cards."},
-  {q:"Risk acceptance means:",a:2,o:["Fixing the vulnerability","Transferring risk to an insurer","Acknowledging and choosing not to mitigate the risk","Eliminating it entirely"],dom:"Governance",d:1,ex:"Risk responses: Accept, Avoid, Transfer (insurance/outsource), Mitigate. Accept = we know the risk and live with it."},
-  {q:"A policy differs from a procedure in that a policy:",a:1,o:["Is more technical","States what must be done, while a procedure explains how","Is optional","Is written by IT only"],dom:"Governance",d:2,ex:"Policy = what (the rule). Procedure = how (step-by-step). Standard = specific requirement. Guideline = recommendation."},
-  {q:"Multi-factor authentication requires:",a:2,o:["Two passwords","Biometric only","Two or more different factor types","A complex password policy"],dom:"Governance",d:1,ex:"MFA factors: something you know (password), have (token), are (biometric), where you are, or do (behavior)."},
-  {q:"A penetration test with no prior knowledge of the system is called:",a:1,o:["Gray box","Black box","White box","Crystal box"],dom:"Governance",d:2,ex:"Black box = zero prior knowledge (simulates external attacker). White box = full knowledge. Gray = partial."},
-  {q:"Authentication is:",a:0,o:["Verifying who you are","Deciding what you can access","Logging what you did","Encrypting your data"],dom:"Governance",d:1,ex:"AAA: Authentication (who), Authorization (what), Accounting (what did you do). Authentication = identity verification."},
-  {q:"MAC (Mandatory Access Control) is characterized by:",a:2,o:["Users setting their own permissions","Role-based permissions","System-enforced labels like Top Secret, Secret, Unclassified","Attribute-based policies"],dom:"Governance",d:3,ex:"MAC = system-enforced security labels. Users cannot override. Common in government/military environments."},
-  {q:"Which access control model is most common in enterprise environments?",a:1,o:["DAC","RBAC","MAC","ABAC"],dom:"Governance",d:2,ex:"RBAC (Role-Based Access Control) assigns permissions to roles, then users to roles. Scalable and auditable."},
+  {q:"RTO (Recovery Time Objective) defines:",a:1,o:["Maximum data loss acceptable","Maximum acceptable downtime","Backup frequency","Failover speed"],dom:"Operations",d:2,ex:"RTO = max acceptable downtime. RPO = max acceptable data loss. Both critical for DR."},
+  {q:"Threat hunting is:",a:0,o:["Proactively searching for threats not detected by automated tools","Responding to IDS alerts","Running vulnerability scans","Penetration testing"],dom:"Operations",d:2,ex:"Threat hunting uses hypotheses and analyst intuition to find threats automated tools missed."},
+  {q:"A vulnerability scan differs from a penetration test in that it:",a:2,o:["Is more thorough","Simulates a real attacker","Identifies weaknesses without exploiting them","Requires physical access"],dom:"Operations",d:2,ex:"Vuln scans identify potential weaknesses. Pen tests actively exploit them to prove impact."},
+  {q:"A false positive in security monitoring means:",a:1,o:["A real threat was missed","A legitimate event was flagged as malicious","An attack was blocked","Logs were corrupted"],dom:"Operations",d:2,ex:"False positive = benign event triggered alert. False negative = real threat missed (usually worse)."},
+  {q:"The primary purpose of a BCP is to:",a:2,o:["Prevent all cyberattacks","Encrypt sensitive data","Ensure critical operations continue during a disaster","Train employees on security policy"],dom:"Operations",d:1,ex:"BCP ensures critical business functions survive and continue through disruptions."},
+  {q:"Which framework has 5 functions: Identify, Protect, Detect, Respond, Recover?",a:1,o:["ISO 9001","NIST CSF","PCI DSS","HIPAA"],dom:"Governance",d:2,ex:"NIST CSF five functions: Identify → Protect → Detect → Respond → Recover."},
+  {q:"GDPR primarily protects:",a:3,o:["US company data","Payment card data","Medical records","Personal data of EU residents"],dom:"Governance",d:2,ex:"GDPR applies to any org processing personal data of EU residents."},
+  {q:"PCI DSS applies to organizations that:",a:0,o:["Process, store, or transmit payment card data","Store medical records","Operate in the EU","Use cloud services"],dom:"Governance",d:2,ex:"PCI DSS applies to any entity handling cardholder data."},
+  {q:"Risk acceptance means:",a:2,o:["Fixing the vulnerability","Transferring risk to an insurer","Acknowledging and choosing not to mitigate the risk","Eliminating it entirely"],dom:"Governance",d:1,ex:"Risk responses: Accept, Avoid, Transfer, Mitigate. Accept = know the risk, live with it."},
+  {q:"A policy differs from a procedure in that a policy:",a:1,o:["Is more technical","States what must be done, while a procedure explains how","Is optional","Is written by IT only"],dom:"Governance",d:2,ex:"Policy = what. Procedure = how. Standard = specific requirement. Guideline = recommendation."},
+  {q:"Multi-factor authentication requires:",a:2,o:["Two passwords","Biometric only","Two or more different factor types","A complex password policy"],dom:"Governance",d:1,ex:"MFA factors: something you know, have, are, where you are, or do (behavior)."},
+  {q:"A penetration test with no prior knowledge is called:",a:1,o:["Gray box","Black box","White box","Crystal box"],dom:"Governance",d:2,ex:"Black box = zero prior knowledge. White box = full knowledge. Gray = partial."},
+  {q:"Authentication is:",a:0,o:["Verifying who you are","Deciding what you can access","Logging what you did","Encrypting your data"],dom:"Governance",d:1,ex:"AAA: Authentication (who), Authorization (what), Accounting (what you did)."},
+  {q:"Which access control model is most common in enterprise environments?",a:1,o:["DAC","RBAC","MAC","ABAC"],dom:"Governance",d:2,ex:"RBAC assigns permissions to roles, then users to roles. Scalable and auditable."},
+  // NEW SY0-701 MODERN QUESTIONS (25)
+  {q:"Which tool automatically responds to security alerts without human intervention?",a:2,o:["SIEM","IDS","SOAR","NAC"],dom:"Operations",d:2,ex:"SOAR automates response playbooks. SIEM detects and alerts. SOAR acts. They work together."},
+  {q:"A SIEM differs from SOAR in that SIEM:",a:1,o:["Responds automatically to threats","Aggregates and correlates logs then alerts","Patches vulnerabilities","Replaces the firewall"],dom:"Operations",d:2,ex:"SIEM = collect, correlate, alert. SOAR = automate the response. SIEM detects, SOAR acts."},
+  {q:"Which tool detects insider threats by baselining normal user behavior and flagging anomalies?",a:3,o:["SIEM","IDS","Firewall","UEBA"],dom:"Operations",d:2,ex:"UEBA establishes behavioral baselines and detects deviations indicating insider threats or compromised accounts."},
+  {q:"Regular outbound network traffic at fixed intervals to an unknown IP most likely indicates:",a:0,o:["C2 beaconing","DNS poisoning","Port scanning","ARP poisoning"],dom:"Operations",d:2,ex:"Regular beaconing = malware checking in with Command and Control (C2) server. Classic IOC."},
+  {q:"Which tool enforces security policies between users and cloud SaaS applications?",a:2,o:["WAF","NGFW","CASB","NAC"],dom:"Architecture",d:2,ex:"CASB sits between users and cloud apps, enforcing DLP, compliance, shadow IT control."},
+  {q:"SASE primary use case is:",a:1,o:["Encrypting hard drives","Securing remote workers and branch offices accessing cloud resources","Monitoring database access","Replacing on-prem firewalls only"],dom:"Architecture",d:2,ex:"SASE (Secure Access Service Edge) combines SD-WAN with cloud security for distributed workforces."},
+  {q:"A malicious update from a trusted software vendor installs malware on thousands of clients. This is:",a:1,o:["Watering hole attack","Supply chain attack","Spear phishing","Privilege escalation"],dom:"Threats",d:2,ex:"Supply chain attacks compromise trusted vendors or update mechanisms to distribute malware at scale (e.g. SolarWinds)."},
+  {q:"SAST (Static Application Security Testing) is performed:",a:0,o:["On source code before deployment","On running applications after deployment","On network traffic at the perimeter","On database query logs"],dom:"Implementation",d:2,ex:"SAST = analyze source code BEFORE the app runs. DAST = test the running application. Shift-left security."},
+  {q:"Which tool tests a live, running application for security vulnerabilities?",a:2,o:["SAST","SCA","DAST","WAF"],dom:"Implementation",d:2,ex:"DAST tests the running application from the outside — like an attacker. SAST tests source code."},
+  {q:"A team wants to check if open-source libraries have known CVEs. They should use:",a:3,o:["SAST","DAST","NGFW","SCA"],dom:"Implementation",d:2,ex:"SCA (Software Composition Analysis) scans third-party/open-source libraries for known vulnerabilities."},
+  {q:"OCSP differs from CRL in that OCSP provides:",a:0,o:["Real-time individual certificate status checks","A periodic downloadable revocation list","Faster certificate issuance","Encryption for certificate data"],dom:"Implementation",d:2,ex:"OCSP = real-time check for one cert's status. CRL = periodic full list (can be stale)."},
+  {q:"Before a CA issues a digital certificate, who verifies the requester's identity?",a:2,o:["The CA itself","The OCSP responder","The Registration Authority (RA)","The CRL"],dom:"Implementation",d:2,ex:"RA validates identity. CA issues the certificate. Two separate roles in PKI."},
+  {q:"LDAP on port 389 is flagged in a security audit. The recommended fix is:",a:1,o:["Block port 389 at the firewall","Migrate to LDAPS on port 636","Use HTTP instead","Disable directory services"],dom:"Implementation",d:1,ex:"LDAP = cleartext. LDAPS (port 636) encrypts directory traffic with TLS."},
+  {q:"Which SNMP version should always be used in production?",a:3,o:["SNMP v1","SNMP v2","Any version with ACLs","SNMP v3"],dom:"Implementation",d:1,ex:"SNMP v1/v2 use community strings (like plaintext passwords). SNMP v3 adds authentication and encryption."},
+  {q:"NAC checks devices before granting network access. This implements which principle?",a:0,o:["Zero Trust verification before network entry","Detective control","Corrective control","Compensating control"],dom:"Architecture",d:2,ex:"NAC verifies device health/compliance before network entry — preventive control aligned with Zero Trust."},
+  {q:"In cloud shared responsibility, who patches the OS in IaaS?",a:2,o:["The cloud provider","Both equally","The customer","The cloud vendor's security team"],dom:"Architecture",d:2,ex:"IaaS: Provider = hardware/hypervisor. Customer = OS, apps, data. OS patching is customer responsibility."},
+  {q:"RPO (Recovery Point Objective) answers which question?",a:1,o:["How long can we be offline?","How much data loss is acceptable?","How fast can we failover?","What is our backup window?"],dom:"Operations",d:2,ex:"RPO = max acceptable data loss (time-based). RTO = max acceptable downtime. Different objectives."},
+  {q:"An attacker steals an API access token to make requests as a legitimate user. This is:",a:3,o:["SQL Injection","CSRF","XSS","Broken Authentication / Token hijacking"],dom:"Threats",d:2,ex:"Stolen API tokens allow attacker impersonation. Defense: short lifetimes, rotation, HTTPS only."},
+  {q:"Which ATT&CK phase involves an attacker moving between systems after initial compromise?",a:0,o:["Lateral Movement","Initial Access","Reconnaissance","Collection"],dom:"Threats",d:2,ex:"Lateral movement = pivoting between internal systems. Segmentation limits this."},
+  {q:"An attacker establishes registry keys and scheduled tasks to survive reboots. This phase is:",a:2,o:["Initial Access","Execution","Persistence","Exfiltration"],dom:"Threats",d:2,ex:"Persistence = maintaining access through reboots. Registry run keys, scheduled tasks, backdoors."},
+  {q:"Large volumes of sensitive data leaving the network during off-hours most likely indicates:",a:1,o:["DDoS preparation","Data exfiltration","Lateral movement","Privilege escalation"],dom:"Operations",d:2,ex:"Off-hours high-volume outbound transfer is a classic exfiltration IOC. Monitor with SIEM."},
+  {q:"Risk appetite differs from risk tolerance in that risk appetite:",a:0,o:["Is the strategic level of risk the org WANTS to accept","Is the maximum risk the org CAN handle","Is always lower than tolerance","Is defined per-system only"],dom:"Governance",d:3,ex:"Appetite = strategic desire. Tolerance = operational boundary. Appetite drives strategy; tolerance defines limits."},
+  {q:"A company stores EU customer data on US servers. Which regulation primarily applies?",a:2,o:["HIPAA","PCI DSS","GDPR","SOX"],dom:"Governance",d:2,ex:"GDPR applies to ANY organization processing personal data of EU residents regardless of location."},
+  {q:"CSPM tools primarily detect:",a:3,o:["Network intrusions","Endpoint malware","API vulnerabilities","Cloud misconfigurations like open S3 buckets or excessive IAM permissions"],dom:"Architecture",d:2,ex:"CSPM continuously monitors cloud environments for misconfiguration and compliance violations."},
+  {q:"A developer uploads credentials to a public GitHub repo. This creates which risk?",a:2,o:["Physical security breach","Availability attack","Credential exposure / supply chain risk","DNS poisoning"],dom:"Threats",d:2,ex:"Exposed credentials in public repos are immediately scraped by attackers. Supply chain / credential exposure risk."},
 ];
 
-// ── QUIZ ENGINE ───────────────────────────────────────────
-let gMode='full', gDomain='', queue=[], qIdx=0, answered=false;
-let sessCorrect=0, sessTotal=0;
-
+// QUIZ ENGINE
+let gMode='full',gDomain='',queue=[],qIdx=0,answered=false,sessCorrect=0,sessTotal=0;
 document.querySelectorAll('.mbtn').forEach(b=>b.addEventListener('click',()=>selectMode(b.dataset.m)));
 document.querySelectorAll('.dbtn').forEach(b=>b.addEventListener('click',()=>selectDomain(b.dataset.d)));
-document.getElementById('startBtn').addEventListener('click', startQuiz);
-document.getElementById('qNextBtn').addEventListener('click', nextQ);
-document.getElementById('scoreRestartBtn').addEventListener('click', ()=>{ document.getElementById('quizScore').style.display='none'; document.getElementById('quizSetup').style.display='block'; });
-document.getElementById('scoreHomeBtn').addEventListener('click', ()=>{ document.getElementById('quizScore').style.display='none'; document.getElementById('quizSetup').style.display='block'; showPanel('dash'); });
+document.getElementById('startBtn').addEventListener('click',startQuiz);
+document.getElementById('qNextBtn').addEventListener('click',nextQ);
+document.getElementById('scoreRestartBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';});
+document.getElementById('scoreHomeBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';showPanel('dash');});
 
-function selectMode(m){
-  gMode=m; gDomain='';
-  document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));
-  document.getElementById('domainWrap').style.display=m==='domain'?'block':'none';
-  document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));
-}
-function selectDomain(d){
-  gDomain=d;
-  document.querySelectorAll('.dbtn').forEach(b=>b.classList.toggle('active',b.dataset.d===d));
-}
+function selectMode(m){gMode=m;gDomain='';document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));document.getElementById('domainWrap').style.display=m==='domain'?'block':'none';document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));}
+function selectDomain(d){gDomain=d;document.querySelectorAll('.dbtn').forEach(b=>b.classList.toggle('active',b.dataset.d===d));}
 
 function buildQ(){
   let pool=[...QB];
-  if(gMode==='domain'&&gDomain) pool=pool.filter(q=>q.dom===gDomain);
-  else if(gMode==='weak'){
-    const weak=DOMS.filter(d=>{ const dd=S.domains[d]; return dd.q>0&&dd.c/dd.q<0.75; });
-    if(weak.length) pool=pool.filter(q=>weak.includes(q.dom));
-  }
+  if(gMode==='domain'&&gDomain)pool=pool.filter(q=>q.dom===gDomain);
+  else if(gMode==='weak'){const weak=DOMS.filter(d=>{const dd=S.domains[d];return dd.q>0&&dd.c/dd.q<0.75;});if(weak.length)pool=pool.filter(q=>weak.includes(q.dom));}
+  else if(gMode==='modern')pool=pool.slice(60);// Last 25 are modern
   pool=pool.sort(()=>Math.random()-.5);
-  if(gMode==='full') pool=pool.slice(0,Math.min(60,pool.length));
-  else if(gMode==='rapid') pool=pool.slice(0,20);
-  else pool=pool.slice(0,Math.min(25,pool.length));
+  if(gMode==='full')pool=pool.slice(0,Math.min(60,pool.length));
+  else if(gMode==='rapid')pool=pool.slice(0,20);
+  else pool=pool.slice(0,Math.min(30,pool.length));
   return pool;
 }
 
 function startQuiz(){
-  queue=buildQ();
-  if(!queue.length){ alert('No questions for this filter!'); return; }
-  qIdx=0; answered=false; sessCorrect=0; sessTotal=0;
-  S.studyDays[new Date().toISOString().slice(0,10)]=true; saveS();
-  document.getElementById('quizSetup').style.display='none';
-  document.getElementById('quizGame').style.display='block';
-  document.getElementById('quizScore').style.display='none';
+  queue=buildQ();if(!queue.length){alert('No questions for this filter!');return;}
+  qIdx=0;answered=false;sessCorrect=0;sessTotal=0;
+  S.studyDays[new Date().toISOString().slice(0,10)]=true;saveS();
+  document.getElementById('quizSetup').style.display='none';document.getElementById('quizGame').style.display='block';document.getElementById('quizScore').style.display='none';
   renderQ();
 }
 
 function renderQ(){
-  if(qIdx>=queue.length){ showScore(); return; }
-  answered=false;
-  const q=queue[qIdx];
+  if(qIdx>=queue.length){showScore();return;}
+  answered=false;const q=queue[qIdx];
   const pct=Math.round(qIdx/queue.length*100);
   document.getElementById('qProgFill').style.width=pct+'%';
   document.getElementById('qCat').textContent=q.dom.toUpperCase();
   document.getElementById('qDiffEl').textContent='⬢'.repeat(q.d)+'⬡'.repeat(3-q.d);
   document.getElementById('qNum').textContent=`Q ${qIdx+1} / ${queue.length}`;
   document.getElementById('qText').textContent=q.q;
-  document.getElementById('qOpts').innerHTML=q.o.map((o,i)=>`
-    <button class="opt" id="opt${i}" onclick="selectAns(${i})">
-      <span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span>
-    </button>`).join('');
-  document.getElementById('qFeedback').style.display='none';
-  document.getElementById('qNextBtn').style.display='none';
-  if(qIdx>0&&qIdx%5===0) showCkpt();
+  document.getElementById('qOpts').innerHTML=q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="selectAns(${i})"><span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
+  document.getElementById('qFeedback').style.display='none';document.getElementById('qNextBtn').style.display='none';
+  if(qIdx>0&&qIdx%5===0)showCkpt();
 }
 
 function selectAns(i){
-  if(answered) return;
-  answered=true;
-  const q=queue[qIdx];
-  const ok=i===q.a;
-  S.totalQ++; sessTotal++; S.domains[q.dom].q++;
-  if(ok){ S.correct++; sessCorrect++; S.domains[q.dom].c++; S.streak++; if(S.streak>S.best)S.best=S.streak; }
-  else S.streak=0;
+  if(answered)return;answered=true;const q=queue[qIdx];const ok=i===q.a;
+  S.totalQ++;sessTotal++;S.domains[q.dom].q++;
+  if(ok){S.correct++;sessCorrect++;S.domains[q.dom].c++;S.streak++;if(S.streak>S.best)S.best=S.streak;}else S.streak=0;
   saveS();
-  document.querySelectorAll('.opt').forEach((b,idx)=>{
-    b.disabled=true;
-    if(idx===q.a) b.classList.add('correct');
-    if(idx===i&&!ok) b.classList.add('wrong');
-  });
-  const fb=document.getElementById('qFeedback');
-  fb.style.display='block';
-  fb.style.borderColor=ok?'var(--green)':'var(--red)';
+  document.querySelectorAll('.opt').forEach((b,idx)=>{b.disabled=true;if(idx===q.a)b.classList.add('correct');if(idx===i&&!ok)b.classList.add('wrong');});
+  const fb=document.getElementById('qFeedback');fb.style.display='block';fb.style.borderColor=ok?'var(--green)':'var(--red)';
   fb.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ WRONG — Correct: '+'ABCD'[q.a]}</div><div style="font-size:13px;color:var(--text2)">${q.ex}</div>`;
   document.getElementById('qNextBtn').style.display='block';
-  document.getElementById('hAcc').textContent=(S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';
-  document.getElementById('hTotal').textContent=S.totalQ;
+  document.getElementById('hAcc').textContent=(S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';document.getElementById('hTotal').textContent=S.totalQ;
 }
 
-function nextQ(){ qIdx++; renderQ(); }
-
-function showCkpt(){
-  const pct=sessTotal?Math.round(sessCorrect/sessTotal*100):0;
-  const b=document.getElementById('ckptBanner');
-  b.style.display='block';
-  b.innerHTML=`<div style="font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:${pct>=75?'var(--green)':'var(--yellow)'}">CHECKPOINT ${qIdx}Q — ${pct}% ${pct>=75?'✓ ON TRACK':'⚠ WEAK AREAS FLAGGED'}</div>`;
-  setTimeout(()=>b.style.display='none',3500);
-}
+function nextQ(){qIdx++;renderQ();}
+function showCkpt(){const pct=sessTotal?Math.round(sessCorrect/sessTotal*100):0;const b=document.getElementById('ckptBanner');b.style.display='block';b.innerHTML=`<div style="font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:${pct>=75?'var(--green)':'var(--yellow)'}">CHECKPOINT ${qIdx}Q — ${pct}% ${pct>=75?'✓ ON TRACK':'⚠ WEAK AREAS FLAGGED'}</div>`;setTimeout(()=>b.style.display='none',3500);}
 
 function showScore(){
   const pct=sessTotal?Math.round(sessCorrect/sessTotal*100):0;
-  const modes={full:'Full Exam',domain:'Domain Drill',weak:'Weak Areas',rapid:'Rapid Fire'};
-  S.sessions.push({mode:modes[gMode]||gMode,pct,date:new Date().toLocaleDateString(),correct:sessCorrect,total:sessTotal});
-  saveS();
-  document.getElementById('quizGame').style.display='none';
-  document.getElementById('quizScore').style.display='block';
-  const col=pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';
-  const circ=2*Math.PI*64;
-  const sfg=document.getElementById('scoreRingFg');
-  sfg.style.stroke=col; sfg.style.strokeDasharray=circ; sfg.style.strokeDashoffset=circ-circ*pct/100;
-  document.getElementById('scorePct').textContent=pct+'%';
-  document.getElementById('scorePct').style.color=col;
+  const modes={full:'Full Exam',domain:'Domain Drill',weak:'Weak Areas',modern:'Modern SY0-701',rapid:'Rapid Fire'};
+  S.sessions.push({mode:modes[gMode]||gMode,pct,date:new Date().toLocaleDateString(),correct:sessCorrect,total:sessTotal});saveS();
+  document.getElementById('quizGame').style.display='none';document.getElementById('quizScore').style.display='block';
+  const col=pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';const circ=2*Math.PI*64;const sfg=document.getElementById('scoreRingFg');
+  sfg.style.stroke=col;sfg.style.strokeDasharray=circ;sfg.style.strokeDashoffset=circ-circ*pct/100;
+  document.getElementById('scorePct').textContent=pct+'%';document.getElementById('scorePct').style.color=col;
   document.getElementById('scoreDetail').textContent=`${sessCorrect} / ${sessTotal} CORRECT`;
-  document.getElementById('scoreStatus').textContent=pct>=85?'🔥 EXAM READY':pct>=70?'💪 KEEP DRILLING':'📚 REVIEW WEAK DOMAINS';
-  document.getElementById('scoreStatus').style.color=col;
-  document.getElementById('scoreDomains').innerHTML=DOMS.map((d,i)=>{
-    const dd=S.domains[d]; const p=dd.q?Math.round(dd.c/dd.q*100):0;
-    return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2)">${d}</span><span style="font-family:'Share Tech Mono',monospace;color:${p>=75?'#00ff9d':p>=60?'#ffc107':'#ff2d55'}">${p}%</span></div>`;
-  }).join('');
+  document.getElementById('scoreStatus').textContent=pct>=85?'🔥 EXAM READY':pct>=70?'💪 KEEP DRILLING':'📚 REVIEW WEAK DOMAINS';document.getElementById('scoreStatus').style.color=col;
+  document.getElementById('scoreDomains').innerHTML=DOMS.map((d,i)=>{const dd=S.domains[d];const p=dd.q?Math.round(dd.c/dd.q*100):0;return`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2)">${d}</span><span style="font-family:'Share Tech Mono',monospace;color:${p>=75?'#00ff9d':p>=60?'#ffc107':'#ff2d55'}">${p}%</span></div>`;}).join('');
 }
 
-// ── FLASHCARDS ────────────────────────────────────────────
+// FLASHCARDS
 const DECKS={
   ports:[
-    {f:'SSH',b:'Port 22 — Encrypted remote shell. Also used for SFTP and SCP.'},
-    {f:'FTP',b:'Ports 20/21 — File transfer (unencrypted). Use SFTP instead.'},
+    {f:'SSH',b:'Port 22 — Encrypted remote shell. Also used for SFTP and SCP. Replaces Telnet.'},
+    {f:'FTP',b:'Ports 20/21 — File transfer (unencrypted). Use SFTP (port 22) instead.'},
     {f:'Telnet',b:'Port 23 — UNENCRYPTED remote shell. Never use in production.'},
     {f:'SMTP',b:'Port 25 — Send email (outbound). SMTPS = 465/587.'},
-    {f:'DNS',b:'Port 53 — UDP for queries, TCP for zone transfers.'},
+    {f:'DNS',b:'Port 53 — UDP for queries, TCP for zone transfers. Poisoning target.'},
     {f:'DHCP',b:'Ports 67/68 — Dynamic IP address assignment.'},
-    {f:'HTTP',b:'Port 80 — Unencrypted web. Always prefer HTTPS.'},
-    {f:'Kerberos',b:'Port 88 — AD authentication protocol. Requires NTP sync.'},
+    {f:'HTTP',b:'Port 80 — Unencrypted web. Always prefer HTTPS (443).'},
+    {f:'Kerberos',b:'Port 88 — AD authentication. Requires NTP time sync.'},
     {f:'POP3',b:'Port 110 — Download email to one device. POP3S = 995.'},
-    {f:'NTP',b:'Port 123 — Network Time Protocol. Critical for Kerberos and log accuracy.'},
+    {f:'NTP',b:'Port 123 — Time sync. Critical for Kerberos and log accuracy.'},
     {f:'IMAP',b:'Port 143 — Receive email, syncs across devices. IMAPS = 993.'},
-    {f:'SNMP',b:'Ports 161/162 — Network device monitoring.'},
-    {f:'LDAP',b:'Port 389 — Directory services (Active Directory). LDAPS = 636.'},
+    {f:'SNMP v3',b:'Ports 161/162 — Network device monitoring. v1/v2 insecure (use v3 only).'},
+    {f:'LDAP',b:'Port 389 — Directory services (AD). Cleartext — use LDAPS (636).'},
     {f:'HTTPS',b:'Port 443 — Encrypted web via TLS. Always preferred over HTTP.'},
-    {f:'SMB',b:'Port 445 — Windows file/print sharing. Exploited by WannaCry.'},
+    {f:'SMB',b:'Port 445 — Windows file/print sharing. Exploited by WannaCry/EternalBlue.'},
+    {f:'LDAPS',b:'Port 636 — Encrypted LDAP. Use instead of port 389.'},
     {f:'RDP',b:'Port 3389 — Windows Remote Desktop. Prime attack target. Limit exposure.'},
-    {f:'MySQL',b:'Port 3306 — MySQL database server.'},
-    {f:'SFTP',b:'Port 22 — Secure file transfer over SSH (NOT FTP over TLS).'},
+    {f:'SFTP',b:'Port 22 — Secure file transfer over SSH. NOT the same as FTP over TLS.'},
   ],
   crypto:[
-    {f:'AES',b:'Advanced Encryption Standard. Symmetric block cipher. 128/192/256-bit keys. Current gold standard.'},
-    {f:'RSA',b:'Asymmetric encryption. Public/private key pair. Used for key exchange and digital signatures.'},
-    {f:'ECC',b:'Elliptic Curve Cryptography. Same security as RSA with smaller keys. Used in mobile/IoT.'},
-    {f:'SHA-256',b:'Secure Hash Algorithm. 256-bit output. Current standard. SHA-1 and MD5 are deprecated.'},
-    {f:'MD5',b:'128-bit hash. DEPRECATED. Vulnerable to collision attacks. Do not use for security.'},
-    {f:'Digital Signature',b:'Hash encrypted with sender\'s private key. Provides non-repudiation + integrity. NOT confidentiality.'},
-    {f:'TLS',b:'Transport Layer Security. Replaced SSL. TLS 1.2/1.3 current. Encrypts web traffic (HTTPS port 443).'},
-    {f:'Symmetric',b:'Same key encrypts and decrypts. Fast. Key distribution is the challenge. AES, 3DES, RC4.'},
-    {f:'Asymmetric',b:'Public key encrypts, private key decrypts (or vice versa for signing). Slower. RSA, ECC, DH.'},
-    {f:'PKI',b:'Public Key Infrastructure. System managing digital certificates and key pairs. CA at the core.'},
-    {f:'Certificate Authority',b:'Trusted entity issuing/signing digital certificates. Binds public keys to verified identities.'},
+    {f:'AES',b:'Advanced Encryption Standard. Symmetric block cipher. 128/192/256-bit. Current gold standard for bulk encryption.'},
+    {f:'RSA',b:'Asymmetric encryption. Public/private key pair. Used for key exchange and digital signatures. Slower than AES.'},
+    {f:'ECC',b:'Elliptic Curve Cryptography. Same strength as RSA with smaller keys. Efficient for mobile/IoT.'},
+    {f:'SHA-256',b:'Secure Hash Algorithm. 256-bit output. Current standard. MD5 and SHA-1 are deprecated.'},
+    {f:'MD5',b:'128-bit hash. DEPRECATED. Vulnerable to collisions. Do not use for security purposes.'},
+    {f:'Digital Signature',b:'Hash encrypted with sender\'s PRIVATE key. Provides: Authentication + Integrity + Non-Repudiation. Does NOT provide Confidentiality.'},
+    {f:'TLS',b:'Transport Layer Security. Replaced SSL. TLS 1.2/1.3 current. Encrypts HTTPS (port 443).'},
+    {f:'Symmetric',b:'Same key encrypts and decrypts. Fast. AES is the standard. Challenge: secure key distribution.'},
+    {f:'Asymmetric',b:'Public key encrypts, private decrypts (or vice versa for signing). Slower. RSA, ECC, DH.'},
+    {f:'PKI',b:'Public Key Infrastructure. System managing digital certs and key pairs. CA at the core.'},
+    {f:'CA',b:'Certificate Authority. Issues and signs digital certificates. Binds public keys to verified identities.'},
     {f:'Diffie-Hellman',b:'Key exchange protocol. Two parties establish shared secret over insecure channel without transmitting it.'},
-    {f:'Salt',b:'Random value added to password before hashing. Defeats rainbow table attacks. Each user gets unique salt.'},
-    {f:'Hashing',b:'One-way function. Same input → same output. Cannot be reversed. Used for integrity and passwords.'},
-    {f:'Key Escrow',b:'Encryption keys held by a third party (often government). Controversial — creates security risk.'},
+    {f:'Salt',b:'Random value added to password before hashing. Same password → different hash. Defeats rainbow tables.'},
+    {f:'Hashing',b:'One-way function. Cannot be reversed. Same input → same output always. Used for integrity and passwords.'},
+    {f:'Key Escrow',b:'Encryption keys held by third party (often government). Controversial — creates security risk.'},
   ],
   attacks:[
     {f:'Phishing',b:'Mass email impersonating trusted entity. Goal: steal credentials or deliver malware.'},
     {f:'Spear Phishing',b:'Targeted phishing at a specific person. Highly personalized. Far more dangerous than mass phishing.'},
-    {f:'Whaling',b:'Phishing targeting C-suite executives. High-value, high-impact targets.'},
+    {f:'Whaling',b:'Phishing targeting C-suite executives (CEO, CFO). High-value, high-impact targets.'},
     {f:'Vishing',b:'Voice phishing via phone. Impersonates IT support, banks, IRS. Social engineering.'},
     {f:'Smishing',b:'SMS-based phishing. Malicious links sent via text message.'},
-    {f:'DoS',b:'Denial of Service. Floods target to make it unavailable. Single source.'},
-    {f:'DDoS',b:'Distributed DoS using botnet. Multiple sources. Harder to block. Volumetric or application layer.'},
+    {f:'DoS',b:'Denial of Service. Single source floods target to make it unavailable.'},
+    {f:'DDoS',b:'Distributed DoS using botnet. Multiple sources. Harder to block. Volumetric or app layer.'},
     {f:'MitM',b:'Man-in-the-Middle. Attacker intercepts communication without either party knowing.'},
     {f:'SQL Injection',b:'Malicious SQL commands in input fields. Exploits poor input validation. Can dump/destroy DB.'},
     {f:'XSS',b:'Cross-Site Scripting. Injects scripts into pages viewed by others. Steals sessions/cookies.'},
     {f:'CSRF',b:'Cross-Site Request Forgery. Tricks authenticated user into submitting unwanted requests.'},
-    {f:'Ransomware',b:'Encrypts files, demands crypto payment. Prevention: offline backups, least privilege.'},
+    {f:'Ransomware',b:'Encrypts files, demands crypto payment. Prevention: offline backups, least privilege, EDR.'},
     {f:'Rootkit',b:'Hides at kernel level. Provides persistent hidden root access. Hard to detect/remove.'},
-    {f:'Zero-Day',b:'Vulnerability unknown to vendor. No patch exists. Extremely high value on dark web.'},
+    {f:'Zero-Day',b:'Vulnerability unknown to vendor. No patch exists. High value on dark web.'},
     {f:'Watering Hole',b:'Compromises website the target group frequents. Infects victims passively on visit.'},
     {f:'Replay Attack',b:'Captures and retransmits valid auth packets. Defense: timestamps, nonces, session expiry.'},
     {f:'Brute Force',b:'Systematically tries all possible passwords. Defense: account lockout, MFA, long passwords.'},
-    {f:'APT',b:'Advanced Persistent Threat. Long-term, stealthy. Infiltrate → persist → exfiltrate. Nation-state level.'},
+    {f:'Supply Chain',b:'Compromise a trusted vendor, update, or library (SolarWinds). Distributes malware at scale.'},
     {f:'Insider Threat',b:'Malicious or negligent employee/contractor. Defense: least privilege, monitoring, offboarding.'},
-    {f:'Social Engineering',b:'Psychological manipulation. Biggest attack vector. No technical exploit needed.'},
+    {f:'Social Engineering',b:'Psychological manipulation. No technical exploit needed. Biggest attack vector overall.'},
   ],
   iam:[
-    {f:'Authentication',b:'Proving identity (who you are). First A in AAA. Methods: password, biometric, token, certificate.'},
+    {f:'Authentication',b:'Proving identity (who you are). First A in AAA. Password, biometric, token, certificate.'},
     {f:'Authorization',b:'What you\'re allowed to do after auth. Second A in AAA. Based on roles, policies, labels.'},
     {f:'Accounting',b:'Logging what authenticated users did. Third A in AAA. Audit trails, forensics, billing.'},
-    {f:'MFA',b:'Multi-Factor Auth. Requires 2+ different factor types: know, have, are, where, do.'},
+    {f:'MFA',b:'Multi-Factor Auth. Requires 2+ DIFFERENT factor types: know, have, are, where, do.'},
     {f:'SSO',b:'Single Sign-On. Authenticate once, access many systems. SAML, OAuth, OIDC enable this.'},
     {f:'RBAC',b:'Role-Based Access Control. Permissions → roles. Users → roles. Most common enterprise model.'},
     {f:'DAC',b:'Discretionary Access Control. Resource owner sets permissions. Standard OS file systems.'},
-    {f:'MAC',b:'Mandatory Access Control. System-enforced labels (TS, Secret, Unclassified). Government/military.'},
-    {f:'ABAC',b:'Attribute-Based Access Control. Access based on user/resource attributes. Highly flexible.'},
-    {f:'Least Privilege',b:'Users get minimum access needed for their job. Limits blast radius if account is compromised.'},
+    {f:'MAC',b:'Mandatory Access Control. System-enforced labels (TS, Secret, Unclassified). Gov/military.'},
+    {f:'ABAC',b:'Attribute-Based Access Control. Access based on user/resource attributes (time, location, dept).'},
+    {f:'Least Privilege',b:'Users get minimum access needed for job. Limits blast radius if account is compromised.'},
     {f:'Separation of Duties',b:'No single person controls an entire critical process. Requires collusion to misuse.'},
     {f:'Zero Trust',b:'Never trust, always verify. No implicit trust from network location. Verify every request.'},
     {f:'Kerberos',b:'Network auth protocol. Uses tickets. Default in Active Directory. Port 88. Needs NTP.'},
     {f:'LDAP',b:'Lightweight Directory Access Protocol. Queries directory services. Port 389 (636 for LDAPS).'},
     {f:'Federation',b:'Sharing identity across org boundaries. SAML, OAuth, OIDC. Used in cloud and SSO.'},
-  ]
+  ],
+  modern:[
+    {f:'CASB',b:'Cloud Access Security Broker. Sits between users and cloud SaaS apps. Enforces DLP, compliance, blocks shadow IT. Exam: "enforce policy on SaaS" → CASB.'},
+    {f:'SASE',b:'Secure Access Service Edge. SD-WAN + cloud security (CASB+ZTNA+FWaaS) in one. Exam: "secure remote workers + cloud" → SASE.'},
+    {f:'SSE',b:'Security Service Edge. Security-only subset of SASE (no SD-WAN). Cloud-delivered security without networking component.'},
+    {f:'CWPP',b:'Cloud Workload Protection Platform. Secures VMs, containers, serverless in cloud. Exam: "secure containers/VMs in cloud" → CWPP.'},
+    {f:'CSPM',b:'Cloud Security Posture Management. Detects cloud misconfigurations (open S3, bad IAM, exposed ports). Exam: "cloud misconfiguration auto-detected" → CSPM.'},
+    {f:'CNAPP',b:'Cloud-Native Application Protection Platform. CWPP + CSPM combined. Full cloud app lifecycle security.'},
+    {f:'SOAR',b:'Security Orchestration, Automation and Response. Automates IR playbooks. SIEM detects → SOAR responds. Exam: "automate response to alerts" → SOAR.'},
+    {f:'UEBA',b:'User and Entity Behavior Analytics. Baselines normal behavior, flags anomalies. Exam: "detect insider threats / unusual behavior" → UEBA.'},
+    {f:'SAST',b:'Static Application Security Testing. Scans source code BEFORE deployment. Shift-left security. Exam: "scan code pre-deploy" → SAST.'},
+    {f:'DAST',b:'Dynamic Application Security Testing. Tests RUNNING application. Simulates attacker. Exam: "test live running app" → DAST.'},
+    {f:'SCA',b:'Software Composition Analysis. Checks third-party/open-source libs for CVEs. Exam: "check open-source library vulnerabilities" → SCA.'},
+    {f:'Supply Chain Attack',b:'Compromise a trusted vendor, update, or build tool to distribute malware (SolarWinds). Defense: verify integrity of all updates and third-party code.'},
+    {f:'OCSP',b:'Online Certificate Status Protocol. Real-time individual cert revocation check. Faster than CRL. Exam: "real-time cert validation" → OCSP.'},
+    {f:'CRL',b:'Certificate Revocation List. Periodic downloadable list of revoked certs (can be stale). OCSP is real-time alternative.'},
+    {f:'RA',b:'Registration Authority. VERIFIES requester identity before a cert is issued. CA issues the cert. Exam: "who verifies identity before cert?" → RA.'},
+    {f:'Lateral Movement',b:'ATT&CK phase: attacker pivots between systems after initial compromise. Defense: segmentation, microsegmentation, Zero Trust.'},
+    {f:'Persistence',b:'ATT&CK phase: maintaining access through reboots. Registry run keys, scheduled tasks, backdoors. Hard to detect.'},
+    {f:'Exfiltration',b:'ATT&CK phase: data leaving the org. IOC: off-hours high-volume outbound, DNS tunneling, HTTPS to unknown IPs.'},
+    {f:'C2 Beaconing',b:'Malware regularly checking in with Command & Control server. Pattern: regular intervals → same IP. Detected by SIEM correlation rules.'},
+    {f:'RPO',b:'Recovery Point Objective. Max data loss tolerated. "How much data can we lose?" Different from RTO (max downtime). Low RPO = more frequent backups.'},
+  ],
 };
 
-let fDeck=[], fIdx=0, fKnown=0, fUnknown=[];
-
+let fDeck=[],fIdx=0,fKnown=0,fUnknown=[];
 document.querySelectorAll('.deck-btn').forEach(b=>b.addEventListener('click',()=>startFlash(b.dataset.deck)));
-
-function startFlash(name){
-  fDeck=[...DECKS[name]].sort(()=>Math.random()-.5);
-  fUnknown=[...fDeck]; fIdx=0; fKnown=0;
-  document.getElementById('flashSelect').style.display='none';
-  document.getElementById('flashGame').style.display='block';
-  renderFlash();
-}
-
+function startFlash(name){fDeck=[...DECKS[name]].sort(()=>Math.random()-.5);fUnknown=[...fDeck];fIdx=0;fKnown=0;document.getElementById('flashSelect').style.display='none';document.getElementById('flashGame').style.display='block';renderFlash();}
 function renderFlash(){
-  if(fUnknown.length===0){
-    document.getElementById('flashGame').style.display='none';
-    document.getElementById('flashSelect').style.display='block';
-    alert(`Deck done! ${fKnown}/${fDeck.length} marked known. 🔥`);
-    return;
-  }
-  if(fIdx>=fUnknown.length) fIdx=0;
-  const c=fUnknown[fIdx];
-  const p=Math.round(fKnown/fDeck.length*100);
-  document.getElementById('flashFill').style.width=p+'%';
-  document.getElementById('flashCtr').textContent=`${fKnown}/${fDeck.length} KNOWN`;
-  document.getElementById('flashCard').classList.remove('flipped');
-  document.getElementById('flashFront').textContent=c.f;
-  document.getElementById('flashBack').textContent=c.b;
-  document.getElementById('flashFlipBtn').style.display='block';
-  document.getElementById('flashActions').style.display='none';
+  if(fUnknown.length===0){document.getElementById('flashGame').style.display='none';document.getElementById('flashSelect').style.display='block';alert(`Deck done! ${fKnown}/${fDeck.length} known. 🔥`);return;}
+  if(fIdx>=fUnknown.length)fIdx=0;
+  const c=fUnknown[fIdx];const p=Math.round(fKnown/fDeck.length*100);
+  document.getElementById('flashFill').style.width=p+'%';document.getElementById('flashCtr').textContent=`${fKnown}/${fDeck.length} KNOWN`;
+  document.getElementById('flashCard').classList.remove('flipped');document.getElementById('flashFront').textContent=c.f;document.getElementById('flashBack').textContent=c.b;
+  document.getElementById('flashFlipBtn').style.display='block';document.getElementById('flashActions').style.display='none';
 }
+function flipCard(){document.getElementById('flashCard').classList.add('flipped');document.getElementById('flashFlipBtn').style.display='none';document.getElementById('flashActions').style.display='flex';}
+function flashMark(knew){if(knew){fKnown++;fUnknown.splice(fIdx,1);}else fIdx++;renderFlash();}
+function endFlash(){document.getElementById('flashGame').style.display='none';document.getElementById('flashSelect').style.display='block';}
 
-function flipCard(){
-  document.getElementById('flashCard').classList.add('flipped');
-  document.getElementById('flashFlipBtn').style.display='none';
-  document.getElementById('flashActions').style.display='flex';
-}
-
-function flashMark(knew){
-  if(knew){ fKnown++; fUnknown.splice(fIdx,1); }
-  else fIdx++;
-  renderFlash();
-}
-
-function endFlash(){
-  document.getElementById('flashGame').style.display='none';
-  document.getElementById('flashSelect').style.display='block';
-}
-
-// ── ACRONYM DRILL ─────────────────────────────────────────
+// ACRONYMS — 76 total
 const ACRS=[
   {a:'AAA',d:'Authentication, Authorization, Accounting'},
   {a:'ACL',d:'Access Control List'},
@@ -815,9 +770,16 @@ const ACRS=[
   {a:'BYOD',d:'Bring Your Own Device'},
   {a:'CA',d:'Certificate Authority'},
   {a:'CASB',d:'Cloud Access Security Broker'},
+  {a:'CNAPP',d:'Cloud-Native Application Protection Platform'},
+  {a:'CRL',d:'Certificate Revocation List'},
   {a:'CSRF',d:'Cross-Site Request Forgery'},
+  {a:'CSR',d:'Certificate Signing Request'},
+  {a:'CSPM',d:'Cloud Security Posture Management'},
   {a:'CVE',d:'Common Vulnerabilities and Exposures'},
+  {a:'CVSS',d:'Common Vulnerability Scoring System'},
+  {a:'CWPP',d:'Cloud Workload Protection Platform'},
   {a:'DAC',d:'Discretionary Access Control'},
+  {a:'DAST',d:'Dynamic Application Security Testing'},
   {a:'DDoS',d:'Distributed Denial of Service'},
   {a:'DLP',d:'Data Loss Prevention'},
   {a:'DMZ',d:'Demilitarized Zone'},
@@ -832,91 +794,73 @@ const ACRS=[
   {a:'HSM',d:'Hardware Security Module'},
   {a:'IAM',d:'Identity and Access Management'},
   {a:'IDS',d:'Intrusion Detection System'},
+  {a:'IOA',d:'Indicator of Attack'},
   {a:'IoC',d:'Indicator of Compromise'},
   {a:'IPS',d:'Intrusion Prevention System'},
   {a:'IR',d:'Incident Response'},
   {a:'MAC',d:'Mandatory Access Control'},
   {a:'MFA',d:'Multi-Factor Authentication'},
   {a:'MitM',d:'Man-in-the-Middle'},
+  {a:'MOU',d:'Memorandum of Understanding'},
+  {a:'MTD',d:'Moving Target Defense'},
   {a:'NAC',d:'Network Access Control'},
+  {a:'NGFW',d:'Next-Generation Firewall'},
   {a:'NIST',d:'National Institute of Standards and Technology'},
+  {a:'OCSP',d:'Online Certificate Status Protocol'},
   {a:'OSINT',d:'Open Source Intelligence'},
   {a:'PCI DSS',d:'Payment Card Industry Data Security Standard'},
   {a:'PII',d:'Personally Identifiable Information'},
   {a:'PKI',d:'Public Key Infrastructure'},
+  {a:'RA',d:'Registration Authority'},
   {a:'RBAC',d:'Role-Based Access Control'},
   {a:'RPO',d:'Recovery Point Objective'},
   {a:'RTO',d:'Recovery Time Objective'},
   {a:'SAML',d:'Security Assertion Markup Language'},
+  {a:'SASE',d:'Secure Access Service Edge'},
+  {a:'SAST',d:'Static Application Security Testing'},
+  {a:'SCA',d:'Software Composition Analysis'},
+  {a:'SCAP',d:'Security Content Automation Protocol'},
   {a:'SHA',d:'Secure Hash Algorithm'},
   {a:'SIEM',d:'Security Information and Event Management'},
+  {a:'SLA',d:'Service Level Agreement'},
   {a:'SMTP',d:'Simple Mail Transfer Protocol'},
   {a:'SOAR',d:'Security Orchestration, Automation and Response'},
   {a:'SOC',d:'Security Operations Center'},
+  {a:'SQL',d:'Structured Query Language'},
+  {a:'SSE',d:'Security Service Edge'},
   {a:'SSO',d:'Single Sign-On'},
   {a:'TLS',d:'Transport Layer Security'},
+  {a:'UEBA',d:'User and Entity Behavior Analytics'},
   {a:'UTM',d:'Unified Threat Management'},
   {a:'VPN',d:'Virtual Private Network'},
   {a:'WAF',d:'Web Application Firewall'},
   {a:'WPA',d:'Wi-Fi Protected Access'},
   {a:'XSS',d:'Cross-Site Scripting'},
   {a:'ZTNA',d:'Zero Trust Network Access'},
-  {a:'SCAP',d:'Security Content Automation Protocol'},
-  {a:'SQL',d:'Structured Query Language'},
 ];
 
-let aQ=[], aIdx=0, aRight=0, aWrong=0;
-
-document.getElementById('acrStartBtn').addEventListener('click',()=>{
-  aQ=[...ACRS].sort(()=>Math.random()-.5);
-  aIdx=0; aRight=0; aWrong=0;
-  document.getElementById('acrStart').style.display='none';
-  document.getElementById('acrGame').style.display='block';
-  renderAcr();
-});
-document.getElementById('acrSubmitBtn').addEventListener('click', checkAcr);
-document.getElementById('acrSkipBtn').addEventListener('click', skipAcr);
-document.getElementById('acrInp').addEventListener('keydown',e=>{ if(e.key==='Enter') checkAcr(); });
-
+let aQ=[],aIdx=0,aRight=0,aWrong=0;
+document.getElementById('acrStartBtn').addEventListener('click',()=>{aQ=[...ACRS].sort(()=>Math.random()-.5);aIdx=0;aRight=0;aWrong=0;document.getElementById('acrStart').style.display='none';document.getElementById('acrGame').style.display='block';renderAcr();});
+document.getElementById('acrSubmitBtn').addEventListener('click',checkAcr);
+document.getElementById('acrSkipBtn').addEventListener('click',skipAcr);
+document.getElementById('acrInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkAcr();});
 function renderAcr(){
-  if(aIdx>=aQ.length){
-    const pct=Math.round(aRight/(aRight+aWrong)*100)||0;
-    document.getElementById('acrQ').textContent='DONE!';
-    document.getElementById('acrFb').textContent=`Score: ${aRight}/${aRight+aWrong} (${pct}%)`;
-    document.getElementById('acrFb').style.color='var(--accent)';
-    document.getElementById('acrInp').disabled=true;
-    document.getElementById('acrCtr').textContent='Complete!';
-    return;
-  }
-  document.getElementById('acrQ').textContent=aQ[aIdx].a;
-  document.getElementById('acrInp').value='';
-  document.getElementById('acrInp').disabled=false;
-  document.getElementById('acrFb').textContent='';
-  document.getElementById('acrCtr').textContent=`${aIdx+1} / ${aQ.length}`;
-  document.getElementById('acrFill').style.width=(aIdx/aQ.length*100)+'%';
+  if(aIdx>=aQ.length){const pct=Math.round(aRight/(aRight+aWrong)*100)||0;document.getElementById('acrQ').textContent='DONE!';document.getElementById('acrFb').textContent=`Score: ${aRight}/${aRight+aWrong} (${pct}%)`;document.getElementById('acrFb').style.color='var(--accent)';document.getElementById('acrInp').disabled=true;document.getElementById('acrCtr').textContent='Complete!';return;}
+  document.getElementById('acrQ').textContent=aQ[aIdx].a;document.getElementById('acrInp').value='';document.getElementById('acrInp').disabled=false;document.getElementById('acrFb').textContent='';
+  document.getElementById('acrCtr').textContent=`${aIdx+1} / ${aQ.length}`;document.getElementById('acrFill').style.width=(aIdx/aQ.length*100)+'%';
   setTimeout(()=>document.getElementById('acrInp').focus(),80);
 }
-
 function checkAcr(){
-  if(aIdx>=aQ.length) return;
-  const correct=aQ[aIdx].d.toLowerCase();
-  const val=document.getElementById('acrInp').value.trim().toLowerCase();
+  if(aIdx>=aQ.length)return;
+  const correct=aQ[aIdx].d.toLowerCase();const val=document.getElementById('acrInp').value.trim().toLowerCase();
   const ok=val.length>3&&correct.includes(val)||val===correct;
-  if(ok){ aRight++; document.getElementById('acrFb').textContent='✓ '+aQ[aIdx].d; document.getElementById('acrFb').style.color='var(--green)'; }
-  else { aWrong++; document.getElementById('acrFb').textContent='✗ '+aQ[aIdx].d; document.getElementById('acrFb').style.color='var(--red)'; }
-  aIdx++;
-  setTimeout(renderAcr,1300);
+  if(ok){aRight++;document.getElementById('acrFb').textContent='✓ '+aQ[aIdx].d;document.getElementById('acrFb').style.color='var(--green)';}
+  else{aWrong++;document.getElementById('acrFb').textContent='✗ '+aQ[aIdx].d;document.getElementById('acrFb').style.color='var(--red)';}
+  aIdx++;setTimeout(renderAcr,1300);
 }
+function skipAcr(){if(aIdx>=aQ.length)return;document.getElementById('acrFb').textContent='→ '+aQ[aIdx].d;document.getElementById('acrFb').style.color='var(--yellow)';aWrong++;aIdx++;setTimeout(renderAcr,1300);}
 
-function skipAcr(){
-  if(aIdx>=aQ.length) return;
-  document.getElementById('acrFb').textContent='→ '+aQ[aIdx].d;
-  document.getElementById('acrFb').style.color='var(--yellow)';
-  aWrong++; aIdx++;
-  setTimeout(renderAcr,1300);
-}
-
-// ── PBQ ENGINE ────────────────────────────────────────────
+// PBQ ENGINE — 9 scenarios
 const PBQS=[
   {type:'order',title:'Incident Response Phases',
    desc:'Tap items in the correct order (PICERL):',
@@ -927,114 +871,62 @@ const PBQS=[
    desc:'Arrange from MOST volatile (collect first) to LEAST:',
    items:['Hard Drive','Network Traffic','CPU Registers/Cache','Temporary Files','RAM'],
    correct:['CPU Registers/Cache','RAM','Network Traffic','Temporary Files','Hard Drive'],
-   exp:'CPU Registers → RAM → Network Traffic → Temp Files → Hard Drive → Removable Media → Backups'},
+   exp:'CPU Registers → RAM → Network Traffic → Temp Files → Hard Drive → Backups'},
+  {type:'order',title:'ATT&CK Attack Lifecycle',
+   desc:'Order these ATT&CK phases from first to last:',
+   items:['Lateral Movement','Exfiltration','Persistence','Reconnaissance','Initial Access','C2'],
+   correct:['Reconnaissance','Initial Access','Persistence','Lateral Movement','C2','Exfiltration'],
+   exp:'Recon → Initial Access → Persistence → Lateral Movement → C2 → Exfiltration'},
   {type:'match',title:'Attack Type Matching',
    desc:'Match each attack to its category:',
    pairs:[{l:'SQL Injection',r:'Injection Attack'},{l:'Phishing',r:'Social Engineering'},{l:'Ransomware',r:'Malware'},{l:'DDoS',r:'Availability Attack'}]},
   {type:'match',title:'Port to Protocol',
    desc:'Match each port number to its protocol:',
    pairs:[{l:'22',r:'SSH'},{l:'443',r:'HTTPS'},{l:'53',r:'DNS'},{l:'3389',r:'RDP'}]},
+  {type:'match',title:'Modern Security Tools',
+   desc:'Match each tool to its primary function:',
+   pairs:[{l:'CASB',r:'Cloud SaaS policy enforcement'},{l:'SOAR',r:'Automated incident response'},{l:'UEBA',r:'Behavioral anomaly detection'},{l:'CSPM',r:'Cloud misconfiguration detection'}]},
+  {type:'match',title:'Cloud Responsibility Model',
+   desc:'Match the cloud model to what the CUSTOMER manages:',
+   pairs:[{l:'SaaS',r:'Data only'},{l:'PaaS',r:'App + Data'},{l:'IaaS',r:'OS + App + Data'},{l:'On-Prem',r:'Everything'}]},
   {type:'classify',title:'Control Type Classification',
    desc:'Classify each control as Preventive, Detective, or Corrective:',
    cats:['Preventive','Detective','Corrective'],
    items:[{n:'Firewall',c:'Preventive'},{n:'IDS Alert',c:'Detective'},{n:'Antivirus Block',c:'Preventive'},{n:'Security Camera',c:'Detective'},{n:'Backup Restore',c:'Corrective'},{n:'Patch Management',c:'Corrective'}]},
+  {type:'classify',title:'Log Pattern → Threat Type',
+   desc:'Classify each log pattern as its most likely threat:',
+   cats:['Brute Force','Exfiltration','C2','Lateral Movement'],
+   items:[{n:'500 failed logins in 2 min',c:'Brute Force'},{n:'Regular beaconing every 60s',c:'C2'},{n:'3GB upload at 3AM',c:'Exfiltration'},{n:'Admin login from 5 internal IPs rapidly',c:'Lateral Movement'},{n:'1000 PW attempts, 1 per user account',c:'Brute Force'},{n:'DNS queries to many random subdomains',c:'C2'}]},
 ];
 
-let pbqIdx=0, pbqOrder=[], pbqMatchSel=null, pbqMatchAns={}, pbqClassAns={};
-
-document.getElementById('pbqCheckBtn').addEventListener('click', checkPBQ);
-document.getElementById('pbqNextBtn').addEventListener('click', ()=>{ pbqIdx=(pbqIdx+1)%PBQS.length; renderPBQ(); });
+let pbqIdx=0,pbqOrder=[],pbqMatchSel=null,pbqMatchAns={},pbqClassAns={};
+document.getElementById('pbqCheckBtn').addEventListener('click',checkPBQ);
+document.getElementById('pbqNextBtn').addEventListener('click',()=>{pbqIdx=(pbqIdx+1)%PBQS.length;renderPBQ();});
 
 function renderPBQ(){
-  const p=PBQS[pbqIdx];
-  pbqOrder=[]; pbqMatchSel=null; pbqMatchAns={}; pbqClassAns={};
-  document.getElementById('pbqTitle').textContent=p.title;
-  document.getElementById('pbqDesc').textContent=p.desc;
-  document.getElementById('pbqCtr').textContent=`${pbqIdx+1}/${PBQS.length}`;
-  document.getElementById('pbqResult').style.display='none';
+  const p=PBQS[pbqIdx];pbqOrder=[];pbqMatchSel=null;pbqMatchAns={};pbqClassAns={};
+  document.getElementById('pbqTitle').textContent=p.title;document.getElementById('pbqDesc').textContent=p.desc;document.getElementById('pbqCtr').textContent=`${pbqIdx+1}/${PBQS.length}`;document.getElementById('pbqResult').style.display='none';
   const c=document.getElementById('pbqContent');
-
-  if(p.type==='order'){
-    const sh=[...p.items].sort(()=>Math.random()-.5);
-    c.innerHTML=`
-      <div style="font-size:11px;color:var(--text3);margin-bottom:8px">TAP in correct order:</div>
-      <div id="pbqItems">${sh.map(it=>`<div class="pbq-item" onclick="pbqTap(this,'${it.replace(/'/g,"\\'")}')" style="margin-bottom:6px">${it}</div>`).join('')}</div>
-      <div style="font-size:11px;color:var(--text3);margin:10px 0 4px">Your order:</div>
-      <div id="pbqOrderDisplay" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>`;
-  } else if(p.type==='match'){
-    const ls=[...p.pairs].sort(()=>Math.random()-.5);
-    const rs=[...p.pairs].sort(()=>Math.random()-.5);
-    c.innerHTML=`
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">SELECT →</div>${ls.map(x=>`<div class="pbq-item" id="ml_${x.l.replace(/\s/g,'_')}" onclick="pbqML(this,'${x.l.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.l}</div>`).join('')}</div>
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">THEN MATCH →</div>${rs.map(x=>`<div class="pbq-item" id="mr_${x.r.replace(/\s/g,'_')}" onclick="pbqMR(this,'${x.r.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.r}</div>`).join('')}</div>
-      </div>
-      <div id="matchStatus" style="font-size:11px;color:var(--text3);margin-top:8px">Select left item first.</div>`;
-  } else if(p.type==='classify'){
-    c.innerHTML=p.items.map((it,i)=>`
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-        <div style="flex:1;min-width:120px;font-size:13px;color:var(--text2);font-weight:600">${it.n}</div>
-        <div class="classify-opts">${p.cats.map(cat=>`<button class="clab" onclick="pbqCL(${i},'${cat}',this)">${cat}</button>`).join('')}</div>
-      </div>`).join('');
-  }
+  if(p.type==='order'){const sh=[...p.items].sort(()=>Math.random()-.5);c.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">TAP in correct order:</div><div id="pbqItems">${sh.map(it=>`<div class="pbq-item" onclick="pbqTap(this,'${it.replace(/'/g,"\\'")}')" style="margin-bottom:6px">${it}</div>`).join('')}</div><div style="font-size:11px;color:var(--text3);margin:10px 0 4px">Your order:</div><div id="pbqOrderDisplay" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>`;}
+  else if(p.type==='match'){const ls=[...p.pairs].sort(()=>Math.random()-.5);const rs=[...p.pairs].sort(()=>Math.random()-.5);c.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">SELECT →</div>${ls.map(x=>`<div class="pbq-item" id="ml_${x.l.replace(/[\s\/]/g,'_')}" onclick="pbqML(this,'${x.l.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.l}</div>`).join('')}</div><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">THEN MATCH →</div>${rs.map(x=>`<div class="pbq-item" id="mr_${x.r.replace(/[\s\/]/g,'_')}" onclick="pbqMR(this,'${x.r.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.r}</div>`).join('')}</div></div><div id="matchStatus" style="font-size:11px;color:var(--text3);margin-top:8px">Select left item first.</div>`;}
+  else if(p.type==='classify'){c.innerHTML=p.items.map((it,i)=>`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px"><div style="flex:1;min-width:120px;font-size:13px;color:var(--text2);font-weight:600">${it.n}</div><div class="classify-opts">${p.cats.map(cat=>`<button class="clab" onclick="pbqCL(${i},'${cat}',this)">${cat}</button>`).join('')}</div></div>`).join('');}
 }
 
-function pbqTap(el,val){
-  if(el.classList.contains('sel')) return;
-  el.classList.add('sel'); pbqOrder.push(val);
-  const d=document.getElementById('pbqOrderDisplay');
-  if(d) d.innerHTML=pbqOrder.map((v,i)=>`<span style="background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:3px 8px;font-size:11px">${i+1}. ${v}</span>`).join('');
-}
-
-function pbqML(el,val,e){
-  e.stopPropagation();
-  document.querySelectorAll('.pbq-item[id^="ml_"]').forEach(b=>b.classList.remove('match-active'));
-  el.classList.add('match-active'); pbqMatchSel=val;
-  document.getElementById('matchStatus').textContent=`"${val}" selected — now pick its match →`;
-}
-
-function pbqMR(el,val,e){
-  e.stopPropagation();
-  if(!pbqMatchSel) return;
-  pbqMatchAns[pbqMatchSel]=val;
-  el.classList.add('matched');
-  const lel=document.getElementById('ml_'+pbqMatchSel.replace(/\s/g,'_'));
-  if(lel){ lel.classList.remove('match-active'); lel.classList.add('matched'); }
-  document.getElementById('matchStatus').textContent=`Matched ${Object.keys(pbqMatchAns).length}/${PBQS[pbqIdx].pairs.length}`;
-  pbqMatchSel=null;
-}
-
-function pbqCL(idx,cat,btn){
-  pbqClassAns[idx]=cat;
-  btn.closest('.classify-opts').querySelectorAll('.clab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
+function pbqTap(el,val){if(el.classList.contains('sel'))return;el.classList.add('sel');pbqOrder.push(val);const d=document.getElementById('pbqOrderDisplay');if(d)d.innerHTML=pbqOrder.map((v,i)=>`<span style="background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:3px 8px;font-size:11px">${i+1}. ${v}</span>`).join('');}
+function pbqML(el,val,e){e.stopPropagation();document.querySelectorAll('.pbq-item[id^="ml_"]').forEach(b=>b.classList.remove('match-active'));el.classList.add('match-active');pbqMatchSel=val;document.getElementById('matchStatus').textContent=`"${val}" selected — now pick its match →`;}
+function pbqMR(el,val,e){e.stopPropagation();if(!pbqMatchSel)return;pbqMatchAns[pbqMatchSel]=val;el.classList.add('matched');const lel=document.getElementById('ml_'+pbqMatchSel.replace(/[\s\/]/g,'_'));if(lel){lel.classList.remove('match-active');lel.classList.add('matched');}document.getElementById('matchStatus').textContent=`Matched ${Object.keys(pbqMatchAns).length}/${PBQS[pbqIdx].pairs.length}`;pbqMatchSel=null;}
+function pbqCL(idx,cat,btn){pbqClassAns[idx]=cat;btn.closest('.classify-opts').querySelectorAll('.clab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 
 function checkPBQ(){
-  const p=PBQS[pbqIdx]; let ok=false, fb='';
-  if(p.type==='order'){
-    ok=JSON.stringify(pbqOrder)===JSON.stringify(p.correct);
-    fb=ok?'Perfect!':'Correct: '+p.correct.join(' → ');
-  } else if(p.type==='match'){
-    ok=p.pairs.every(x=>pbqMatchAns[x.l]===x.r);
-    fb=ok?'All matched!':'Correct: '+p.pairs.map(x=>`${x.l}=${x.r}`).join(', ');
-  } else if(p.type==='classify'){
-    ok=p.items.every((it,i)=>pbqClassAns[i]===it.c);
-    fb=ok?'All correct!':'Correct: '+p.items.map(it=>`${it.n}=${it.c}`).join(', ');
-  }
-  const r=document.getElementById('pbqResult');
-  r.style.display='block';
-  r.style.border=`1px solid ${ok?'var(--green)':'var(--red)'}`;
-  r.style.background=ok?'rgba(0,255,157,.06)':'rgba(255,45,85,.06)';
-  r.style.padding='12px'; r.style.borderRadius='10px';
+  const p=PBQS[pbqIdx];let ok=false,fb='';
+  if(p.type==='order'){ok=JSON.stringify(pbqOrder)===JSON.stringify(p.correct);fb=ok?'Perfect!':'Correct order: '+p.correct.join(' → ');}
+  else if(p.type==='match'){ok=p.pairs.every(x=>pbqMatchAns[x.l]===x.r);fb=ok?'All matched correctly!':'Correct: '+p.pairs.map(x=>`${x.l} = ${x.r}`).join(', ');}
+  else if(p.type==='classify'){ok=p.items.every((it,i)=>pbqClassAns[i]===it.c);fb=ok?'All classified correctly!':'Correct: '+p.items.map(it=>`${it.n} = ${it.c}`).join(', ');}
+  const r=document.getElementById('pbqResult');r.style.display='block';r.style.border=`1px solid ${ok?'var(--green)':'var(--red)'}`;r.style.background=ok?'rgba(0,255,157,.06)':'rgba(255,45,85,.06)';r.style.padding='12px';r.style.borderRadius='10px';
   r.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ INCORRECT'}</div><div style="font-size:12px;color:var(--text2)">${fb}</div>${p.exp?`<div style="font-size:11px;color:var(--text3);margin-top:6px">${p.exp}</div>`:''}`;
 }
 
-// ── INIT ──────────────────────────────────────────────────
-loadS();
-initCd();
-refreshDash();
-renderPBQ();
+loadS();initCd();refreshDash();renderPBQ();
 </script>
 </body>
 </html>
