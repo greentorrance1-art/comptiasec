@@ -204,6 +204,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <button class="mbtn" data-m="domain">🎯 DOMAIN</button>
         <button class="mbtn" data-m="weak">⚠️ WEAK AREAS</button>
         <button class="mbtn" data-m="modern">☁️ MODERN</button>
+        <button class="mbtn" data-m="gapfill">🎯 GAP FILL</button>
         <button class="mbtn" data-m="rapid">⚡ RAPID</button>
       </div>
       <div id="domainWrap" style="display:none">
@@ -219,7 +220,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="card" style="background:rgba(124,92,252,.06);border-color:rgba(124,92,252,.3)">
       <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">☁️ NEW IN v2</div>
-      <div style="font-size:13px;color:var(--text2)">85 questions total · CASB · SASE · SOAR · UEBA · CSPM · SAST/DAST · Supply Chain · ATT&CK phases · RPO · OCSP/CRL · RA/CA · API security · Log pattern recognition</div>
+      <div style="font-size:13px;color:var(--text2)">110 questions total · + All 10 control types · Deterrent/Directive/Compensating · Physical attacks · Crypto attacks · DR sites · BIA/MTD · EDR vs XDR · MDM/MAM · PAM/PIM · DLP · DNS filtering · Sandboxing · Vendor risk · SLA/MOU/NDA</div>
     </div>
     <button class="btn btn-primary" id="startBtn">START QUIZ →</button>
   </div>
@@ -269,7 +270,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="deck-btn" data-deck="crypto"><span class="deck-icon">🔐</span><div class="deck-info"><div class="dn">CRYPTO & PKI</div><div class="dc">15 cards — encryption fundamentals</div></div></button>
       <button class="deck-btn" data-deck="attacks"><span class="deck-icon">⚔️</span><div class="deck-info"><div class="dn">ATTACK TYPES</div><div class="dc">20 cards — every attack on the exam</div></div></button>
       <button class="deck-btn" data-deck="iam"><span class="deck-icon">👤</span><div class="deck-info"><div class="dn">IAM & ACCESS CONTROL</div><div class="dc">15 cards — auth, authz, AAA</div></div></button>
-      <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)"><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
+      <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)">
+      <button class="deck-btn" data-deck="gapdeck" style="border-color:rgba(255,45,85,.5)"><span class="deck-icon">🎯</span><div class="deck-info"><div class="dn">OFFICIAL OBJECTIVES GAP FILL <span class="v2badge">NEW</span></div><div class="dc">22 cards — controls, resilience, BIA, vendor risk, physical attacks</div></div></button><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
     </div>
   </div>
   <div id="flashGame" style="display:none">
@@ -301,8 +303,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="acrStart">
     <div class="card" style="text-align:center">
       <div class="ctitle">ACRONYM DRILL</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">76 acronyms including all SY0-701 modern terms. Type the full name.</div>
-      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: UEBA · SASE · CSPM · CVSS · OCSP · CRL · NGFW · SAST · DAST · SCA + more</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">90 acronyms including all SY0-701 modern + objective terms. Type the full name.</div>
+      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: BIA · MTD · PAM · PIM · XDR · MDM · MAM · STIG · CIS · SOC 2 + all v2 terms</div>
       <button class="btn btn-primary" id="acrStartBtn">START DRILL →</button>
     </div>
   </div>
@@ -310,7 +312,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="acrprogbar" style="margin-bottom:4px">
       <div class="acr-pbar"><div class="acr-pfill" id="acrFill" style="width:0%"></div></div>
     </div>
-    <div class="acr-ctr" id="acrCtr">1 / 76</div>
+    <div class="acr-ctr" id="acrCtr">1 / 90</div>
     <div class="card">
       <div class="acr-q" id="acrQ">AAA</div>
       <input class="acr-inp" id="acrInp" type="text" placeholder="Type the full name..." autocomplete="off" autocorrect="off" spellcheck="false"/>
@@ -567,6 +569,34 @@ const QB=[
   {q:"A company stores EU customer data on US servers. Which regulation primarily applies?",a:2,o:["HIPAA","PCI DSS","GDPR","SOX"],dom:"Governance",d:2,ex:"GDPR applies to ANY organization processing personal data of EU residents regardless of location."},
   {q:"CSPM tools primarily detect:",a:3,o:["Network intrusions","Endpoint malware","API vulnerabilities","Cloud misconfigurations like open S3 buckets or excessive IAM permissions"],dom:"Architecture",d:2,ex:"CSPM continuously monitors cloud environments for misconfiguration and compliance violations."},
   {q:"A developer uploads credentials to a public GitHub repo. This creates which risk?",a:2,o:["Physical security breach","Availability attack","Credential exposure / supply chain risk","DNS poisoning"],dom:"Threats",d:2,ex:"Exposed credentials in public repos are immediately scraped by attackers. Supply chain / credential exposure risk."},
+
+  // ── GAP FILL: OFFICIAL OBJECTIVES (25 new) ──────────────────────────────
+  {q:"Which security control type DISCOURAGES attackers without actively stopping them?",a:1,o:["Corrective","Deterrent","Compensating","Directive"],dom:"Threats",d:2,ex:"Deterrent controls discourage attackers (warning signs, visible cameras). They don't block — they discourage. Ex: 'Authorized users only' sign, guard visible at entry."},
+  {q:"A security policy document that tells employees what they MUST do is which control type?",a:3,o:["Preventive","Detective","Corrective","Directive"],dom:"Governance",d:2,ex:"Directive controls instruct people through policies, procedures, standards. 'Employees must use MFA' = directive. The instruction itself is the control."},
+  {q:"An org cannot patch a critical legacy system. They add a firewall rule to block attack vectors. This is:",a:2,o:["Preventive control","Detective control","Compensating control","Corrective control"],dom:"Governance",d:2,ex:"Compensating controls provide alternative protection when the primary control cannot be implemented. Common with legacy systems that cannot be patched."},
+  {q:"A security camera is BEST classified as which two control types?",a:0,o:["Detective + Physical","Preventive + Technical","Corrective + Operational","Directive + Managerial"],dom:"Threats",d:2,ex:"Security camera: Detective (records/identifies incidents) + Physical (tangible hardware). Can also be Deterrent. CompTIA tests knowing controls can have multiple classifications."},
+  {q:"Risk assessments conducted by management belong to which control implementation type?",a:2,o:["Technical","Operational","Managerial","Physical"],dom:"Governance",d:2,ex:"Managerial controls = administrative oversight tools. Risk assessments, audits, security policies fall here. Operational = people/processes. Technical = software/hardware."},
+  {q:"A birthday attack exploits which cryptographic weakness?",a:1,o:["Weak key length","Hash collision probability","Poor IV generation","Improper certificate validation"],dom:"Implementation",d:3,ex:"Birthday attacks exploit the mathematical probability of hash collisions. Two different inputs producing the same hash. Defense: use larger hash outputs (SHA-256 or higher)."},
+  {q:"An attacker forces a HTTPS connection to negotiate TLS 1.0 instead of TLS 1.3. This is:",a:3,o:["Birthday attack","Replay attack","Rainbow table attack","Downgrade attack"],dom:"Threats",d:2,ex:"Downgrade attacks force systems to use older, weaker protocol versions. Defense: disable legacy TLS versions on servers. Require TLS 1.2 minimum."},
+  {q:"An attacker searches through discarded documents in trash bins to gather sensitive information. This is:",a:2,o:["Tailgating","Piggybacking","Dumpster diving","Shoulder surfing"],dom:"Threats",d:1,ex:"Dumpster diving = searching physical trash for sensitive data. Defense: shredding all documents before disposal. Physical attack vector."},
+  {q:"An observer watches a user type their PIN at an ATM from a nearby position. This is:",a:1,o:["Skimming","Shoulder surfing","Tailgating","Vishing"],dom:"Threats",d:1,ex:"Shoulder surfing = directly observing someone's screen or keyboard input. Defense: privacy screens, awareness. Low-tech but effective physical attack."},
+  {q:"A device attached to a card reader that captures payment card data is called:",a:3,o:["Keylogger","Rootkit","Logic bomb","Skimmer"],dom:"Threats",d:2,ex:"Skimming = hardware device captures magnetic stripe or chip data from payment cards. Found on ATMs, gas pumps. Defense: inspect card readers, use chip+PIN."},
+  {q:"Which DR site type has hardware ready but requires data restoration before operations resume?",a:1,o:["Hot site","Warm site","Cold site","Mobile site"],dom:"Architecture",d:2,ex:"Warm site: hardware pre-installed, data needs restoration. Hours to recover. Balance between hot (instant, expensive) and cold (slow, cheap). Most common for mid-sized orgs."},
+  {q:"Which DR site type has NO equipment and only provides physical space?",a:2,o:["Hot site","Warm site","Cold site","Failover site"],dom:"Architecture",d:1,ex:"Cold site = shell only. No hardware, no data. Cheapest option. Slowest recovery (days to weeks). Must ship in hardware and restore data from scratch."},
+  {q:"The 3-2-1 backup rule means:",a:0,o:["3 copies, 2 different media types, 1 copy offsite","3 backups daily, 2 weekly, 1 monthly","3 redundant systems, 2 sites, 1 cloud","3 full backups, 2 incremental, 1 differential"],dom:"Architecture",d:2,ex:"3-2-1: 3 copies of data, on 2 different media types (disk + tape/cloud), with 1 stored offsite. Protects against single failure, site disaster, and media failure simultaneously."},
+  {q:"Which backup type backs up ONLY changes since the last FULL backup, regardless of daily backups?",a:2,o:["Full","Incremental","Differential","Snapshot"],dom:"Architecture",d:2,ex:"Differential: always backs up changes since last FULL backup (grows larger daily). Faster restore than incremental (only need full + latest differential). Slower backup than incremental."},
+  {q:"EDR differs from XDR in that XDR:",a:1,o:["Only monitors endpoint logs","Extends detection across endpoint, network, and cloud in a unified platform","Replaces SIEM entirely","Only works on Windows systems"],dom:"Operations",d:2,ex:"EDR = Endpoint Detection and Response (one device type). XDR = Extended D+R — integrates endpoint + network + cloud + email into unified detection. XDR is EDR++."},
+  {q:"An organization uses personal employee phones for work. Which MDM approach best balances security with employee privacy?",a:2,o:["Full MDM with remote wipe","Disable all personal phones","MAM — manage only work apps, not the full device","Deploy corporate-owned devices only"],dom:"Operations",d:2,ex:"MAM (Mobile App Management) controls only work applications without touching personal data. Ideal for BYOD. MDM = full device control, appropriate for corporate-owned devices."},
+  {q:"Just-in-time privileged access that is granted only when needed then immediately revoked is:",a:3,o:["RBAC","DAC","PAM without PIM","PIM — Privileged Identity Management"],dom:"Operations",d:2,ex:"PIM provides just-in-time access — elevate privileges for specific task, then auto-revoke. PAM broadly manages privileged accounts. PIM adds time-limited just-in-time access."},
+  {q:"CIS Benchmarks and STIG are examples of:",a:0,o:["Secure configuration baselines for system hardening","Incident response frameworks","Vulnerability scanning tools","Risk assessment methodologies"],dom:"Operations",d:2,ex:"CIS Benchmarks (Center for Internet Security) and STIG (Security Technical Implementation Guide, DoD) define hardened configuration standards for OS, apps, and network devices."},
+  {q:"Which control prevents sensitive data like SSNs from being emailed outside the organization?",a:2,o:["Firewall","IDS","DLP — Data Loss Prevention","NAC"],dom:"Operations",d:2,ex:"DLP (Data Loss Prevention) monitors and blocks unauthorized transmission of sensitive data — via email, USB, cloud upload. Classifies data and enforces policy based on content."},
+  {q:"Which process formally identifies critical business functions and the impact of their disruption?",a:1,o:["Risk register","Business Impact Analysis (BIA)","Disaster Recovery Plan","Vulnerability assessment"],dom:"Governance",d:2,ex:"BIA identifies: which functions are critical, what's the financial/operational impact of losing them, what are the MTD/RTO/RPO requirements. BIA feeds into the DR/BCP planning."},
+  {q:"MTD (Maximum Tolerable Downtime) relates to RTO in that:",a:3,o:["They are the same measurement","MTD is always longer than RPO","RTO defines maximum data loss","RTO must always be shorter than MTD"],dom:"Governance",d:3,ex:"MTD = absolute limit an org can survive outage. RTO = target recovery time. RTO must be less than MTD or recovery won't save the org. BIA determines both values."},
+  {q:"A contract establishing legally enforceable uptime and performance standards between customer and vendor is:",a:0,o:["SLA — Service Level Agreement","MOU — Memorandum of Understanding","NDA — Non-Disclosure Agreement","BPA — Business Partnership Agreement"],dom:"Governance",d:2,ex:"SLA = legally binding. MOU = non-binding intent. NDA = confidentiality only. MSA = master terms. SLA specifically defines measurable service standards with penalties for breach."},
+  {q:"A third-party vendor provides a SOC 2 Type II report. This demonstrates:",a:2,o:["They passed a penetration test","They are ISO 27001 certified","Independent auditor verified their controls over time","They have cyber insurance"],dom:"Governance",d:3,ex:"SOC 2 Type II = independent auditor tested the vendor's security controls over a period (usually 6-12 months) and verified they operated effectively. High credibility vendor assessment."},
+  {q:"DNS filtering as a security control primarily prevents:",a:1,o:["SQL injection attacks","Users from accessing malicious domains at the DNS resolution layer","Brute force authentication attacks","Data exfiltration via HTTPS"],dom:"Operations",d:2,ex:"DNS filtering blocks malicious domain resolution before connection is made. Stops malware from reaching C2 servers, phishing sites, and known malicious IPs at the network layer."},
+  {q:"ICS/SCADA systems differ from standard IT security in that they prioritize:",a:3,o:["Confidentiality above all else","Integrity over availability","Patching as frequently as possible","Availability above confidentiality — downtime causes physical harm"],dom:"Architecture",d:3,ex:"ICS/SCADA control physical processes (power grids, water treatment). Availability = safety. CIA triad is inverted: Availability > Integrity > Confidentiality. Patches require extensive testing."},
+  {q:"Application sandboxing runs untrusted code in an isolated environment to:",a:0,o:["Prevent it from affecting the host system if malicious","Speed up application performance","Encrypt application data at rest","Enable logging of all user activity"],dom:"Operations",d:2,ex:"Sandboxing isolates execution — if code is malicious it cannot affect the host OS or other applications. Used by email gateways, browsers, AV tools, and malware analysis platforms."},
 ];
 
 // QUIZ ENGINE
@@ -585,7 +615,8 @@ function buildQ(){
   let pool=[...QB];
   if(gMode==='domain'&&gDomain)pool=pool.filter(q=>q.dom===gDomain);
   else if(gMode==='weak'){const weak=DOMS.filter(d=>{const dd=S.domains[d];return dd.q>0&&dd.c/dd.q<0.75;});if(weak.length)pool=pool.filter(q=>weak.includes(q.dom));}
-  else if(gMode==='modern')pool=pool.slice(60);// Last 25 are modern
+  else if(gMode==='modern')pool=pool.slice(60,85);
+  else if(gMode==='gapfill')pool=pool.slice(85);
   pool=pool.sort(()=>Math.random()-.5);
   if(gMode==='full')pool=pool.slice(0,Math.min(60,pool.length));
   else if(gMode==='rapid')pool=pool.slice(0,20);
@@ -632,7 +663,7 @@ function showCkpt(){const pct=sessTotal?Math.round(sessCorrect/sessTotal*100):0;
 
 function showScore(){
   const pct=sessTotal?Math.round(sessCorrect/sessTotal*100):0;
-  const modes={full:'Full Exam',domain:'Domain Drill',weak:'Weak Areas',modern:'Modern SY0-701',rapid:'Rapid Fire'};
+  const modes={full:'Full Exam',domain:'Domain Drill',weak:'Weak Areas',modern:'Modern SY0-701',gapfill:'Gap Fill',rapid:'Rapid Fire'};
   S.sessions.push({mode:modes[gMode]||gMode,pct,date:new Date().toLocaleDateString(),correct:sessCorrect,total:sessTotal});saveS();
   document.getElementById('quizGame').style.display='none';document.getElementById('quizScore').style.display='block';
   const col=pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';const circ=2*Math.PI*64;const sfg=document.getElementById('scoreRingFg');
@@ -720,6 +751,30 @@ const DECKS={
     {f:'Kerberos',b:'Network auth protocol. Uses tickets. Default in Active Directory. Port 88. Needs NTP.'},
     {f:'LDAP',b:'Lightweight Directory Access Protocol. Queries directory services. Port 389 (636 for LDAPS).'},
     {f:'Federation',b:'Sharing identity across org boundaries. SAML, OAuth, OIDC. Used in cloud and SSO.'},
+  ],
+  gapdeck:[
+    {f:'Deterrent Control',b:'Discourages attackers without actively blocking. Ex: warning signs, visible cameras, guards at entrance. Does NOT stop — discourages. Exam: "discourage attackers" → Deterrent.'},
+    {f:'Directive Control',b:'Instructs people what to do through policies, procedures, standards. Ex: "Employees must use MFA" = directive control. The instruction IS the control.'},
+    {f:'Compensating Control',b:'Alternative protection when primary control cannot be implemented. Ex: cannot patch legacy system → add firewall rules around it. Common on exams with legacy/compliance scenarios.'},
+    {f:'Managerial Control',b:'Administrative oversight controls. Risk assessments, security audits, penetration testing authorization. NOT technical. Management-level oversight of security posture.'},
+    {f:'Birthday Attack',b:'Exploits hash collision probability — find two inputs producing the same hash. Reason MD5/SHA-1 are deprecated. Defense: larger hash output (SHA-256+).'},
+    {f:'Downgrade Attack',b:'Forces connection to use older, weaker protocol version. Ex: force TLS 1.0 instead of TLS 1.3. Defense: disable legacy protocol versions server-side.'},
+    {f:'Dumpster Diving',b:'Physical attack — searching discarded trash for sensitive documents, credentials, hardware. Defense: shred all documents before disposal.'},
+    {f:'Shoulder Surfing',b:'Physical attack — observing someone's screen or keyboard directly. Defense: privacy screens, awareness training, positioning.'},
+    {f:'Skimming',b:'Hardware device captures payment card data from legitimate card readers. Found on ATMs, gas pumps. Defense: inspect readers, use chip+PIN, tap-to-pay.'},
+    {f:'Hot Site',b:'DR site: fully operational, real-time data sync. Fastest recovery (minutes). Most expensive. Used for critical systems with near-zero RTO.'},
+    {f:'Warm Site',b:'DR site: hardware ready, data needs restoration. Hours to recover. Moderate cost. Most common balance of cost vs recovery time.'},
+    {f:'Cold Site',b:'DR site: physical space only, no hardware or data. Slowest recovery (days-weeks). Cheapest option. Must ship hardware and restore from backup.'},
+    {f:'3-2-1 Backup Rule',b:'3 copies of data, on 2 different media types, with 1 stored offsite. Exam: always correct backup strategy. Protects against single failure, site disaster, media failure.'},
+    {f:'Differential Backup',b:'Backs up ALL changes since last FULL backup (grows daily). Faster restore than incremental (need full + 1 differential). Slower backup than incremental.'},
+    {f:'XDR',b:'Extended Detection and Response. Integrates endpoint + network + cloud + email into unified detection platform. XDR = EDR++ with broader visibility. Exam: "unified detection across all layers" → XDR.'},
+    {f:'MAM vs MDM',b:'MAM (Mobile App Mgmt) = controls work apps only, preserves personal privacy. BYOD → MAM. MDM (Mobile Device Mgmt) = full device control, remote wipe. Corporate-owned → MDM.'},
+    {f:'PIM',b:'Privileged Identity Management. Just-in-time access — elevate privileges only when needed, auto-revoke after task. Reduces standing privileged access risk. Exam: "just-in-time admin access" → PIM.'},
+    {f:'BIA',b:'Business Impact Analysis. Identifies critical systems and financial/operational impact of their loss. Determines MTD, RTO, RPO values. Foundation of DR/BCP planning.'},
+    {f:'MTD vs RTO',b:'MTD (Max Tolerable Downtime) = absolute survival limit. RTO (Recovery Time Objective) = target restore time. RTO MUST be less than MTD or recovery fails. BIA determines both.'},
+    {f:'SLA vs MOU',b:'SLA (Service Level Agreement) = legally binding, enforceable, has penalties. MOU (Memorandum of Understanding) = non-binding intent to cooperate. Exam: "legally enforceable" → SLA.'},
+    {f:'SOC 2 Type II',b:'Independent auditor verified vendor security controls operated effectively over time (6-12 months). High-credibility third-party vendor risk assessment. Type I = design only. Type II = operating effectiveness.'},
+    {f:'DNS Filtering',b:'Security control blocking malicious domain resolution before connection is made. Stops C2 beaconing, phishing, malware downloads at DNS layer. Network-level protection.'},
   ],
   modern:[
     {f:'CASB',b:'Cloud Access Security Broker. Sits between users and cloud SaaS apps. Enforces DLP, compliance, blocks shadow IT. Exam: "enforce policy on SaaS" → CASB.'},
@@ -837,6 +892,20 @@ const ACRS=[
   {a:'WPA',d:'Wi-Fi Protected Access'},
   {a:'XSS',d:'Cross-Site Scripting'},
   {a:'ZTNA',d:'Zero Trust Network Access'},
+  {a:'BIA',d:'Business Impact Analysis'},
+  {a:'BPA',d:'Business Partnership Agreement'},
+  {a:'CIS',d:'Center for Internet Security'},
+  {a:'DPO',d:'Data Protection Officer'},
+  {a:'MAM',d:'Mobile Application Management'},
+  {a:'MDM',d:'Mobile Device Management'},
+  {a:'MSA',d:'Master Service Agreement'},
+  {a:'MTD',d:'Maximum Tolerable Downtime'},
+  {a:'NDA',d:'Non-Disclosure Agreement'},
+  {a:'PAM',d:'Privileged Access Management'},
+  {a:'PIM',d:'Privileged Identity Management'},
+  {a:'SOC',d:'System and Organization Controls'},
+  {a:'STIG',d:'Security Technical Implementation Guide'},
+  {a:'XDR',d:'Extended Detection and Response'},
 ];
 
 let aQ=[],aIdx=0,aRight=0,aWrong=0;
@@ -897,6 +966,23 @@ const PBQS=[
    desc:'Classify each log pattern as its most likely threat:',
    cats:['Brute Force','Exfiltration','C2','Lateral Movement'],
    items:[{n:'500 failed logins in 2 min',c:'Brute Force'},{n:'Regular beaconing every 60s',c:'C2'},{n:'3GB upload at 3AM',c:'Exfiltration'},{n:'Admin login from 5 internal IPs rapidly',c:'Lateral Movement'},{n:'1000 PW attempts, 1 per user account',c:'Brute Force'},{n:'DNS queries to many random subdomains',c:'C2'}]},
+  {type:'match',title:'Security Control Classification',
+   desc:'Match each control to its FUNCTION type:',
+   pairs:[{l:'Warning Sign',r:'Deterrent'},{l:'Security Policy',r:'Directive'},{l:'Extra Firewall Rule (no patch)',r:'Compensating'},{l:'Risk Assessment',r:'Managerial'}]},
+  {type:'match',title:'DR Site Types',
+   desc:'Match each DR site to its recovery characteristic:',
+   pairs:[{l:'Hot Site',r:'Real-time sync, instant failover'},{l:'Warm Site',r:'Hardware ready, restore data'},{l:'Cold Site',r:'Space only, slowest recovery'},{l:'3-2-1 Rule',r:'3 copies, 2 media, 1 offsite'}]},
+  {type:'classify',title:'Physical vs Cryptographic Attack',
+   desc:'Classify each attack as Physical or Cryptographic:',
+   cats:['Physical','Cryptographic'],
+   items:[
+     {n:'Dumpster Diving',c:'Physical'},
+     {n:'Birthday Attack',c:'Cryptographic'},
+     {n:'Shoulder Surfing',c:'Physical'},
+     {n:'Downgrade Attack',c:'Cryptographic'},
+     {n:'Skimming',c:'Physical'},
+     {n:'Rainbow Table',c:'Cryptographic'},
+   ]},
 ];
 
 let pbqIdx=0,pbqOrder=[],pbqMatchSel=null,pbqMatchAns={},pbqClassAns={};
