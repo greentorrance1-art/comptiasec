@@ -142,7 +142,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <div class="hdr">
   <div>
-    <div class="logo">SEC+ <span class="v2badge">v2</span></div>
+    <div class="logo">SEC+ <span class="v2badge">v3</span></div>
     <div class="logo-sub">SY0-701 COMMAND CENTER</div>
   </div>
   <div class="hstats">
@@ -219,7 +219,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
     <div class="card" style="background:rgba(124,92,252,.06);border-color:rgba(124,92,252,.3)">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">☁️ NEW IN v2</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">⚡ NEW IN v3</div>
       <div style="font-size:13px;color:var(--text2)">110 questions total · + All 10 control types · Deterrent/Directive/Compensating · Physical attacks · Crypto attacks · DR sites · BIA/MTD · EDR vs XDR · MDM/MAM · PAM/PIM · DLP · DNS filtering · Sandboxing · Vendor risk · SLA/MOU/NDA</div>
     </div>
     <button class="btn btn-primary" id="startBtn">START QUIZ →</button>
@@ -270,8 +270,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="deck-btn" data-deck="crypto"><span class="deck-icon">🔐</span><div class="deck-info"><div class="dn">CRYPTO & PKI</div><div class="dc">15 cards — encryption fundamentals</div></div></button>
       <button class="deck-btn" data-deck="attacks"><span class="deck-icon">⚔️</span><div class="deck-info"><div class="dn">ATTACK TYPES</div><div class="dc">20 cards — every attack on the exam</div></div></button>
       <button class="deck-btn" data-deck="iam"><span class="deck-icon">👤</span><div class="deck-info"><div class="dn">IAM & ACCESS CONTROL</div><div class="dc">15 cards — auth, authz, AAA</div></div></button>
-      <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)">
-      <button class="deck-btn" data-deck="gapdeck" style="border-color:rgba(255,45,85,.5)"><span class="deck-icon">🎯</span><div class="deck-info"><div class="dn">OFFICIAL OBJECTIVES GAP FILL <span class="v2badge">NEW</span></div><div class="dc">22 cards — controls, resilience, BIA, vendor risk, physical attacks</div></div></button><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
+      <button class="deck-btn" data-deck="gapdeck" style="border-color:rgba(255,45,85,.5)"><span class="deck-icon">🎯</span><div class="deck-info"><div class="dn">OFFICIAL OBJECTIVES GAP FILL <span class="v2badge">NEW</span></div><div class="dc">22 cards — controls, resilience, BIA, vendor risk, physical attacks</div></div></button>
+      <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)"><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
     </div>
   </div>
   <div id="flashGame" style="display:none">
@@ -330,7 +330,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <div class="ctitle" style="margin:0" id="pbqTitle">PBQ SIMULATION</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3)" id="pbqCtr">1/9</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3)" id="pbqCtr">1/12</div>
     </div>
     <div style="font-size:13px;color:var(--text2);margin-bottom:14px" id="pbqDesc"></div>
     <div id="pbqContent"></div>
@@ -903,7 +903,7 @@ const ACRS=[
   {a:'NDA',d:'Non-Disclosure Agreement'},
   {a:'PAM',d:'Privileged Access Management'},
   {a:'PIM',d:'Privileged Identity Management'},
-  {a:'SOC',d:'System and Organization Controls'},
+  {a:'SOC2',d:'System and Organization Controls (audit framework)'},
   {a:'STIG',d:'Security Technical Implementation Guide'},
   {a:'XDR',d:'Extended Detection and Response'},
 ];
