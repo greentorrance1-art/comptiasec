@@ -35,9 +35,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-primary{background:var(--accent);color:#000;}
 .btn-sec{background:transparent;border:1.5px solid var(--border2);color:var(--text2);}
 .btn-sm{padding:10px;font-size:13px;border-radius:9px;}
-/* NEW: v2 badge */
 .v2badge{display:inline-block;background:linear-gradient(135deg,var(--purple),var(--accent));color:#000;font-family:'Share Tech Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:1px;margin-left:6px;vertical-align:middle;}
-/* DASHBOARD */
 .ring-wrap{position:relative;width:130px;height:130px;margin:0 auto 14px;}
 .ring-bg{fill:none;stroke:var(--border);stroke-width:9;}
 .ring-fg-el{fill:none;stroke:var(--accent);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);}
@@ -52,7 +50,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .cal-grid{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
 .cal-cell{width:18px;height:18px;border-radius:4px;}
 .slog-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
-/* QUIZ */
 .mode-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .mbtn{flex:1;min-width:80px;padding:12px 8px;border:1.5px solid var(--border2);border-radius:10px;background:transparent;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;text-align:center;transition:all .2s;}
 .mbtn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.08);}
@@ -72,14 +69,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .opt.wrong{background:rgba(255,45,85,.12);border-color:var(--red);}
 .qfeedback{border-radius:11px;padding:12px;margin-top:4px;border:1px solid var(--border2);}
 .ckpt-banner{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.3);border-radius:10px;padding:10px;margin-bottom:10px;display:none;}
-/* SCORE */
 .score-ring-wrap{position:relative;width:150px;height:150px;margin:0 auto 14px;}
 .score-ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
 .score-ring-fg{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.2s ease;}
 .score-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;}
 .score-num{font-family:'Rajdhani',sans-serif;font-size:44px;font-weight:700;line-height:1;}
 .score-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;}
-/* FLASHCARDS */
 .deck-btn{width:100%;padding:14px;border:1.5px solid var(--border2);border-radius:11px;background:transparent;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;margin-bottom:8px;text-align:left;display:flex;align-items:center;gap:12px;transition:all .2s;}
 .deck-btn:active{transform:scale(.99);}
 .deck-icon{font-size:22px;}
@@ -98,7 +93,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .flash-prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));transition:width .4s ease;}
 .flash-ctr{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text3);text-align:center;margin-bottom:12px;}
 .flash-actions{display:flex;gap:8px;}
-/* ACRONYMS */
 .acr-q{font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:var(--accent);text-align:center;margin:20px 0 14px;letter-spacing:4px;text-shadow:0 0 30px rgba(0,229,255,.3);}
 .acr-inp{width:100%;background:var(--surface);border:1.5px solid var(--border2);border-radius:10px;padding:13px;font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text);outline:none;margin-bottom:10px;letter-spacing:1px;}
 .acr-inp:focus{border-color:var(--accent);}
@@ -106,7 +100,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .acr-pbar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px;}
 .acr-pfill{height:100%;background:linear-gradient(90deg,var(--green),var(--accent));transition:width .4s ease;}
 .acr-ctr{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3);text-align:center;margin-bottom:14px;}
-/* PBQ */
 .pbq-item{background:var(--card2);border:1.5px solid var(--border2);border-radius:9px;padding:10px 14px;font-size:13px;cursor:pointer;transition:all .15s;user-select:none;}
 .pbq-item:active{transform:scale(.98);}
 .pbq-item.sel{opacity:.5;border-style:dashed;}
@@ -116,7 +109,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .classify-opts{display:flex;gap:6px;flex-wrap:wrap;}
 .clab{padding:6px 12px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all .15s;}
 .clab.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.1);}
-/* RESOURCES */
 .rsec-title{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:3px;margin:16px 0 8px;}
 .rlink{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px;text-decoration:none;transition:border-color .2s;}
 .rlink:active{background:var(--card2);}
@@ -161,7 +153,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="ntab" data-p="ref"><span class="ic">📚</span>REF</div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dash" class="panel active">
   <div class="card" style="text-align:center">
     <div class="ring-wrap">
@@ -194,7 +185,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- QUIZ -->
 <div id="quiz" class="panel">
   <div id="quizSetup">
     <div class="card">
@@ -220,7 +210,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="card" style="background:rgba(124,92,252,.06);border-color:rgba(124,92,252,.3)">
       <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">⚡ NEW IN v3</div>
-      <div style="font-size:13px;color:var(--text2)">110 questions total · + All 10 control types · Deterrent/Directive/Compensating · Physical attacks · Crypto attacks · DR sites · BIA/MTD · EDR vs XDR · MDM/MAM · PAM/PIM · DLP · DNS filtering · Sandboxing · Vendor risk · SLA/MOU/NDA</div>
+      <div style="font-size:13px;color:var(--text2)">134 questions total · + All 10 control types · Deterrent/Directive/Compensating · Physical attacks · Crypto attacks · DR sites · BIA/MTD · EDR vs XDR · MDM/MAM · PAM/PIM · DLP · DNS filtering · Sandboxing · Vendor risk · SLA/MOU/NDA · TOCTOU · Fail open/closed · VM escape · RFID cloning · SDLC · SPF/DKIM/DMARC · CVSS · Asset lifecycle</div>
     </div>
     <button class="btn btn-primary" id="startBtn">START QUIZ →</button>
   </div>
@@ -262,7 +252,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- FLASHCARDS -->
 <div id="flash" class="panel">
   <div id="flashSelect">
     <div class="card"><div class="ctitle">CHOOSE DECK</div>
@@ -272,6 +261,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="deck-btn" data-deck="iam"><span class="deck-icon">👤</span><div class="deck-info"><div class="dn">IAM & ACCESS CONTROL</div><div class="dc">15 cards — auth, authz, AAA</div></div></button>
       <button class="deck-btn" data-deck="gapdeck" style="border-color:rgba(255,45,85,.5)"><span class="deck-icon">🎯</span><div class="deck-info"><div class="dn">OFFICIAL OBJECTIVES GAP FILL <span class="v2badge">NEW</span></div><div class="dc">22 cards — controls, resilience, BIA, vendor risk, physical attacks</div></div></button>
       <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)"><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
+      <button class="deck-btn" data-deck="datagov" style="border-color:rgba(255,193,7,.5)"><span class="deck-icon">🗂️</span><div class="deck-info"><div class="dn">DATA, RESILIENCY & GOV GAPS <span class="v2badge">NEW</span></div><div class="dc">18 cards — data classification, HA, email security, vuln mgmt</div></div></button>
     </div>
   </div>
   <div id="flashGame" style="display:none">
@@ -298,13 +288,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- ACRONYMS -->
 <div id="acr" class="panel">
   <div id="acrStart">
     <div class="card" style="text-align:center">
       <div class="ctitle">ACRONYM DRILL</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">90 acronyms including all SY0-701 modern + objective terms. Type the full name.</div>
-      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: BIA · MTD · PAM · PIM · XDR · MDM · MAM · STIG · CIS · SOC 2 + all v2 terms</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">99 acronyms including all SY0-701 modern + objective terms. Type the full name.</div>
+      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: TOCTOU · OAuth · SDLC · SPF · DKIM · DMARC · EOL · EOSL · UPS · HA + all v2/v3 terms</div>
       <button class="btn btn-primary" id="acrStartBtn">START DRILL →</button>
     </div>
   </div>
@@ -325,7 +314,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- PBQ -->
 <div id="pbq" class="panel">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -342,7 +330,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </div>
 </div>
 
-<!-- REFERENCE -->
 <div id="ref" class="panel">
   <div class="rsec-title">🎓 FREE STUDY</div>
   <a class="rlink" href="https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/" target="_blank">
@@ -483,10 +470,36 @@ const SCENARIOS=[
   ['Protect web apps from XSS/SQLi','WAF'],
   ['First step after breach detected','Identification → Containment'],
   ['Trust nothing, verify everything','Zero Trust'],
+  ['Doors must unlock during fire/power loss','Fail Open'],
+  ['Firewall must block everything on crash','Fail Closed'],
+  ['Gap between permission check and file use','TOCTOU'],
+  ['Malicious code escapes a VM to host','VM Escape'],
+  ['Attacker clones a badge/RFID signal','RFID Cloning'],
+  ['External researchers test app, controlled scope','Bug Bounty Program'],
+  ['Security built in from design to retirement','SDLC'],
+  ['Ongoing discovery of all devices on network','Enumeration'],
+  ['Board-level oversight of audit independence','Audit Committee'],
+  ['Devices trusted just by being on the LAN','Implicit Trust Zone'],
+  ['Third-party login without sharing password','OAuth'],
+  ['Enterprise browser-based SSO assertions','SAML'],
+  ['Internal directory user/password queries','LDAP'],
+  ['Classify data as public/private/confidential/restricted','Data Classification'],
+  ['Protect data while it is being processed','Encryption in Use'],
+  ['Spread servers across regions for fault tolerance','Geographic Dispersion'],
+  ['Distribute traffic across multiple servers','Load Balancing'],
+  ['Backup power during short outage','UPS'],
+  ['Backup power for extended outage','Generator'],
+  ['Verify sender domain authorized to send mail','SPF'],
+  ['Cryptographically sign outgoing email','DKIM'],
+  ['Tell receivers what to do with failed SPF/DKIM','DMARC'],
+  ['Score vulnerability severity 0-10','CVSS'],
+  ['Scan with valid login to see deeper','Credentialed Scan'],
+  ['Scan without login, outside view only','Non-Credentialed Scan'],
+  ['Track hardware from purchase to disposal','Asset Management / EOL'],
 ];
 document.getElementById('scenarioRef').innerHTML=SCENARIOS.map(([s,a])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span style="color:var(--text2)">${s}</span><span style="color:var(--green);font-weight:700;text-align:right;margin-left:8px">${a}</span></div>`).join('');
 
-// QUESTION BANK — 85 total
+// QUESTION BANK — 128 total
 const QB=[
   // Original 60
   {q:"An attacker sends millions of requests to crash a web server. What attack is this?",a:2,o:["MitM","SQL Injection","DoS","Phishing"],dom:"Threats",d:1,ex:"DoS overwhelms a system with traffic until unavailable. DDoS uses multiple sources."},
@@ -597,6 +610,39 @@ const QB=[
   {q:"DNS filtering as a security control primarily prevents:",a:1,o:["SQL injection attacks","Users from accessing malicious domains at the DNS resolution layer","Brute force authentication attacks","Data exfiltration via HTTPS"],dom:"Operations",d:2,ex:"DNS filtering blocks malicious domain resolution before connection is made. Stops malware from reaching C2 servers, phishing sites, and known malicious IPs at the network layer."},
   {q:"ICS/SCADA systems differ from standard IT security in that they prioritize:",a:3,o:["Confidentiality above all else","Integrity over availability","Patching as frequently as possible","Availability above confidentiality — downtime causes physical harm"],dom:"Architecture",d:3,ex:"ICS/SCADA control physical processes (power grids, water treatment). Availability = safety. CIA triad is inverted: Availability > Integrity > Confidentiality. Patches require extensive testing."},
   {q:"Application sandboxing runs untrusted code in an isolated environment to:",a:0,o:["Prevent it from affecting the host system if malicious","Speed up application performance","Encrypt application data at rest","Enable logging of all user activity"],dom:"Operations",d:2,ex:"Sandboxing isolates execution — if code is malicious it cannot affect the host OS or other applications. Used by email gateways, browsers, AV tools, and malware analysis platforms."},
+
+  // ── ROUND 2 GAP FILL: TOCTOU, fail-open/closed, VM escape, RFID, bug bounty, SDLC, enumeration, audit committee, implicit trust, OAuth/SAML/LDAP (10) ──────────────────────────────
+  {q:"A program checks a file's permissions, but before it opens the file an attacker swaps it with a malicious one. This vulnerability is:",a:1,o:["Buffer overflow","TOCTOU (Time-of-check to time-of-use)","Memory injection","Improper input validation"],dom:"Threats",d:3,ex:"TOCTOU exploits the gap between when a condition is checked and when the resource is actually used. The attacker swaps the resource during that window."},
+  {q:"A power outage causes a building's badge access system to go offline. Doors remain unlocked to allow safe evacuation. This failure mode is:",a:0,o:["Fail open","Fail closed","Implicit trust","Security zone misconfiguration"],dom:"Architecture",d:2,ex:"Fail open = system allows access when it loses power or crashes. Used for life-safety systems (fire doors). Fail closed = system locks down on failure (firewalls, sensitive vaults)."},
+  {q:"A firewall should be configured so that if it crashes, all traffic is blocked rather than allowed through. This is an example of:",a:2,o:["Fail open","Implicit trust","Fail closed","Deterrent control"],dom:"Architecture",d:2,ex:"Fail closed = on failure, the system denies everything. Correct default for security devices like firewalls, where allowing all traffic through on crash would be dangerous."},
+  {q:"Malicious code executed inside a virtual machine gains control of the underlying host system. This is:",a:3,o:["VM migration","VM cloning","Load balancing across hosts","VM escape"],dom:"Threats",d:3,ex:"VM escape occurs when code running inside a guest VM breaks out and compromises the hypervisor or host. A serious virtualization security concern."},
+  {q:"An attacker uses a device to copy the signal from a legitimate employee's access badge, then uses the copy to enter a secure area. This is:",a:1,o:["Shoulder surfing","RFID cloning","Tailgating","Dumpster diving"],dom:"Threats",d:2,ex:"RFID cloning captures and duplicates a badge/RFID tag's signal, letting the attacker impersonate the legitimate holder at access readers."},
+  {q:"An organization wants external security researchers to find vulnerabilities in its public web app under a controlled, legal framework. They should launch a:",a:2,o:["Vulnerability scan","Internal audit","Bug bounty program","Threat intelligence subscription"],dom:"Governance",d:2,ex:"A bug bounty program invites vetted outside researchers to test systems within a defined scope and rules, rewarding responsible disclosure of real vulnerabilities."},
+  {q:"An organization wants security built in starting at the design phase of a new application and maintained through deployment and retirement. This is best supported by:",a:1,o:["An acceptable use policy","SDLC (Software Development Lifecycle) with security integrated at each phase","A change management policy","A disaster recovery plan"],dom:"Governance",d:2,ex:"SDLC formalizes software creation into phases (planning, design, development, testing, deployment, maintenance) with security built into each one — not bolted on at the end."},
+  {q:"A company wants to continuously identify all devices connected to its network, including unauthorized or forgotten ones. The best supporting action is:",a:0,o:["Performing regular enumeration of devices across the network","Assigning asset tags during procurement only","Requiring users to acknowledge ownership of hardware","Classifying devices by data sensitivity"],dom:"Governance",d:2,ex:"Enumeration actively and repeatedly identifies what's actually connected to the network right now — catching rogue or unmanaged devices that initial tagging would miss."},
+  {q:"Which group is best positioned to oversee internal audit objectivity and ensure findings are escalated to executive leadership?",a:3,o:["The compliance department","The internal audit team itself","The risk management group","The audit committee"],dom:"Governance",d:2,ex:"The audit committee (typically a board subcommittee) provides independent oversight. The internal audit team cannot oversee itself without a conflict of interest."},
+  {q:"Systems on the same internal subnet are allowed to communicate freely without inspection, simply because they are on the internal network. This is an example of:",a:2,o:["Lack of centralized authentication","Incorrect identity mapping","Use of implicit trust zones","Policy enforcement point misconfiguration"],dom:"Architecture",d:2,ex:"Implicit trust zones assume devices are safe just because of network location, not identity. This is exactly what Zero Trust architecture is designed to eliminate."},
+  {q:"A mobile app lets users sign in with their existing Google account without sharing their Google password with the app. This relies on:",a:2,o:["SAML","LDAP","OAuth","Attestation"],dom:"Implementation",d:2,ex:"OAuth allows a user to grant a third-party app limited access using an existing account, without exposing the password. SAML is more common for enterprise browser SSO; LDAP queries internal directories."},
+
+  // ── ROUND 3 GAP FILL: data classification/states, HA/capacity/power, email auth, vuln mgmt depth, asset lifecycle (18) ──────────────────────────────
+  {q:"Data labeled so that only specific authorized roles can view it, distinct from data anyone in the company can see, is being organized by:",a:1,o:["Data sovereignty","Data classification","Data masking","Tokenization"],dom:"Governance",d:1,ex:"Data classification labels data by sensitivity — public, private, confidential, restricted — so handling rules can be applied based on the label."},
+  {q:"Data actively being processed in a system's RAM, as opposed to sitting on disk or moving across a network, is data:",a:2,o:["At rest","In transit","In use","In escrow"],dom:"Governance",d:2,ex:"Data in use = actively being processed (in RAM/CPU). Data at rest = stored on disk. Data in transit = moving across a network. Each state needs different protections."},
+  {q:"A company replaces real credit card numbers in its test database with realistic but fake values so developers can't see real customer data. This is:",a:3,o:["Encryption","Hashing","Classification","Data masking / tokenization"],dom:"Governance",d:2,ex:"Masking/tokenization substitutes sensitive values with realistic placeholders, protecting real data in non-production environments."},
+  {q:"A company replicates its data centers across multiple geographic regions so a regional disaster doesn't take down the whole business. This is:",a:0,o:["Geographic dispersion for fault tolerance","Load balancing for high availability","Platform diversity","RAID 1 mirroring"],dom:"Architecture",d:2,ex:"Geographic dispersion spreads infrastructure across regions to limit the blast radius of a localized outage or disaster."},
+  {q:"Distributing incoming traffic across multiple servers to prevent any single server from being overwhelmed is:",a:2,o:["Geographic dispersion","Capacity planning","Load balancing","Clustering"],dom:"Architecture",d:1,ex:"Load balancing spreads client requests across multiple servers for performance and high availability — distinct from geographic dispersion, which is about location, not traffic distribution."},
+  {q:"Forecasting future infrastructure needs based on expected growth, so systems don't run out of resources under load, is:",a:1,o:["High availability","Capacity planning","Power resiliency","Redundancy"],dom:"Architecture",d:2,ex:"Capacity planning anticipates future resource demand (storage, compute, bandwidth) to ensure systems scale before they're overwhelmed."},
+  {q:"A short battery backup that keeps servers running just long enough to shut down safely during a brief power outage is a:",a:0,o:["UPS (Uninterruptible Power Supply)","Generator","Dual power supply","PDU"],dom:"Architecture",d:1,ex:"A UPS provides short-term battery backup, bridging brief outages or giving time for an orderly shutdown. A generator is for extended outages."},
+  {q:"For an outage expected to last several hours, the best power resiliency option is:",a:1,o:["A UPS alone","A generator","A second network card","RAID 5"],dom:"Architecture",d:1,ex:"Generators provide extended power during long outages, unlike a UPS, which is only meant to bridge short gaps or allow time to switch to generator power."},
+  {q:"A DNS record that lists which mail servers are authorized to send email on behalf of a domain is:",a:0,o:["SPF (Sender Policy Framework)","DKIM","DMARC","MX record priority"],dom:"Implementation",d:2,ex:"SPF publishes which mail servers are authorized to send mail for a domain, helping receivers detect spoofed sender addresses."},
+  {q:"A cryptographic signature added to outgoing email that lets the receiving server verify the message wasn't altered in transit is:",a:1,o:["SPF","DKIM (DomainKeys Identified Mail)","DMARC","TLS"],dom:"Implementation",d:2,ex:"DKIM signs outgoing email with a private key; the receiver verifies it with the sender's public DNS-published key, confirming the message wasn't tampered with."},
+  {q:"A DNS policy that tells receiving mail servers what to do when a message fails both SPF and DKIM checks is:",a:2,o:["SPF","DKIM","DMARC (Domain-based Message Authentication, Reporting & Conformance)","MX record"],dom:"Implementation",d:2,ex:"DMARC builds on SPF and DKIM, instructing receivers to quarantine or reject messages that fail authentication, and provides reporting back to the domain owner."},
+  {q:"A vulnerability scoring system that rates flaws on a numeric scale from 0 to 10 based on exploitability and impact is:",a:1,o:["CVE","CVSS (Common Vulnerability Scoring System)","SCAP","STIG"],dom:"Operations",d:1,ex:"CVSS provides a standardized 0-10 severity score for vulnerabilities. CVE is just the identifier/catalog entry, not a score."},
+  {q:"A vulnerability scan performed WITH valid login credentials, allowing the scanner to see inside the system rather than just from the outside, is a:",a:0,o:["Credentialed scan","Non-credentialed scan","Passive scan","Active reconnaissance"],dom:"Operations",d:2,ex:"Credentialed scans log in to the target, revealing far more detail (missing patches, misconfigurations) than an external, non-credentialed scan."},
+  {q:"A vulnerability scan performed with NO login access, testing only what's visible from outside the system, is a:",a:1,o:["Credentialed scan","Non-credentialed scan","Internal scan","White box scan"],dom:"Operations",d:2,ex:"Non-credentialed scans test the system the way an outside attacker would see it, without any internal access — generally surfaces less detail than a credentialed scan."},
+  {q:"Tracking hardware and software assets from the time they are purchased to the time they are securely retired is called:",a:2,o:["Risk register maintenance","Data classification","Asset management","Vulnerability remediation"],dom:"Governance",d:1,ex:"Asset management covers the full lifecycle: procurement, inventory, assignment, ongoing tracking, and secure decommissioning/disposal (EOL/EOSL)."},
+  {q:"A vendor stops releasing security patches for a product version, even though the organization still uses it. This product has reached:",a:1,o:["MTD","End-of-life (EOL) / End-of-support (EOSL)","RPO","Risk transference"],dom:"Governance",d:1,ex:"EOL/EOSL means the vendor no longer supports or patches the product, creating ongoing unpatched vulnerability risk if the org keeps using it."},
+  {q:"Writing a script to automatically apply the same security configuration across hundreds of servers, instead of doing it manually one at a time, is an example of:",a:0,o:["Automation and orchestration","Capacity planning","Enumeration","Threat hunting"],dom:"Operations",d:1,ex:"Automation/orchestration use scripting to apply consistent actions at scale, reducing human error and response time across large environments."},
+  {q:"A security analyst correlates a brute-force pattern from authentication logs with a separate alert from an EDR tool, using a script to automatically open and assign an incident ticket. This combination of automated detection and response is best described as:",a:3,o:["Manual SIEM review","Static configuration","Capacity planning","Security orchestration"],dom:"Operations",d:2,ex:"Orchestration ties together multiple tools and data sources into a single automated workflow, distinct from a SIEM (which just collects/correlates) or a single static action."},
 ];
 
 // QUIZ ENGINE
@@ -702,7 +748,7 @@ const DECKS={
     {f:'ECC',b:'Elliptic Curve Cryptography. Same strength as RSA with smaller keys. Efficient for mobile/IoT.'},
     {f:'SHA-256',b:'Secure Hash Algorithm. 256-bit output. Current standard. MD5 and SHA-1 are deprecated.'},
     {f:'MD5',b:'128-bit hash. DEPRECATED. Vulnerable to collisions. Do not use for security purposes.'},
-    {f:'Digital Signature',b:'Hash encrypted with sender\'s PRIVATE key. Provides: Authentication + Integrity + Non-Repudiation. Does NOT provide Confidentiality.'},
+    {f:'Digital Signature',b:"Hash encrypted with sender's PRIVATE key. Provides: Authentication + Integrity + Non-Repudiation. Does NOT provide Confidentiality."},
     {f:'TLS',b:'Transport Layer Security. Replaced SSL. TLS 1.2/1.3 current. Encrypts HTTPS (port 443).'},
     {f:'Symmetric',b:'Same key encrypts and decrypts. Fast. AES is the standard. Challenge: secure key distribution.'},
     {f:'Asymmetric',b:'Public key encrypts, private decrypts (or vice versa for signing). Slower. RSA, ECC, DH.'},
@@ -737,7 +783,7 @@ const DECKS={
   ],
   iam:[
     {f:'Authentication',b:'Proving identity (who you are). First A in AAA. Password, biometric, token, certificate.'},
-    {f:'Authorization',b:'What you\'re allowed to do after auth. Second A in AAA. Based on roles, policies, labels.'},
+    {f:'Authorization',b:"What you're allowed to do after auth. Second A in AAA. Based on roles, policies, labels."},
     {f:'Accounting',b:'Logging what authenticated users did. Third A in AAA. Audit trails, forensics, billing.'},
     {f:'MFA',b:'Multi-Factor Auth. Requires 2+ DIFFERENT factor types: know, have, are, where, do.'},
     {f:'SSO',b:'Single Sign-On. Authenticate once, access many systems. SAML, OAuth, OIDC enable this.'},
@@ -760,7 +806,7 @@ const DECKS={
     {f:'Birthday Attack',b:'Exploits hash collision probability — find two inputs producing the same hash. Reason MD5/SHA-1 are deprecated. Defense: larger hash output (SHA-256+).'},
     {f:'Downgrade Attack',b:'Forces connection to use older, weaker protocol version. Ex: force TLS 1.0 instead of TLS 1.3. Defense: disable legacy protocol versions server-side.'},
     {f:'Dumpster Diving',b:'Physical attack — searching discarded trash for sensitive documents, credentials, hardware. Defense: shred all documents before disposal.'},
-    {f:'Shoulder Surfing',b:'Physical attack — observing someone\'s screen or keyboard directly. Defense: privacy screens, awareness training, positioning.'},
+    {f:'Shoulder Surfing',b:"Physical attack — observing someone's screen or keyboard directly. Defense: privacy screens, awareness training, positioning."},
     {f:'Skimming',b:'Hardware device captures payment card data from legitimate card readers. Found on ATMs, gas pumps. Defense: inspect readers, use chip+PIN, tap-to-pay.'},
     {f:'Hot Site',b:'DR site: fully operational, real-time data sync. Fastest recovery (minutes). Most expensive. Used for critical systems with near-zero RTO.'},
     {f:'Warm Site',b:'DR site: hardware ready, data needs restoration. Hours to recover. Moderate cost. Most common balance of cost vs recovery time.'},
@@ -789,14 +835,34 @@ const DECKS={
     {f:'DAST',b:'Dynamic Application Security Testing. Tests RUNNING application. Simulates attacker. Exam: "test live running app" → DAST.'},
     {f:'SCA',b:'Software Composition Analysis. Checks third-party/open-source libs for CVEs. Exam: "check open-source library vulnerabilities" → SCA.'},
     {f:'Supply Chain Attack',b:'Compromise a trusted vendor, update, or build tool to distribute malware (SolarWinds). Defense: verify integrity of all updates and third-party code.'},
-    {f:'OCSP',b:'Online Certificate Status Protocol. Real-time individual cert revocation check. Faster than CRL. Exam: "real-time cert validation" → OCSP.'},
+    {f:'OCSP',b:"Online Certificate Status Protocol. Real-time individual cert revocation check. Faster than CRL. Exam: 'real-time cert validation' → OCSP."},
     {f:'CRL',b:'Certificate Revocation List. Periodic downloadable list of revoked certs (can be stale). OCSP is real-time alternative.'},
-    {f:'RA',b:'Registration Authority. VERIFIES requester identity before a cert is issued. CA issues the cert. Exam: "who verifies identity before cert?" → RA.'},
+    {f:'RA',b:"Registration Authority. VERIFIES requester identity before a cert is issued. CA issues the cert. Exam: 'who verifies identity before cert?' → RA."},
     {f:'Lateral Movement',b:'ATT&CK phase: attacker pivots between systems after initial compromise. Defense: segmentation, microsegmentation, Zero Trust.'},
     {f:'Persistence',b:'ATT&CK phase: maintaining access through reboots. Registry run keys, scheduled tasks, backdoors. Hard to detect.'},
     {f:'Exfiltration',b:'ATT&CK phase: data leaving the org. IOC: off-hours high-volume outbound, DNS tunneling, HTTPS to unknown IPs.'},
     {f:'C2 Beaconing',b:'Malware regularly checking in with Command & Control server. Pattern: regular intervals → same IP. Detected by SIEM correlation rules.'},
     {f:'RPO',b:'Recovery Point Objective. Max data loss tolerated. "How much data can we lose?" Different from RTO (max downtime). Low RPO = more frequent backups.'},
+  ],
+  datagov:[
+    {f:'TOCTOU',b:"Time-of-check to time-of-use. The resource is checked (e.g. permissions verified), then swapped with something malicious before it's actually used. Exploits the timing gap."},
+    {f:'Fail Open vs Fail Closed',b:'Fail open = system unlocks/allows on failure (fire doors — safety first). Fail closed = system locks/denies on failure (firewalls, vaults — security first). Exam: read whether the scenario is about life safety or data security.'},
+    {f:'VM Escape',b:'Malicious code inside a guest VM breaks out and takes control of the host/hypervisor. Different from VM migration (moving a VM) or VM cloning (copying one).'},
+    {f:'RFID Cloning',b:'Attacker copies the signal from a legitimate RFID badge/tag, then replays it on another device to impersonate the badge holder at access readers.'},
+    {f:'Bug Bounty Program',b:'Structured program inviting external researchers to find vulnerabilities under defined scope/rules, with rewards for responsible disclosure. Controlled alternative to uncontrolled "white hat" testing.'},
+    {f:'SDLC',b:'Software Development Lifecycle. Formal phases (plan, design, develop, test, deploy, maintain) with security integrated throughout — not bolted on at the end. Exam: "security from the start of development" → SDLC.'},
+    {f:'Enumeration',b:'Actively and repeatedly identifying every device connected to the network — including rogue/unmanaged ones. Different from one-time asset tagging at procurement.'},
+    {f:'Audit Committee',b:'Board-level subcommittee that oversees internal audit independence and ensures findings reach executive leadership. The internal audit team cannot oversee itself (conflict of interest).'},
+    {f:'Implicit Trust Zone',b:'Devices/systems trusted simply because of where they sit on the network (e.g. "internal" = safe), without verifying identity. The exact failure pattern Zero Trust is built to eliminate.'},
+    {f:'OAuth vs SAML vs LDAP',b:'OAuth = third-party app login without sharing your password (e.g. "Sign in with Google"). SAML = enterprise browser-based SSO assertions. LDAP = querying an internal directory service (port 389/636).'},
+    {f:'Data Classification',b:'Labeling data by sensitivity: public, private/sensitive, confidential, restricted. Determines who can access it and how it must be handled.'},
+    {f:'Data States',b:'At rest = stored on disk. In transit = moving across a network (encrypt with TLS). In use = actively being processed in memory (hardest to protect — needs encryption-in-use/secure enclaves).'},
+    {f:'Geographic Dispersion vs Load Balancing',b:'Geographic dispersion = spreading infrastructure across regions for disaster fault tolerance. Load balancing = spreading traffic across servers for performance/availability. Different problems.'},
+    {f:'UPS vs Generator',b:'UPS = short-term battery backup, bridges brief outages or buys time to shut down safely. Generator = sustains power through extended outages. Exam: match outage duration to the tool.'},
+    {f:'SPF / DKIM / DMARC',b:"SPF = lists authorized sending mail servers for a domain. DKIM = cryptographically signs outgoing mail to prove it wasn't altered. DMARC = tells receivers what to do when SPF/DKIM fail, and reports back."},
+    {f:'CVSS',b:'Common Vulnerability Scoring System. Numeric 0-10 severity score for a vulnerability. CVE is just the catalog ID — CVSS is the severity rating.'},
+    {f:'Credentialed vs Non-Credentialed Scan',b:"Credentialed = scanner logs in, sees deep configuration/patch detail. Non-credentialed = scanner has no login, sees only what's visible externally — like an outside attacker would."},
+    {f:'Asset Management / EOL',b:'Tracking hardware/software from purchase through secure disposal. EOL/EOSL = vendor stops releasing patches for that version, creating ongoing unpatched risk if still in use.'},
   ],
 };
 
@@ -815,7 +881,7 @@ function flipCard(){document.getElementById('flashCard').classList.add('flipped'
 function flashMark(knew){if(knew){fKnown++;fUnknown.splice(fIdx,1);}else fIdx++;renderFlash();}
 function endFlash(){document.getElementById('flashGame').style.display='none';document.getElementById('flashSelect').style.display='block';}
 
-// ACRONYMS — 76 total
+// ACRONYMS — 100 total
 const ACRS=[
   {a:'AAA',d:'Authentication, Authorization, Accounting'},
   {a:'ACL',d:'Access Control List'},
@@ -906,6 +972,17 @@ const ACRS=[
   {a:'SOC2',d:'System and Organization Controls (audit framework)'},
   {a:'STIG',d:'Security Technical Implementation Guide'},
   {a:'XDR',d:'Extended Detection and Response'},
+  // ── NEW ACRONYMS FROM GAP AUDIT ──────────────────────────────
+  {a:'TOCTOU',d:'Time-Of-Check to Time-Of-Use'},
+  {a:'OAuth',d:'Open Authorization'},
+  {a:'SDLC',d:'Software Development Life Cycle'},
+  {a:'SPF',d:'Sender Policy Framework'},
+  {a:'DKIM',d:'DomainKeys Identified Mail'},
+  {a:'DMARC',d:'Domain-based Message Authentication, Reporting and Conformance'},
+  {a:'EOL',d:'End of Life'},
+  {a:'EOSL',d:'End of Service Life'},
+  {a:'UPS',d:'Uninterruptible Power Supply'},
+  {a:'HA',d:'High Availability'},
 ];
 
 let aQ=[],aIdx=0,aRight=0,aWrong=0;
@@ -929,7 +1006,7 @@ function checkAcr(){
 }
 function skipAcr(){if(aIdx>=aQ.length)return;document.getElementById('acrFb').textContent='→ '+aQ[aIdx].d;document.getElementById('acrFb').style.color='var(--yellow)';aWrong++;aIdx++;setTimeout(renderAcr,1300);}
 
-// PBQ ENGINE — 9 scenarios
+// PBQ ENGINE — 15 scenarios
 const PBQS=[
   {type:'order',title:'Incident Response Phases',
    desc:'Tap items in the correct order (PICERL):',
@@ -983,6 +1060,23 @@ const PBQS=[
      {n:'Skimming',c:'Physical'},
      {n:'Rainbow Table',c:'Cryptographic'},
    ]},
+  {type:'classify',title:'Fail Open or Fail Closed',
+   desc:"Classify each system's correct failure behavior:",
+   cats:['Fail Open','Fail Closed'],
+   items:[
+     {n:'Fire exit door lock',c:'Fail Open'},
+     {n:'Perimeter firewall',c:'Fail Closed'},
+     {n:'Emergency stairwell access control',c:'Fail Open'},
+     {n:'Bank vault lock',c:'Fail Closed'},
+     {n:'Data center fire suppression door release',c:'Fail Open'},
+     {n:'VPN concentrator',c:'Fail Closed'},
+   ]},
+  {type:'match',title:'Identity Protocol Matching',
+   desc:'Match each protocol to its primary use case:',
+   pairs:[{l:'OAuth',r:'Third-party login without sharing password'},{l:'SAML',r:'Enterprise browser-based SSO'},{l:'LDAP',r:'Querying an internal directory'},{l:'Kerberos',r:'Ticket-based AD authentication'}]},
+  {type:'match',title:'Email Authentication Matching',
+   desc:'Match each email security mechanism to its function:',
+   pairs:[{l:'SPF',r:'Lists authorized sending mail servers'},{l:'DKIM',r:'Signs mail to prove it was not altered'},{l:'DMARC',r:'Tells receivers what to do on auth failure'}]},
 ];
 
 let pbqIdx=0,pbqOrder=[],pbqMatchSel=null,pbqMatchAns={},pbqClassAns={};
