@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SEC+ COMMAND CENTER v4</title>
+<title>SEC+ COMMAND CENTER v4.0 Final</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#05070f;--surface:#090c18;--card:#0e1220;--card2:#141828;--border:#1a2035;--border2:#242d4a;--accent:#00e5ff;--red:#ff2d55;--green:#00ff9d;--yellow:#ffc107;--purple:#7c5cfc;--orange:#ff7d3b;--text:#e8eaf2;--text2:#8892b0;--text3:#3d4a6b;}
@@ -118,7 +118,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .rtag{font-size:9px;font-family:'Share Tech Mono',monospace;padding:2px 6px;border-radius:4px;margin-left:auto;flex-shrink:0;}
 .rtag-free{background:rgba(0,255,157,.15);color:var(--green);}
 .rtag-key{background:rgba(255,193,7,.15);color:var(--yellow);}
-.rtag-paid{background:rgba(124,92,252,.15);color:var(--purple);}
 .port-table{width:100%;border-collapse:collapse;font-size:12px;}
 .port-table th{background:var(--card2);color:var(--text3);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:8px 10px;text-align:left;}
 .port-table td{padding:8px 10px;border-top:1px solid var(--border);}
@@ -134,7 +133,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <div class="hdr">
   <div>
-    <div class="logo">SEC+ <span class="v2badge">v4</span></div>
+    <div class="logo">SEC+ <span class="v2badge">v4.0 FINAL</span></div>
     <div class="logo-sub">SY0-701 COMMAND CENTER</div>
   </div>
   <div class="hstats">
@@ -320,8 +319,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div id="acrStart">
     <div class="card" style="text-align:center">
       <div class="ctitle">ACRONYM DRILL</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">99 acronyms including all SY0-701 modern + objective terms. Type the full name.</div>
-      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: TOCTOU · OAuth · SDLC · SPF · DKIM · DMARC · EOL · EOSL · UPS · HA + all v2/v3 terms</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">104 acronyms including all SY0-701 modern + objective terms. Type the full name.</div>
+      <div style="font-size:12px;color:var(--purple);margin-bottom:16px">NEW: 802.1X · EAP · MTTR · MTBF · RAID + all v2/v3/v4 terms</div>
       <button class="btn btn-primary" id="acrStartBtn">START DRILL →</button>
     </div>
   </div>
@@ -527,7 +526,7 @@ const SCENARIOS=[
 ];
 document.getElementById('scenarioRef').innerHTML=SCENARIOS.map(([s,a])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span style="color:var(--text2)">${s}</span><span style="color:var(--green);font-weight:700;text-align:right;margin-left:8px">${a}</span></div>`).join('');
 
-// QUESTION BANK — 128 total
+// QUESTION BANK — 169 total
 const QB=[
   // Original 60
   {q:"An attacker sends millions of requests to crash a web server. What attack is this?",a:2,o:["MitM","SQL Injection","DoS","Phishing"],dom:"Threats",d:1,ex:"DoS overwhelms a system with traffic until unavailable. DDoS uses multiple sources."},
@@ -581,7 +580,7 @@ const QB=[
   {q:"Risk acceptance means:",a:2,o:["Fixing the vulnerability","Transferring risk to an insurer","Acknowledging and choosing not to mitigate the risk","Eliminating it entirely"],dom:"Governance",d:1,ex:"Risk responses: Accept, Avoid, Transfer, Mitigate. Accept = know the risk, live with it."},
   {q:"A policy differs from a procedure in that a policy:",a:1,o:["Is more technical","States what must be done, while a procedure explains how","Is optional","Is written by IT only"],dom:"Governance",d:2,ex:"Policy = what. Procedure = how. Standard = specific requirement. Guideline = recommendation."},
   {q:"Multi-factor authentication requires:",a:2,o:["Two passwords","Biometric only","Two or more different factor types","A complex password policy"],dom:"Governance",d:1,ex:"MFA factors: something you know, have, are, where you are, or do (behavior)."},
-  {q:"A penetration test with no prior knowledge is called:",a:1,o:["Gray box","Black box","White box","Crystal box"],dom:"Governance",d:2,ex:"Black box = zero prior knowledge. White box = full knowledge. Gray = partial."},
+  {q:"A colleague uses the older term 'black box' to describe a penetration test where the tester has zero prior knowledge of the target. What is the correct CURRENT SY0-701 term for this same test type?",a:1,o:["Partially known environment","Unknown environment","Known environment","Crystal box"],dom:"Governance",d:2,ex:"SY0-701 replaced 'black box' with 'unknown environment' — the tester has zero prior knowledge, simulating a real external attacker. The underlying concept is identical; only the official exam terminology changed.",we:"Partially known environment is the current replacement for 'gray box' (some information provided) — a different test type than the one described. Known environment replaced 'white box' (full access/knowledge) — the opposite scenario. 'Crystal box' is not real penetration-testing terminology at any point."},
   {q:"Authentication is:",a:0,o:["Verifying who you are","Deciding what you can access","Logging what you did","Encrypting your data"],dom:"Governance",d:1,ex:"AAA: Authentication (who), Authorization (what), Accounting (what you did)."},
   {q:"Which access control model is most common in enterprise environments?",a:1,o:["DAC","RBAC","MAC","ABAC"],dom:"Governance",d:2,ex:"RBAC assigns permissions to roles, then users to roles. Scalable and auditable."},
   // NEW SY0-701 MODERN QUESTIONS (25)
@@ -998,7 +997,7 @@ function flipCard(){document.getElementById('flashCard').classList.add('flipped'
 function flashMark(knew){if(knew){fKnown++;fUnknown.splice(fIdx,1);}else fIdx++;renderFlash();}
 function endFlash(){document.getElementById('flashGame').style.display='none';document.getElementById('flashSelect').style.display='block';}
 
-// ACRONYMS — 100 total
+// ACRONYMS — 104 total
 const ACRS=[
   {a:'AAA',d:'Authentication, Authorization, Accounting'},
   {a:'ACL',d:'Access Control List'},
@@ -1082,7 +1081,7 @@ const ACRS=[
   {a:'MAM',d:'Mobile Application Management'},
   {a:'MDM',d:'Mobile Device Management'},
   {a:'MSA',d:'Master Service Agreement'},
-  {a:'MTD2',d:'Maximum Tolerable Downtime'},
+  {a:'MTD',d:'Maximum Tolerable Downtime'},
   {a:'NDA',d:'Non-Disclosure Agreement'},
   {a:'PAM',d:'Privileged Access Management'},
   {a:'PIM',d:'Privileged Identity Management'},
@@ -1129,7 +1128,7 @@ function checkAcr(){
 }
 function skipAcr(){if(aIdx>=aQ.length)return;document.getElementById('acrFb').textContent='→ '+aQ[aIdx].d;document.getElementById('acrFb').style.color='var(--yellow)';aWrong++;aIdx++;setTimeout(renderAcr,1300);}
 
-// PBQ ENGINE — 15 scenarios
+// PBQ ENGINE — 24 scenarios
 const PBQS=[
   {type:'order',title:'Incident Response Phases',
    desc:'Tap items in the correct order (PICERL):',
@@ -1381,8 +1380,9 @@ function examShowReview(){
 }
 function examJumpTo(i){examIdx=i;document.getElementById('examReview').style.display='none';document.getElementById('quizGame').style.display='block';examRenderQ();}
 function examSubmit(){
-  if(examTimerHandle)clearInterval(examTimerHandle);
+  if(!examActive)return;
   examActive=false;
+  if(examTimerHandle)clearInterval(examTimerHandle);
   let correct=0;const domTally={};DOMS.forEach(d=>domTally[d]={q:0,c:0});
   examQueue.forEach((q,i)=>{
     const ans=examAnswers[i];let ok=false;
