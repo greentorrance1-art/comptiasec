@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>SEC+ COMMAND CENTER v2</title>
+<title>SEC+ COMMAND CENTER v4</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#05070f;--surface:#090c18;--card:#0e1220;--card2:#141828;--border:#1a2035;--border2:#242d4a;--accent:#00e5ff;--red:#ff2d55;--green:#00ff9d;--yellow:#ffc107;--purple:#7c5cfc;--orange:#ff7d3b;--text:#e8eaf2;--text2:#8892b0;--text3:#3d4a6b;}
@@ -134,7 +134,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <div class="hdr">
   <div>
-    <div class="logo">SEC+ <span class="v2badge">v3</span></div>
+    <div class="logo">SEC+ <span class="v2badge">v4</span></div>
     <div class="logo-sub">SY0-701 COMMAND CENTER</div>
   </div>
   <div class="hstats">
@@ -196,7 +196,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <button class="mbtn" data-m="modern">☁️ MODERN</button>
         <button class="mbtn" data-m="gapfill">🎯 GAP FILL</button>
         <button class="mbtn" data-m="rapid">⚡ RAPID</button>
+        <button class="mbtn" data-m="examsim">⏱️ EXAM SIM</button>
       </div>
+      <div id="examSimInfo" style="display:none;font-size:12px;color:var(--text2);margin-top:10px;background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.25);border-radius:9px;padding:10px">90 questions · 90-minute countdown · no feedback until you finish · flag questions for review · full review screen before final submit — mirrors the real SY0-701 exam experience.</div>
       <div id="domainWrap" style="display:none">
         <div class="ctitle" style="margin-top:8px">PICK DOMAIN</div>
         <div style="display:flex;flex-wrap:wrap">
@@ -212,10 +214,15 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:2px;margin-bottom:6px">⚡ NEW IN v3</div>
       <div style="font-size:13px;color:var(--text2)">134 questions total · + All 10 control types · Deterrent/Directive/Compensating · Physical attacks · Crypto attacks · DR sites · BIA/MTD · EDR vs XDR · MDM/MAM · PAM/PIM · DLP · DNS filtering · Sandboxing · Vendor risk · SLA/MOU/NDA · TOCTOU · Fail open/closed · VM escape · RFID cloning · SDLC · SPF/DKIM/DMARC · CVSS · Asset lifecycle</div>
     </div>
+    <div class="card" style="background:rgba(0,255,157,.06);border-color:rgba(0,255,157,.3)">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:6px">⚡ NEW IN v4</div>
+      <div style="font-size:13px;color:var(--text2)">169 questions total · Multi-select (choose 2/3) support · Full Exam Simulation Mode (90Q, 90-min timer, flag & review) · RAID 0/1/5/10 · Change management & backout plans · Buffer overflow & memory injection · Jump/proxy servers · 802.1X/EAP/WPA3 · Media sanitization · MTTR/MTBF · Known/partially known/unknown environment pen test terms · Zero Trust Policy Engine/PA/PEP/adaptive identity · SLE/ALE/ARO calculations · "Why the others are wrong" on hardest questions · Log-reading & firewall ACL rule-ordering PBQs</div>
+    </div>
     <button class="btn btn-primary" id="startBtn">START QUIZ →</button>
   </div>
   <div id="quizGame" style="display:none">
     <div class="ckpt-banner" id="ckptBanner"></div>
+    <div id="examTimerBar" style="display:none;text-align:center;font-family:'Share Tech Mono',monospace;font-size:20px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px"></div>
     <div class="qprog-track"><div class="qprog-fill" id="qProgFill" style="width:0%"></div></div>
     <div class="qmeta">
       <span class="qcat" id="qCat">DOMAIN</span>
@@ -228,6 +235,26 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="qfeedback" id="qFeedback" style="display:none"></div>
     </div>
     <button class="btn btn-primary" id="qNextBtn" style="display:none;margin-top:4px">NEXT →</button>
+    <button class="btn btn-primary" id="qSubmitMultiBtn" style="display:none;margin-top:4px">SUBMIT ANSWER</button>
+    <div id="examControls" style="display:none;gap:8px;margin-top:4px">
+      <button class="btn btn-sec btn-sm" style="flex:1" id="examFlagBtn" onclick="examToggleFlag()">🚩 FLAG</button>
+      <button class="btn btn-sec btn-sm" style="flex:1" onclick="examGoPrev()">← PREV</button>
+      <button class="btn btn-primary btn-sm" style="flex:1" onclick="examGoNext()">NEXT →</button>
+    </div>
+    <button class="btn btn-sec" id="examReviewBtn" style="display:none;margin-top:8px" onclick="examShowReview()">📋 REVIEW / SUBMIT EXAM</button>
+  </div>
+  <div id="examReview" style="display:none">
+    <div class="card">
+      <div class="ctitle">EXAM REVIEW — <span id="examReviewSummary" style="color:var(--text2);text-transform:none;letter-spacing:0"></span></div>
+      <div id="examReviewGrid" style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px"></div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;font-size:11px;color:var(--text3);flex-wrap:wrap">
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:3px;margin-right:4px"></span>Answered</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--yellow);border-radius:3px;margin-right:4px"></span>Flagged</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--border2);border-radius:3px;margin-right:4px"></span>Unanswered</span>
+      </div>
+      <button class="btn btn-sec btn-sm" style="margin-bottom:8px" onclick="examBackToExam()">← BACK TO EXAM</button>
+      <button class="btn btn-primary" onclick="examSubmit()">SUBMIT EXAM →</button>
+    </div>
   </div>
   <div id="quizScore" style="display:none;text-align:center">
     <div class="card">
@@ -262,6 +289,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="deck-btn" data-deck="gapdeck" style="border-color:rgba(255,45,85,.5)"><span class="deck-icon">🎯</span><div class="deck-info"><div class="dn">OFFICIAL OBJECTIVES GAP FILL <span class="v2badge">NEW</span></div><div class="dc">22 cards — controls, resilience, BIA, vendor risk, physical attacks</div></div></button>
       <button class="deck-btn" data-deck="modern" style="border-color:rgba(124,92,252,.5)"><span class="deck-icon">☁️</span><div class="deck-info"><div class="dn">MODERN CLOUD + SY0-701 <span class="v2badge">NEW</span></div><div class="dc">20 cards — CASB, SASE, SOAR, ATT&CK, DevSecOps</div></div></button>
       <button class="deck-btn" data-deck="datagov" style="border-color:rgba(255,193,7,.5)"><span class="deck-icon">🗂️</span><div class="deck-info"><div class="dn">DATA, RESILIENCY & GOV GAPS <span class="v2badge">NEW</span></div><div class="dc">18 cards — data classification, HA, email security, vuln mgmt</div></div></button>
+      <button class="deck-btn" data-deck="opsgap" style="border-color:rgba(0,255,157,.5)"><span class="deck-icon">🛠️</span><div class="deck-info"><div class="dn">OPS & ARCHITECTURE GAP FILL v4 <span class="v2badge">NEW</span></div><div class="dc">20 cards — RAID, change mgmt, jump/proxy, 802.1X, Zero Trust internals, risk math</div></div></button>
     </div>
   </div>
   <div id="flashGame" style="display:none">
@@ -512,7 +540,7 @@ const QB=[
   {q:"An attacker calls pretending to be IT support. This is:",a:0,o:["Vishing","Phishing","Smishing","Whaling"],dom:"Threats",d:1,ex:"Vishing = voice phishing. Phone-based social engineering to extract credentials."},
   {q:"Which attack specifically targets C-suite executives with personalized phishing?",a:2,o:["Spear phishing","Vishing","Whaling","Smishing"],dom:"Threats",d:2,ex:"Whaling = exec targeting. Spear phishing = any specific individual. Phishing = mass scale."},
   {q:"A zero-day vulnerability is:",a:1,o:["A bug fixed immediately","A flaw with no patch available yet","A vulnerability exploited daily","An old unpatched system"],dom:"Threats",d:2,ex:"Zero-day = unknown to vendor, no patch exists. Extremely dangerous and valuable."},
-  {q:"An attacker compromises a website frequently visited by targets to deliver malware. This is:",a:3,o:["Spear phishing","Vishing","Drive-by download","Watering hole"],dom:"Threats",d:3,ex:"Watering hole attacks compromise sites the target group visits, infecting them passively."},
+  {q:"An attacker compromises a website frequently visited by targets to deliver malware. This is:",a:3,o:["Spear phishing","Vishing","Drive-by download","Watering hole"],dom:"Threats",d:3,ex:"Watering hole attacks compromise sites the target group visits, infecting them passively.",we:"Spear phishing targets a specific individual directly, not a shared site. Vishing is voice-based — no website involved. Drive-by download describes the malware delivery mechanism itself, not the strategy of compromising a frequently-visited site first; a watering hole attack often uses a drive-by download to actually deliver its payload."},
   {q:"What is a replay attack?",a:0,o:["Capturing and retransmitting valid data to gain unauthorized access","Flooding a target with traffic","Injecting SQL commands","Spoofing DNS responses"],dom:"Threats",d:2,ex:"Replay attacks retransmit captured valid auth packets. Defense: timestamps, nonces."},
   {q:"Which malware self-replicates across networks without any user interaction?",a:2,o:["Trojan","Virus","Worm","Spyware"],dom:"Threats",d:1,ex:"Worms self-propagate. Viruses need a host file. Trojans disguise as legitimate software."},
   {q:"SQL injection is most effective against applications that fail to:",a:3,o:["Use HTTPS","Use a firewall","Implement MFA","Sanitize/validate user input"],dom:"Threats",d:2,ex:"SQL injection exploits insufficient input validation, allowing DB query manipulation."},
@@ -578,7 +606,7 @@ const QB=[
   {q:"Which ATT&CK phase involves an attacker moving between systems after initial compromise?",a:0,o:["Lateral Movement","Initial Access","Reconnaissance","Collection"],dom:"Threats",d:2,ex:"Lateral movement = pivoting between internal systems. Segmentation limits this."},
   {q:"An attacker establishes registry keys and scheduled tasks to survive reboots. This phase is:",a:2,o:["Initial Access","Execution","Persistence","Exfiltration"],dom:"Threats",d:2,ex:"Persistence = maintaining access through reboots. Registry run keys, scheduled tasks, backdoors."},
   {q:"Large volumes of sensitive data leaving the network during off-hours most likely indicates:",a:1,o:["DDoS preparation","Data exfiltration","Lateral movement","Privilege escalation"],dom:"Operations",d:2,ex:"Off-hours high-volume outbound transfer is a classic exfiltration IOC. Monitor with SIEM."},
-  {q:"Risk appetite differs from risk tolerance in that risk appetite:",a:0,o:["Is the strategic level of risk the org WANTS to accept","Is the maximum risk the org CAN handle","Is always lower than tolerance","Is defined per-system only"],dom:"Governance",d:3,ex:"Appetite = strategic desire. Tolerance = operational boundary. Appetite drives strategy; tolerance defines limits."},
+  {q:"Risk appetite differs from risk tolerance in that risk appetite:",a:0,o:["Is the strategic level of risk the org WANTS to accept","Is the maximum risk the org CAN handle","Is always lower than tolerance","Is defined per-system only"],dom:"Governance",d:3,ex:"Appetite = strategic desire. Tolerance = operational boundary. Appetite drives strategy; tolerance defines limits.",we:"Tolerance, not appetite, is the operational boundary an org CAN handle — the two are commonly reversed as an exam trap. Appetite isn't inherently lower than tolerance; they measure different things (desired vs. maximum), so neither is reliably 'lower.' Appetite is typically set at the strategic/enterprise level, not per-system."},
   {q:"A company stores EU customer data on US servers. Which regulation primarily applies?",a:2,o:["HIPAA","PCI DSS","GDPR","SOX"],dom:"Governance",d:2,ex:"GDPR applies to ANY organization processing personal data of EU residents regardless of location."},
   {q:"CSPM tools primarily detect:",a:3,o:["Network intrusions","Endpoint malware","API vulnerabilities","Cloud misconfigurations like open S3 buckets or excessive IAM permissions"],dom:"Architecture",d:2,ex:"CSPM continuously monitors cloud environments for misconfiguration and compliance violations."},
   {q:"A developer uploads credentials to a public GitHub repo. This creates which risk?",a:2,o:["Physical security breach","Availability attack","Credential exposure / supply chain risk","DNS poisoning"],dom:"Threats",d:2,ex:"Exposed credentials in public repos are immediately scraped by attackers. Supply chain / credential exposure risk."},
@@ -589,7 +617,7 @@ const QB=[
   {q:"An org cannot patch a critical legacy system. They add a firewall rule to block attack vectors. This is:",a:2,o:["Preventive control","Detective control","Compensating control","Corrective control"],dom:"Governance",d:2,ex:"Compensating controls provide alternative protection when the primary control cannot be implemented. Common with legacy systems that cannot be patched."},
   {q:"A security camera is BEST classified as which two control types?",a:0,o:["Detective + Physical","Preventive + Technical","Corrective + Operational","Directive + Managerial"],dom:"Threats",d:2,ex:"Security camera: Detective (records/identifies incidents) + Physical (tangible hardware). Can also be Deterrent. CompTIA tests knowing controls can have multiple classifications."},
   {q:"Risk assessments conducted by management belong to which control implementation type?",a:2,o:["Technical","Operational","Managerial","Physical"],dom:"Governance",d:2,ex:"Managerial controls = administrative oversight tools. Risk assessments, audits, security policies fall here. Operational = people/processes. Technical = software/hardware."},
-  {q:"A birthday attack exploits which cryptographic weakness?",a:1,o:["Weak key length","Hash collision probability","Poor IV generation","Improper certificate validation"],dom:"Implementation",d:3,ex:"Birthday attacks exploit the mathematical probability of hash collisions. Two different inputs producing the same hash. Defense: use larger hash outputs (SHA-256 or higher)."},
+  {q:"A birthday attack exploits which cryptographic weakness?",a:1,o:["Weak key length","Hash collision probability","Poor IV generation","Improper certificate validation"],dom:"Implementation",d:3,ex:"Birthday attacks exploit the mathematical probability of hash collisions. Two different inputs producing the same hash. Defense: use larger hash outputs (SHA-256 or higher).",we:"Weak key length is what brute-force attacks exploit, not birthday attacks — key length and hash output size are different properties. Poor IV generation weakens stream/block cipher modes (e.g. IV reuse), unrelated to hash collisions. Improper certificate validation enables MitM-style attacks, not collision math."},
   {q:"An attacker forces a HTTPS connection to negotiate TLS 1.0 instead of TLS 1.3. This is:",a:3,o:["Birthday attack","Replay attack","Rainbow table attack","Downgrade attack"],dom:"Threats",d:2,ex:"Downgrade attacks force systems to use older, weaker protocol versions. Defense: disable legacy TLS versions on servers. Require TLS 1.2 minimum."},
   {q:"An attacker searches through discarded documents in trash bins to gather sensitive information. This is:",a:2,o:["Tailgating","Piggybacking","Dumpster diving","Shoulder surfing"],dom:"Threats",d:1,ex:"Dumpster diving = searching physical trash for sensitive data. Defense: shredding all documents before disposal. Physical attack vector."},
   {q:"An observer watches a user type their PIN at an ATM from a nearby position. This is:",a:1,o:["Skimming","Shoulder surfing","Tailgating","Vishing"],dom:"Threats",d:1,ex:"Shoulder surfing = directly observing someone's screen or keyboard input. Defense: privacy screens, awareness. Low-tech but effective physical attack."},
@@ -604,18 +632,18 @@ const QB=[
   {q:"CIS Benchmarks and STIG are examples of:",a:0,o:["Secure configuration baselines for system hardening","Incident response frameworks","Vulnerability scanning tools","Risk assessment methodologies"],dom:"Operations",d:2,ex:"CIS Benchmarks (Center for Internet Security) and STIG (Security Technical Implementation Guide, DoD) define hardened configuration standards for OS, apps, and network devices."},
   {q:"Which control prevents sensitive data like SSNs from being emailed outside the organization?",a:2,o:["Firewall","IDS","DLP — Data Loss Prevention","NAC"],dom:"Operations",d:2,ex:"DLP (Data Loss Prevention) monitors and blocks unauthorized transmission of sensitive data — via email, USB, cloud upload. Classifies data and enforces policy based on content."},
   {q:"Which process formally identifies critical business functions and the impact of their disruption?",a:1,o:["Risk register","Business Impact Analysis (BIA)","Disaster Recovery Plan","Vulnerability assessment"],dom:"Governance",d:2,ex:"BIA identifies: which functions are critical, what's the financial/operational impact of losing them, what are the MTD/RTO/RPO requirements. BIA feeds into the DR/BCP planning."},
-  {q:"MTD (Maximum Tolerable Downtime) relates to RTO in that:",a:3,o:["They are the same measurement","MTD is always longer than RPO","RTO defines maximum data loss","RTO must always be shorter than MTD"],dom:"Governance",d:3,ex:"MTD = absolute limit an org can survive outage. RTO = target recovery time. RTO must be less than MTD or recovery won't save the org. BIA determines both values."},
+  {q:"MTD (Maximum Tolerable Downtime) relates to RTO in that:",a:3,o:["They are the same measurement","MTD is always longer than RPO","RTO defines maximum data loss","RTO must always be shorter than MTD"],dom:"Governance",d:3,ex:"MTD = absolute limit an org can survive outage. RTO = target recovery time. RTO must be less than MTD or recovery won't save the org. BIA determines both values.",we:"MTD and RTO are related but distinct measurements, not the same thing — this is the most common trap in this question style. Comparing MTD to RPO mixes up downtime with data loss, two different metrics. RTO defines acceptable downtime, not data loss — that's RPO's job."},
   {q:"A contract establishing legally enforceable uptime and performance standards between customer and vendor is:",a:0,o:["SLA — Service Level Agreement","MOU — Memorandum of Understanding","NDA — Non-Disclosure Agreement","BPA — Business Partnership Agreement"],dom:"Governance",d:2,ex:"SLA = legally binding. MOU = non-binding intent. NDA = confidentiality only. MSA = master terms. SLA specifically defines measurable service standards with penalties for breach."},
-  {q:"A third-party vendor provides a SOC 2 Type II report. This demonstrates:",a:2,o:["They passed a penetration test","They are ISO 27001 certified","Independent auditor verified their controls over time","They have cyber insurance"],dom:"Governance",d:3,ex:"SOC 2 Type II = independent auditor tested the vendor's security controls over a period (usually 6-12 months) and verified they operated effectively. High credibility vendor assessment."},
+  {q:"A third-party vendor provides a SOC 2 Type II report. This demonstrates:",a:2,o:["They passed a penetration test","They are ISO 27001 certified","Independent auditor verified their controls over time","They have cyber insurance"],dom:"Governance",d:3,ex:"SOC 2 Type II = independent auditor tested the vendor's security controls over a period (usually 6-12 months) and verified they operated effectively. High credibility vendor assessment.",we:"A penetration test is a one-time technical exercise, not the same as ongoing operational control verification. ISO 27001 is a different certification framework with its own separate audit process. Cyber insurance says nothing about whether controls were actually tested or effective."},
   {q:"DNS filtering as a security control primarily prevents:",a:1,o:["SQL injection attacks","Users from accessing malicious domains at the DNS resolution layer","Brute force authentication attacks","Data exfiltration via HTTPS"],dom:"Operations",d:2,ex:"DNS filtering blocks malicious domain resolution before connection is made. Stops malware from reaching C2 servers, phishing sites, and known malicious IPs at the network layer."},
-  {q:"ICS/SCADA systems differ from standard IT security in that they prioritize:",a:3,o:["Confidentiality above all else","Integrity over availability","Patching as frequently as possible","Availability above confidentiality — downtime causes physical harm"],dom:"Architecture",d:3,ex:"ICS/SCADA control physical processes (power grids, water treatment). Availability = safety. CIA triad is inverted: Availability > Integrity > Confidentiality. Patches require extensive testing."},
+  {q:"ICS/SCADA systems differ from standard IT security in that they prioritize:",a:3,o:["Confidentiality above all else","Integrity over availability","Patching as frequently as possible","Availability above confidentiality — downtime causes physical harm"],dom:"Architecture",d:3,ex:"ICS/SCADA control physical processes (power grids, water treatment). Availability = safety. CIA triad is inverted: Availability > Integrity > Confidentiality. Patches require extensive testing.",we:"Confidentiality is rarely the top priority for systems controlling physical processes — secrecy matters less than the system staying online and safe. Integrity does matter, but the bigger risk is the system going offline entirely, which is why availability outranks it here. Frequent patching is actually avoided in ICS/SCADA — untested patches risk destabilizing systems that control physical equipment."},
   {q:"Application sandboxing runs untrusted code in an isolated environment to:",a:0,o:["Prevent it from affecting the host system if malicious","Speed up application performance","Encrypt application data at rest","Enable logging of all user activity"],dom:"Operations",d:2,ex:"Sandboxing isolates execution — if code is malicious it cannot affect the host OS or other applications. Used by email gateways, browsers, AV tools, and malware analysis platforms."},
 
   // ── ROUND 2 GAP FILL: TOCTOU, fail-open/closed, VM escape, RFID, bug bounty, SDLC, enumeration, audit committee, implicit trust, OAuth/SAML/LDAP (10) ──────────────────────────────
-  {q:"A program checks a file's permissions, but before it opens the file an attacker swaps it with a malicious one. This vulnerability is:",a:1,o:["Buffer overflow","TOCTOU (Time-of-check to time-of-use)","Memory injection","Improper input validation"],dom:"Threats",d:3,ex:"TOCTOU exploits the gap between when a condition is checked and when the resource is actually used. The attacker swaps the resource during that window."},
+  {q:"A program checks a file's permissions, but before it opens the file an attacker swaps it with a malicious one. This vulnerability is:",a:1,o:["Buffer overflow","TOCTOU (Time-of-check to time-of-use)","Memory injection","Improper input validation"],dom:"Threats",d:3,ex:"TOCTOU exploits the gap between when a condition is checked and when the resource is actually used. The attacker swaps the resource during that window.",we:"Buffer overflow writes past allocated memory bounds — no timing gap is involved. Memory injection inserts code directly into a running process's memory space, also without a check-then-use timing window. Improper input validation is a broad category (like SQLi) that doesn't specifically describe the timing gap TOCTOU relies on."},
   {q:"A power outage causes a building's badge access system to go offline. Doors remain unlocked to allow safe evacuation. This failure mode is:",a:0,o:["Fail open","Fail closed","Implicit trust","Security zone misconfiguration"],dom:"Architecture",d:2,ex:"Fail open = system allows access when it loses power or crashes. Used for life-safety systems (fire doors). Fail closed = system locks down on failure (firewalls, sensitive vaults)."},
   {q:"A firewall should be configured so that if it crashes, all traffic is blocked rather than allowed through. This is an example of:",a:2,o:["Fail open","Implicit trust","Fail closed","Deterrent control"],dom:"Architecture",d:2,ex:"Fail closed = on failure, the system denies everything. Correct default for security devices like firewalls, where allowing all traffic through on crash would be dangerous."},
-  {q:"Malicious code executed inside a virtual machine gains control of the underlying host system. This is:",a:3,o:["VM migration","VM cloning","Load balancing across hosts","VM escape"],dom:"Threats",d:3,ex:"VM escape occurs when code running inside a guest VM breaks out and compromises the hypervisor or host. A serious virtualization security concern."},
+  {q:"Malicious code executed inside a virtual machine gains control of the underlying host system. This is:",a:3,o:["VM migration","VM cloning","Load balancing across hosts","VM escape"],dom:"Threats",d:3,ex:"VM escape occurs when code running inside a guest VM breaks out and compromises the hypervisor or host. A serious virtualization security concern.",we:"VM migration is the routine, authorized movement of a VM between hosts — not an attack. VM cloning is duplicating a VM, also not malicious by itself. Load balancing across hosts distributes workload for performance and has nothing to do with a security breakout."},
   {q:"An attacker uses a device to copy the signal from a legitimate employee's access badge, then uses the copy to enter a secure area. This is:",a:1,o:["Shoulder surfing","RFID cloning","Tailgating","Dumpster diving"],dom:"Threats",d:2,ex:"RFID cloning captures and duplicates a badge/RFID tag's signal, letting the attacker impersonate the legitimate holder at access readers."},
   {q:"An organization wants external security researchers to find vulnerabilities in its public web app under a controlled, legal framework. They should launch a:",a:2,o:["Vulnerability scan","Internal audit","Bug bounty program","Threat intelligence subscription"],dom:"Governance",d:2,ex:"A bug bounty program invites vetted outside researchers to test systems within a defined scope and rules, rewarding responsible disclosure of real vulnerabilities."},
   {q:"An organization wants security built in starting at the design phase of a new application and maintained through deployment and retirement. This is best supported by:",a:1,o:["An acceptable use policy","SDLC (Software Development Lifecycle) with security integrated at each phase","A change management policy","A disaster recovery plan"],dom:"Governance",d:2,ex:"SDLC formalizes software creation into phases (planning, design, development, testing, deployment, maintenance) with security built into each one — not bolted on at the end."},
@@ -643,18 +671,57 @@ const QB=[
   {q:"A vendor stops releasing security patches for a product version, even though the organization still uses it. This product has reached:",a:1,o:["MTD","End-of-life (EOL) / End-of-support (EOSL)","RPO","Risk transference"],dom:"Governance",d:1,ex:"EOL/EOSL means the vendor no longer supports or patches the product, creating ongoing unpatched vulnerability risk if the org keeps using it."},
   {q:"Writing a script to automatically apply the same security configuration across hundreds of servers, instead of doing it manually one at a time, is an example of:",a:0,o:["Automation and orchestration","Capacity planning","Enumeration","Threat hunting"],dom:"Operations",d:1,ex:"Automation/orchestration use scripting to apply consistent actions at scale, reducing human error and response time across large environments."},
   {q:"A security analyst correlates a brute-force pattern from authentication logs with a separate alert from an EDR tool, using a script to automatically open and assign an incident ticket. This combination of automated detection and response is best described as:",a:3,o:["Manual SIEM review","Static configuration","Capacity planning","Security orchestration"],dom:"Operations",d:2,ex:"Orchestration ties together multiple tools and data sources into a single automated workflow, distinct from a SIEM (which just collects/correlates) or a single static action."},
+
+  // ── v4 GAP CLOSE: buffer overflow/memory injection, RAID, change management, jump/proxy server, 802.1X/EAP/wireless, media sanitization, MTTR/MTBF, updated pentest terminology, Zero Trust sub-components, SLE/ALE/ARO (29) ──────────────────────────────
+  {q:"An application fails to validate the length of user input, allowing an attacker to write data past the end of an allocated memory buffer and potentially execute arbitrary code. This is:",a:0,o:["Buffer overflow","TOCTOU","Race condition","Directory traversal"],dom:"Threats",d:2,ex:"Buffer overflow occurs when input exceeds the memory space allocated for it, overwriting adjacent memory — can lead to crashes or arbitrary code execution. Defense: input length validation, bounds checking, non-executable memory (DEP), ASLR.",we:"TOCTOU is a timing gap between a check and a use, not a memory-bounds issue. A race condition is a timing/ordering problem between concurrent processes, not memory overwriting. Directory traversal manipulates file paths to access unauthorized files — unrelated to memory allocation."},
+  {q:"Malicious code directly inserted into a running process's memory space, rather than delivered as a file on disk, is best described as:",a:0,o:["Memory injection","Buffer overflow","Rootkit installation","Logic bomb"],dom:"Threats",d:2,ex:"Memory injection places malicious code directly into a legitimate process's active memory, often evading disk-based antivirus scanning since nothing is written to disk. DLL injection and process hollowing are common techniques.",we:"Buffer overflow specifically exploits an unchecked bounds condition to overwrite memory — a possible technique used to achieve injection, but not the general category itself. A rootkit is a persistence/concealment tool, not the memory-insertion technique itself. A logic bomb is code that waits for a trigger condition — unrelated to where the code lives in memory."},
+  {q:"A RAID configuration that stripes data across two disks with no redundancy, maximizing performance but offering zero fault tolerance, is:",a:0,o:["RAID 0","RAID 1","RAID 5","RAID 10"],dom:"Architecture",d:1,ex:"RAID 0 stripes data for speed with no redundancy — if one disk fails, all data is lost. Chosen for performance-only use cases, never for fault tolerance."},
+  {q:"A RAID configuration that mirrors data identically across two disks, so either disk can fail without data loss, is:",a:1,o:["RAID 0","RAID 1","RAID 5","RAID 6"],dom:"Architecture",d:1,ex:"RAID 1 mirrors data across two disks — full redundancy but no added storage efficiency (50% usable capacity)."},
+  {q:"A RAID configuration using striping with distributed parity across at least three disks, tolerating a single disk failure, is:",a:2,o:["RAID 0","RAID 1","RAID 5","RAID 10"],dom:"Architecture",d:2,ex:"RAID 5 stripes data with distributed parity across 3+ disks. Can survive one disk failure. Good balance of performance, redundancy, and storage efficiency.",we:"RAID 0 has no redundancy at all — the opposite of what's required here. RAID 1 only mirrors two disks and doesn't use parity or scale past two drives. RAID 10 (1+0) mirrors then stripes — it survives failures without parity calculations, a different mechanism than RAID 5."},
+  {q:"An organization needs both high fault tolerance AND high performance for a critical database, and has budget for extra drives. The best RAID choice is:",a:3,o:["RAID 0","RAID 5","RAID 6","RAID 10"],dom:"Architecture",d:2,ex:"RAID 10 (1+0) combines mirroring and striping — high performance and fault tolerance, at the cost of using only half of total raw storage. Preferred for performance-critical, redundancy-critical workloads when budget allows.",we:"RAID 0 offers great performance but zero fault tolerance, disqualifying it outright. RAID 5 offers good redundancy and efficiency but has slower write performance and a rebuild penalty from parity calculation. RAID 6 adds a second parity block for extra fault tolerance but is slower than RAID 10 for writes, making RAID 10 the better fit when performance matters as much as redundancy."},
+  {q:"Before implementing a firewall rule change in production, an organization requires the change to be reviewed and formally approved by a change advisory board. This is part of:",a:1,o:["Vulnerability management","Change management process","Asset management","Incident response"],dom:"Governance",d:1,ex:"Change management formalizes how modifications to systems are proposed, reviewed, approved, and documented — reducing the risk of unplanned outages or security gaps introduced by uncontrolled changes."},
+  {q:"A planned system change fails and causes an unexpected outage. The team reverts the change using a pre-defined process to restore the previous working state. This is the:",a:0,o:["Rollback / backout plan","Business continuity plan","Root cause analysis","Vulnerability remediation plan"],dom:"Governance",d:2,ex:"A backout (rollback) plan is a required part of change management — a documented way to undo a change if it causes problems. It should be defined and tested BEFORE the change is implemented, not improvised afterward.",we:"A business continuity plan addresses sustaining operations during a broader disaster, not reverting one specific technical change. Root cause analysis identifies why something failed, but doesn't itself restore the previous state. A vulnerability remediation plan addresses fixing security flaws, not undoing a change."},
+  {q:"Which of the following is NOT a required component of a formal change management process?",a:2,o:["Identifying all stakeholders affected by the change","Documenting the technical implications of the change","Approving the change after it has already been implemented","Defining a rollback/backout plan before implementation"],dom:"Governance",d:2,ex:"Approval must happen BEFORE implementation, not after. Retroactive rubber-stamping defeats the purpose of change control — the point is to review risk and impact before the change is made.",we:"Identifying affected stakeholders is a legitimate, required part of change management. Documenting technical implications (what systems/services are affected) is also a core, required step. Defining a backout plan before implementation is required so the team has a tested way to undo the change if needed."},
+  {q:"A system administrator makes an emergency configuration change outside the normal change management process to stop an active attack. What should happen immediately afterward?",a:1,o:["Nothing — emergency changes are exempt from all documentation","The change should be retroactively documented and reviewed through the change management process","The administrator should be disciplined regardless of the outcome","The change should be reversed immediately, regardless of effectiveness"],dom:"Governance",d:2,ex:"Emergency changes are permitted to bypass the normal approval delay during an active incident, but they still must be retroactively documented and reviewed — this maintains an audit trail and lets the organization formally evaluate the change after the fact.",we:"Emergency changes still require documentation — skipping paperwork entirely is never correct, even under time pressure. Blanket discipline regardless of a reasonable, well-justified emergency action isn't the standard process response. Reversing an effective emergency fix just because it bypassed process would reintroduce the very risk the change was meant to stop."},
+  {q:"Administrators must connect through a single hardened, tightly monitored host before reaching sensitive internal servers, rather than connecting to those servers directly. This hardened host is a:",a:1,o:["Proxy server","Jump server","Load balancer","Reverse proxy"],dom:"Architecture",d:2,ex:"A jump server (jump box/bastion host) is a hardened intermediary that administrators must pass through to reach sensitive internal systems, providing a single, heavily monitored and logged chokepoint for privileged access.",we:"A proxy server typically mediates outbound client requests to external resources, a different purpose than securing inbound administrative access. A load balancer distributes traffic across multiple servers for performance/availability, not access control. A reverse proxy sits in front of servers to handle incoming requests (often for web apps), a related but distinct role from an administrative jump server."},
+  {q:"A server that forwards client requests to external websites on behalf of internal users, allowing content filtering and centralized logging, is a:",a:1,o:["Jump server","Forward proxy server","Load balancer","Reverse proxy server"],dom:"Architecture",d:2,ex:"A forward proxy sits between internal clients and the internet, forwarding their requests outward. Commonly used for web content filtering, caching, and logging of outbound traffic. A reverse proxy does the opposite — it sits in front of servers, handling inbound requests from external clients.",we:"A jump server is used for administrative access to internal systems, not general outbound web traffic for all users. A load balancer distributes incoming traffic across multiple backend servers, not client requests going outward to the internet. A reverse proxy handles inbound requests to internal servers on behalf of external clients — the opposite direction of a forward proxy."},
+  {q:"A network requires devices to authenticate before being granted access to a switch port, using a centralized authentication server. This port-based access control standard is:",a:0,o:["802.1X","WPA3","CASB","NAC agent-based scanning"],dom:"Architecture",d:2,ex:"802.1X provides port-based network access control, requiring authentication (often via RADIUS) before a device is allowed onto the wired or wireless network. It's the foundation for enterprise-grade network access control on switch ports and Wi-Fi.",we:"WPA3 is a wireless encryption/authentication standard for Wi-Fi traffic itself, not a general port-based access control framework also used on wired switches. CASB enforces policy on cloud SaaS applications, unrelated to physical/logical port access. NAC agent-based scanning checks device health/posture but isn't the port-based authentication standard itself — 802.1X is often used as part of a NAC solution."},
+  {q:"Which authentication framework is used alongside 802.1X to support multiple authentication methods (certificates, tokens, passwords) for network access?",a:0,o:["EAP (Extensible Authentication Protocol)","LDAP","Kerberos","SAML"],dom:"Architecture",d:2,ex:"EAP is a flexible authentication framework that 802.1X uses to support various authentication methods — EAP-TLS (certificates), PEAP, EAP-FAST, etc. 802.1X handles port control; EAP handles the actual authentication conversation.",we:"LDAP is a directory-query protocol, not an authentication framework for network port access. Kerberos is a ticket-based authentication protocol mainly used within Active Directory environments, not paired with 802.1X port control. SAML is used for web-based SSO assertions between identity providers and service providers, a different use case entirely."},
+  {q:"An attacker sets up a rogue wireless access point with the same SSID as a legitimate corporate network, hoping nearby devices will connect automatically. This attack is:",a:0,o:["Evil twin","Bluejacking","War driving","Downgrade attack"],dom:"Threats",d:2,ex:"An evil twin is a rogue AP impersonating a legitimate network's SSID to intercept traffic or harvest credentials from unsuspecting devices that auto-connect.",we:"Bluejacking sends unsolicited messages over Bluetooth — unrelated to Wi-Fi SSID impersonation. War driving is the act of searching for wireless networks while moving (e.g. by car), a reconnaissance activity rather than an impersonation attack. A downgrade attack forces a weaker protocol version, a different mechanism than spoofing an SSID."},
+  {q:"WPA3 improves on WPA2 primarily by:",a:1,o:["Using a weaker default cipher for compatibility","Replacing the 4-way handshake with Simultaneous Authentication of Equals (SAE), resistant to offline dictionary attacks","Removing encryption to improve connection speed","Eliminating the need for a password entirely"],dom:"Architecture",d:2,ex:"WPA3 replaces WPA2's 4-way handshake with SAE (Simultaneous Authentication of Equals), which resists offline dictionary/brute-force attacks against captured handshakes — a known WPA2 weakness.",we:"WPA3 strengthens ciphers rather than weakening them for compatibility. WPA3 still encrypts traffic — removing encryption would be a security regression, not an improvement. Personal WPA3 still uses a password (via SAE); it's Enterprise WPA3 that adds certificate-based options, but a password isn't eliminated in personal mode."},
+  {q:"An organization is decommissioning old hard drives that contained sensitive customer data. Simply deleting the files is insufficient because:",a:0,o:["Deleted files can often still be recovered using forensic tools","Deleting files takes too long","Deletion is only effective on SSDs","Deletion automatically encrypts remaining data"],dom:"Governance",d:2,ex:"Standard deletion typically just removes the file system pointer to the data — the underlying data often remains recoverable with forensic tools until it's overwritten. True media sanitization requires wiping, degaussing, or physical destruction.",we:"Deletion speed isn't the security concern here — recoverability is. Deletion behavior differs between SSDs and HDDs, but the underlying problem (data often still recoverable) applies broadly, not narrowly to SSDs. Deletion has no encryption effect at all on remaining data."},
+  {q:"Which media sanitization method physically renders a hard drive completely unusable and unreadable, typically used for the highest-sensitivity data disposal?",a:2,o:["Formatting","Degaussing","Physical destruction (shredding/pulverizing)","File deletion"],dom:"Governance",d:1,ex:"Physical destruction (shredding, pulverizing, incineration) physically destroys the media so data cannot be recovered by any means — the highest-assurance sanitization method, often paired with a certificate of destruction for compliance."},
+  {q:"MTTR (Mean Time To Repair) measures:",a:1,o:["The average time between two consecutive system failures","The average time required to detect, diagnose, and fix a failure and restore service","The maximum time an organization can tolerate an outage","The average time a system runs before its next scheduled maintenance"],dom:"Governance",d:2,ex:"MTTR = average time to repair and restore a failed system to operation. It's a reliability/operations metric distinct from MTBF (time between failures) and MTD (max tolerable downtime).",we:"That describes MTBF (Mean Time Between Failures), a different reliability metric measuring failure frequency, not repair speed. That describes MTD (Maximum Tolerable Downtime), a business-continuity limit, not a repair-time average. Scheduled maintenance intervals aren't what MTTR measures."},
+  {q:"MTBF (Mean Time Between Failures) is primarily used to measure:",a:1,o:["How quickly a team can respond to an incident","The expected reliability and failure frequency of a piece of hardware over its lifetime","How much data can be lost before it matters","How long a disaster recovery site takes to become operational"],dom:"Governance",d:2,ex:"MTBF estimates how often a piece of hardware or system is expected to fail over time — a reliability metric often provided by manufacturers, used in capacity/replacement planning. Higher MTBF = more reliable hardware.",we:"That's closer to MTTR, which measures response/repair speed, not failure frequency. That describes RPO, an entirely different metric about acceptable data loss. That describes DR site activation time, not a hardware reliability statistic."},
+  {q:"Under current CompTIA terminology, a penetration test where the testing team is given NO prior information about the target environment is called:",a:2,o:["Known environment test","Partially known environment test","Unknown environment test","Integrated test"],dom:"Governance",d:2,ex:"Current SY0-701 terminology replaces the older 'black box' label with 'unknown environment' — the tester has zero prior knowledge, simulating a real external attacker. 'Known environment' replaced 'white box' and 'partially known environment' replaced 'gray box'.",we:"A known environment test gives the tester full internal knowledge (the old 'white box' term) — the opposite of this scenario. A partially known environment test gives the tester some information (the old 'gray box' term) — more than none. Integrated testing refers to combining physical, offensive, and defensive testing elements, not a knowledge-level classification."},
+  {q:"A penetration test where the testing team is given partial documentation, such as network diagrams but no credentials, is best classified as a:",a:1,o:["Unknown environment test","Partially known environment test","Known environment test","Passive reconnaissance test"],dom:"Governance",d:2,ex:"Partially known environment testing (formerly 'gray box') gives the tester some information — like architecture diagrams — but not full access or credentials, simulating an attacker with limited insider knowledge or a compromised low-privilege account.",we:"An unknown environment test gives zero prior information — this scenario provides some (diagrams), ruling that out. A known environment test gives full access/credentials — more than described here. Passive reconnaissance describes a research technique, not a knowledge-level test classification."},
+  {q:"In the Zero Trust model, the component that evaluates a request against policy and decides whether to grant access is the:",a:1,o:["Policy Enforcement Point (PEP)","Policy Engine","Policy Administrator","Implicit trust zone"],dom:"Architecture",d:3,ex:"The Policy Engine evaluates access requests against defined policy and makes the actual access decision. The Policy Administrator then executes that decision. The Policy Enforcement Point is the gateway that actually enables, monitors, and terminates the connection between subject and resource.",we:"The Policy Enforcement Point carries out the decision by enabling/monitoring/terminating the connection — it doesn't make the decision itself. The Policy Administrator executes the Policy Engine's decision by establishing the session, but the decision itself is made by the Policy Engine. An implicit trust zone is exactly what Zero Trust is designed to eliminate — it isn't a decision-making component at all."},
+  {q:"In the Zero Trust data plane, the gateway that sits between a subject and a resource, actually enabling or terminating the connection based on policy decisions, is the:",a:2,o:["Policy Engine","Policy Administrator","Policy Enforcement Point (PEP)","Adaptive identity module"],dom:"Architecture",d:3,ex:"The Policy Enforcement Point (PEP) is the actual gateway/chokepoint that enables, monitors, and can terminate the connection between a subject and a resource — it's the enforcement mechanism, sitting in the data plane.",we:"The Policy Engine makes the access decision (control plane) but doesn't sit in the data path enforcing it. The Policy Administrator executes the Policy Engine's decision and communicates with the PEP, but is not itself the gateway. An adaptive identity module contributes signals used to make a decision, but isn't the enforcement gateway."},
+  {q:"Continuously re-evaluating a user's risk level using contextual signals (location, device health, behavior) rather than trusting a session indefinitely after initial login reflects which Zero Trust concept?",a:1,o:["Threat scope reduction","Adaptive identity","Implicit trust zone","Policy Administrator"],dom:"Architecture",d:2,ex:"Adaptive identity continuously evaluates contextual risk signals throughout a session rather than granting indefinite trust after a single authentication event — access can be adjusted or revoked mid-session if risk indicators change.",we:"Threat scope reduction is about limiting the blast radius of any single compromised account or segment, a related but distinct Zero Trust principle. An implicit trust zone is the pattern Zero Trust eliminates, not a Zero Trust concept itself. The Policy Administrator is the component that executes access decisions, not the concept of ongoing contextual re-evaluation."},
+  {q:"A server has a Single Loss Expectancy (SLE) of $40,000 and an Annualized Rate of Occurrence (ARO) of 0.5 (expected once every two years). What is the Annualized Loss Expectancy (ALE)?",a:0,o:["$20,000","$40,000","$80,000","$2,000"],dom:"Governance",d:2,ex:"ALE = SLE × ARO = $40,000 × 0.5 = $20,000. This is the expected yearly financial loss from this risk, used to justify the cost of a mitigating control.",we:"$40,000 is just the SLE — the cost of one occurrence — not adjusted for how often it's expected to happen. $80,000 would result from multiplying by 2 instead of 0.5 — an ARO under 1 means the event happens LESS than once a year, which lowers ALE. $2,000 would result from an incorrect decimal shift in the multiplication."},
+  {q:"An asset worth $200,000 has an Exposure Factor (EF) of 25% for a given threat. What is the Single Loss Expectancy (SLE)?",a:1,o:["$25,000","$50,000","$75,000","$200,000"],dom:"Governance",d:2,ex:"SLE = Asset Value × Exposure Factor = $200,000 × 0.25 = $50,000. SLE represents the expected loss from a single occurrence of the threat.",we:"$25,000 would result from using 12.5% instead of 25% for the exposure factor. $75,000 would result from using 37.5% instead of 25%. $200,000 is the full asset value, which would only be correct if the exposure factor were 100% (total loss), not 25%."},
+  {q:"A risk has an SLE of $10,000 and occurs on average once every 4 years. What is the closest ARO to use in the ALE calculation?",a:1,o:["4","0.25","1","0.4"],dom:"Governance",d:2,ex:"ARO expresses frequency per year. Once every 4 years = 1/4 = 0.25 occurrences per year. ALE would then be $10,000 × 0.25 = $2,500.",we:"4 would be the correct ARO if the event happened 4 times per year, not once every 4 years — that's the inverse of what's described. 1 would mean the event happens once every year, not once every 4 years. 0.4 doesn't correspond to any correct inversion of the stated 4-year frequency."},
+  {q:"Given an ALE of $30,000 for a risk, a security control costing $5,000/year would reduce ALE to $8,000/year. Based on cost-benefit analysis, is this control worth implementing?",a:1,o:["No — the control costs more than the risk it addresses","Yes — the control costs $5,000 but reduces expected annual loss by $22,000, a net benefit of $17,000","No — ALE calculations don't factor into control decisions","Yes, but only if the asset value is unknown"],dom:"Governance",d:2,ex:"Cost-benefit for controls: (ALE before − ALE after) − Annual cost of control = value of the control. Here: ($30,000 − $8,000) − $5,000 = $17,000 net benefit per year. The control is clearly worth implementing.",we:"The control ($5,000) costs far less than the risk reduction it provides ($22,000), so this is backwards. ALE-based cost-benefit analysis is exactly the standard, correct method for justifying security control spending. Asset value uncertainty isn't a precondition for this ALE-based decision; the reduction in ALE is already known here."},
+
+  // ── v4 MULTI-SELECT ("choose two/three") questions (6) ──────────────────────────────
+  {q:"Which of the following are examples of Preventive controls? (Select TWO)",type:"multi",correct:[0,2],o:["Firewall rule blocking inbound traffic","Security camera recording entrances","Encryption of data at rest","Post-incident forensic log review"],dom:"Threats",d:2,ex:"Firewall rules blocking traffic and encryption are both preventive — they stop or reduce the likelihood of an incident before it happens. Camera recording is detective (identifies after the fact); forensic log review after an incident is also detective/investigative, not preventive."},
+  {q:"Which of the following are considered PII (Personally Identifiable Information)? (Select TWO)",type:"multi",correct:[0,2],o:["Social Security Number","Company's public stock ticker symbol","Full home address","A firewall's public IP address"],dom:"Governance",d:1,ex:"SSNs and home addresses can identify a specific individual, making them PII. A stock ticker and a firewall's public IP identify a company/device, not a person."},
+  {q:"Which of the following are valid backup types? (Select TWO)",type:"multi",correct:[0,1],o:["Full backup","Differential backup","Geographic backup","Load-balanced backup"],dom:"Architecture",d:1,ex:"Full and differential are standard, recognized backup types (along with incremental). 'Geographic backup' and 'load-balanced backup' aren't standard backup-type terminology — geographic dispersion and load balancing are separate resilience concepts, not backup types."},
+  {q:"Which of the following are components of the AAA framework? (Select THREE)",type:"multi",correct:[0,2,3],o:["Authentication","Availability","Accounting","Authorization"],dom:"Governance",d:1,ex:"AAA = Authentication, Authorization, Accounting. Availability is part of the CIA triad, not AAA — a common mix-up between two different three-letter security frameworks."},
+  {q:"Which of the following risk management strategies change WHO bears a risk or WHETHER it is tolerated, without changing the risk itself? (Select TWO)",type:"multi",correct:[0,2],o:["Risk transfer (e.g. purchasing cyber insurance)","Risk avoidance (discontinuing the risky activity)","Risk acceptance (acknowledging and tolerating the risk)","Risk mitigation (patching the vulnerability)"],dom:"Governance",d:2,ex:"Transfer shifts financial impact to a third party (insurance) without eliminating the risk itself. Acceptance tolerates the risk without changing it at all. Avoidance removes the risk by stopping the risky activity, and mitigation reduces the risk's likelihood/impact — both of those actually change the risk, unlike transfer and acceptance."},
+  {q:"Which of the following are 'something you have' authentication factors? (Select TWO)",type:"multi",correct:[0,2],o:["A hardware token / security key","A fingerprint","A smart card","A typed password"],dom:"Governance",d:1,ex:"Hardware tokens and smart cards are physical items you possess — something you have. A fingerprint is something you are (biometric); a password is something you know."},
 ];
 
 // QUIZ ENGINE
 let gMode='full',gDomain='',queue=[],qIdx=0,answered=false,sessCorrect=0,sessTotal=0;
 document.querySelectorAll('.mbtn').forEach(b=>b.addEventListener('click',()=>selectMode(b.dataset.m)));
 document.querySelectorAll('.dbtn').forEach(b=>b.addEventListener('click',()=>selectDomain(b.dataset.d)));
-document.getElementById('startBtn').addEventListener('click',startQuiz);
+document.getElementById('startBtn').addEventListener('click',()=>{if(gMode==='examsim')startExamSim();else startQuiz();});
 document.getElementById('qNextBtn').addEventListener('click',nextQ);
-document.getElementById('scoreRestartBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';});
-document.getElementById('scoreHomeBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';showPanel('dash');});
+document.getElementById('scoreRestartBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';document.getElementById('examTimerBar').style.display='none';document.getElementById('examControls').style.display='none';document.getElementById('examReviewBtn').style.display='none';});
+document.getElementById('scoreHomeBtn').addEventListener('click',()=>{document.getElementById('quizScore').style.display='none';document.getElementById('quizSetup').style.display='block';document.getElementById('examTimerBar').style.display='none';document.getElementById('examControls').style.display='none';document.getElementById('examReviewBtn').style.display='none';showPanel('dash');});
 
-function selectMode(m){gMode=m;gDomain='';document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));document.getElementById('domainWrap').style.display=m==='domain'?'block':'none';document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));}
+function selectMode(m){gMode=m;gDomain='';document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('active',b.dataset.m===m));document.getElementById('domainWrap').style.display=m==='domain'?'block':'none';document.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('active'));document.getElementById('examSimInfo').style.display=m==='examsim'?'block':'none';document.getElementById('startBtn').textContent=m==='examsim'?'BEGIN EXAM SIMULATION →':'START QUIZ →';}
 function selectDomain(d){gDomain=d;document.querySelectorAll('.dbtn').forEach(b=>b.classList.toggle('active',b.dataset.d===d));}
 
 function buildQ(){
@@ -678,19 +745,47 @@ function startQuiz(){
   renderQ();
 }
 
+let multiSel=new Set();
 function renderQ(){
   if(qIdx>=queue.length){showScore();return;}
-  answered=false;const q=queue[qIdx];
+  answered=false;multiSel=new Set();const q=queue[qIdx];
   const pct=Math.round(qIdx/queue.length*100);
   document.getElementById('qProgFill').style.width=pct+'%';
   document.getElementById('qCat').textContent=q.dom.toUpperCase();
   document.getElementById('qDiffEl').textContent='⬢'.repeat(q.d)+'⬡'.repeat(3-q.d);
-  document.getElementById('qNum').textContent=`Q ${qIdx+1} / ${queue.length}`;
+  document.getElementById('qNum').textContent=`Q ${qIdx+1} / ${queue.length}`+(q.type==='multi'?' — SELECT ALL THAT APPLY':'');
   document.getElementById('qText').textContent=q.q;
-  document.getElementById('qOpts').innerHTML=q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="selectAns(${i})"><span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
+  document.getElementById('qOpts').innerHTML=q.o.map((o,i)=>`<button class="opt" id="opt${i}" onclick="${q.type==='multi'?`toggleMulti(${i})`:`selectAns(${i})`}"><span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span></button>`).join('');
   document.getElementById('qFeedback').style.display='none';document.getElementById('qNextBtn').style.display='none';
+  document.getElementById('qSubmitMultiBtn').style.display=q.type==='multi'?'block':'none';
   if(qIdx>0&&qIdx%5===0)showCkpt();
 }
+function toggleMulti(i){
+  if(answered)return;
+  const btn=document.getElementById('opt'+i);
+  if(multiSel.has(i)){multiSel.delete(i);btn.style.borderColor='';btn.style.background='';}
+  else{multiSel.add(i);btn.style.borderColor='var(--accent)';btn.style.background='rgba(0,229,255,.08)';}
+}
+function gradeAndShowFeedback(q,ok,correctLabel){
+  document.getElementById('qFeedback').style.display='block';
+  const fb=document.getElementById('qFeedback');fb.style.borderColor=ok?'var(--green)':'var(--red)';
+  fb.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ WRONG — Correct: '+correctLabel}</div><div style="font-size:13px;color:var(--text2)">${q.ex}</div>${q.we?`<div style="font-size:12px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border2)"><span style="color:var(--purple);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px">WHY THE OTHERS ARE WRONG</span><br>${q.we}</div>`:''}`;
+  document.getElementById('qNextBtn').style.display='block';
+  document.getElementById('qSubmitMultiBtn').style.display='none';
+  document.getElementById('hAcc').textContent=(S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';document.getElementById('hTotal').textContent=S.totalQ;
+}
+function submitMulti(){
+  if(answered)return;const q=queue[qIdx];if(!q||q.type!=='multi')return;
+  answered=true;
+  const sel=[...multiSel].sort((x,y)=>x-y);const cor=[...q.correct].sort((x,y)=>x-y);
+  const ok=JSON.stringify(sel)===JSON.stringify(cor);
+  S.totalQ++;sessTotal++;S.domains[q.dom].q++;
+  if(ok){S.correct++;sessCorrect++;S.domains[q.dom].c++;S.streak++;if(S.streak>S.best)S.best=S.streak;}else S.streak=0;
+  saveS();
+  document.querySelectorAll('.opt').forEach((b,idx)=>{b.disabled=true;if(q.correct.includes(idx))b.classList.add('correct');if(multiSel.has(idx)&&!q.correct.includes(idx))b.classList.add('wrong');});
+  gradeAndShowFeedback(q,ok,cor.map(i=>'ABCD'[i]).join(', '));
+}
+document.getElementById('qSubmitMultiBtn').addEventListener('click',submitMulti);
 
 function selectAns(i){
   if(answered)return;answered=true;const q=queue[qIdx];const ok=i===q.a;
@@ -699,7 +794,7 @@ function selectAns(i){
   saveS();
   document.querySelectorAll('.opt').forEach((b,idx)=>{b.disabled=true;if(idx===q.a)b.classList.add('correct');if(idx===i&&!ok)b.classList.add('wrong');});
   const fb=document.getElementById('qFeedback');fb.style.display='block';fb.style.borderColor=ok?'var(--green)':'var(--red)';
-  fb.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ WRONG — Correct: '+'ABCD'[q.a]}</div><div style="font-size:13px;color:var(--text2)">${q.ex}</div>`;
+  fb.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ WRONG — Correct: '+'ABCD'[q.a]}</div><div style="font-size:13px;color:var(--text2)">${q.ex}</div>${q.we?`<div style="font-size:12px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border2)"><span style="color:var(--purple);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px">WHY THE OTHERS ARE WRONG</span><br>${q.we}</div>`:''}`;
   document.getElementById('qNextBtn').style.display='block';
   document.getElementById('hAcc').textContent=(S.totalQ?Math.round(S.correct/S.totalQ*100):0)+'%';document.getElementById('hTotal').textContent=S.totalQ;
 }
@@ -864,6 +959,28 @@ const DECKS={
     {f:'Credentialed vs Non-Credentialed Scan',b:"Credentialed = scanner logs in, sees deep configuration/patch detail. Non-credentialed = scanner has no login, sees only what's visible externally — like an outside attacker would."},
     {f:'Asset Management / EOL',b:'Tracking hardware/software from purchase through secure disposal. EOL/EOSL = vendor stops releasing patches for that version, creating ongoing unpatched risk if still in use.'},
   ],
+  opsgap:[
+    {f:'Buffer Overflow',b:'Input exceeds the memory space allocated for it, overwriting adjacent memory — can crash the app or enable arbitrary code execution. Defense: input length validation, bounds checking, DEP, ASLR.'},
+    {f:'Memory Injection',b:'Malicious code inserted directly into a running process\'s active memory rather than written to disk — often evades disk-based antivirus. Techniques include DLL injection and process hollowing.'},
+    {f:'RAID 0',b:'Striping across 2+ disks. Max performance, ZERO redundancy — one disk failure loses everything.'},
+    {f:'RAID 1',b:'Mirroring across 2 disks. Full redundancy, 50% usable capacity, no performance boost.'},
+    {f:'RAID 5',b:'Striping + distributed parity across 3+ disks. Survives 1 disk failure. Balanced performance/redundancy/cost.'},
+    {f:'RAID 10 (1+0)',b:'Mirrored pairs, then striped. High performance AND high fault tolerance. Uses only half of raw capacity. Best choice when both speed and redundancy matter and budget allows.'},
+    {f:'Change Management',b:'Formal process to propose, review, approve, and document system changes BEFORE they happen. Requires: stakeholder identification, technical impact documentation, and a tested backout/rollback plan. Approval must happen before implementation — never retroactively, except for documented emergency changes.'},
+    {f:'Backout Plan',b:'A pre-defined, tested way to revert a change if it causes problems. Required part of change management, must exist BEFORE the change is made — not improvised after something breaks.'},
+    {f:'Jump Server',b:'Hardened, heavily monitored host administrators must pass through to reach sensitive internal systems. Single logged chokepoint for privileged access. Also called a bastion host.'},
+    {f:'Forward Proxy',b:'Sits between internal clients and the internet, forwarding outbound requests. Used for content filtering, caching, and logging. Opposite direction from a reverse proxy, which handles inbound requests to internal servers.'},
+    {f:'802.1X',b:'Port-based network access control standard. Requires authentication (often via RADIUS) before a device is allowed onto a wired switch port or Wi-Fi network. Foundation of enterprise NAC.'},
+    {f:'EAP',b:'Extensible Authentication Protocol. The flexible authentication framework 802.1X uses underneath — supports certificates (EAP-TLS), PEAP, and other methods. 802.1X controls the port; EAP handles the actual auth conversation.'},
+    {f:'Evil Twin',b:'Rogue wireless AP broadcasting the same SSID as a legitimate network, hoping devices auto-connect so the attacker can intercept traffic or harvest credentials.'},
+    {f:'WPA3 / SAE',b:'WPA3 replaces WPA2\'s 4-way handshake with SAE (Simultaneous Authentication of Equals), which resists offline dictionary attacks against captured handshakes — WPA2\'s known weak point.'},
+    {f:'Media Sanitization',b:'Deleting files is NOT enough — data is often still forensically recoverable. Real sanitization: wiping (overwrite), degaussing (magnetic erasure), or physical destruction (shredding/pulverizing — highest assurance, pair with a certificate of destruction).'},
+    {f:'MTTR vs MTBF',b:'MTTR (Mean Time To Repair) = average time to fix a failure and restore service. MTBF (Mean Time Between Failures) = average time a system runs before it fails. MTTR = speed of recovery. MTBF = frequency of failure. Different metrics, commonly confused.'},
+    {f:'Known / Partially Known / Unknown Environment',b:'Current SY0-701 pen-test terminology. Known environment = full access/knowledge (old "white box"). Partially known = some info, e.g. diagrams but no creds (old "gray box"). Unknown = zero prior knowledge (old "black box").'},
+    {f:'Zero Trust: Policy Engine vs PA vs PEP',b:'Policy Engine = evaluates the request against policy and MAKES the decision. Policy Administrator = executes that decision, establishes/tears down the session. Policy Enforcement Point (PEP) = the actual gateway in the data path that enables/monitors/terminates the connection.'},
+    {f:'Adaptive Identity',b:'Continuously re-evaluates a user\'s risk using contextual signals (location, device health, behavior) throughout a session, instead of trusting indefinitely after one login. Core Zero Trust concept — access can change mid-session if risk changes.'},
+    {f:'SLE / ARO / ALE',b:'SLE (Single Loss Expectancy) = Asset Value × Exposure Factor — cost of one occurrence. ARO (Annualized Rate of Occurrence) = expected times per year (e.g. once every 4 years = 0.25). ALE (Annualized Loss Expectancy) = SLE × ARO — the expected yearly dollar loss, used to justify control spending.'},
+  ],
 };
 
 let fDeck=[],fIdx=0,fKnown=0,fUnknown=[];
@@ -983,6 +1100,12 @@ const ACRS=[
   {a:'EOSL',d:'End of Service Life'},
   {a:'UPS',d:'Uninterruptible Power Supply'},
   {a:'HA',d:'High Availability'},
+  // ── NEW ACRONYMS FROM v4 GAP AUDIT ──────────────────────────────
+  {a:'802.1X',d:'IEEE 802.1X Port-Based Network Access Control'},
+  {a:'EAP',d:'Extensible Authentication Protocol'},
+  {a:'MTTR',d:'Mean Time To Repair'},
+  {a:'MTBF',d:'Mean Time Between Failures'},
+  {a:'RAID',d:'Redundant Array of Independent Disks'},
 ];
 
 let aQ=[],aIdx=0,aRight=0,aWrong=0;
@@ -1077,20 +1200,92 @@ const PBQS=[
   {type:'match',title:'Email Authentication Matching',
    desc:'Match each email security mechanism to its function:',
    pairs:[{l:'SPF',r:'Lists authorized sending mail servers'},{l:'DKIM',r:'Signs mail to prove it was not altered'},{l:'DMARC',r:'Tells receivers what to do on auth failure'}]},
+  {type:'match',title:'RAID Level Matching',
+   desc:'Match each RAID level to its defining characteristic:',
+   pairs:[{l:'RAID 0',r:'Striping only, zero redundancy'},{l:'RAID 1',r:'Mirroring, 50% usable capacity'},{l:'RAID 5',r:'Striping + distributed parity, 3+ disks'},{l:'RAID 10',r:'Mirrored pairs then striped, best of both'}]},
+  {type:'match',title:'Updated Pen Test Terminology',
+   desc:'Match each current SY0-701 term to its meaning:',
+   pairs:[{l:'Unknown environment',r:'Zero prior knowledge (formerly black box)'},{l:'Partially known environment',r:'Some info, no full access (formerly gray box)'},{l:'Known environment',r:'Full access and knowledge (formerly white box)'},{l:'Integrated test',r:'Combines physical, offensive, and defensive testing'}]},
+
+  // ── v4 GAP CLOSE: raw log-reading PBQs (objective 4.9 — data sources for investigation) ──────────────────────────────
+  {type:'logread',title:'Log Analysis: Authentication Events',
+   desc:'Review the log below, then identify what it indicates.',
+   log:'10:14:02 auth: user "jsmith" login SUCCESS from 10.0.4.12\n10:14:05 auth: user "admin" login FAILURE from 203.0.113.55\n10:14:05 auth: user "admin" login FAILURE from 203.0.113.55\n10:14:06 auth: user "admin" login FAILURE from 203.0.113.55\n10:14:06 auth: user "admin" login FAILURE from 203.0.113.55\n10:14:07 auth: user "admin" login FAILURE from 203.0.113.55\n10:15:00 auth: user "jsmith" logout from 10.0.4.12',
+   options:['Brute-force attack against the admin account','Normal user activity','A successful attacker login','DNS exfiltration attempt'],
+   correct:0,
+   exp:'Five rapid FAILURE attempts against the same "admin" account from a single external IP (203.0.113.55) in under 3 seconds is a classic brute-force signature. The jsmith login/logout on a separate internal IP is unrelated normal activity.'},
+  {type:'logread',title:'Log Analysis: Outbound Connections',
+   desc:'Review the connection log below, then identify what it indicates.',
+   log:'14:00:00 conn: 10.0.2.15:51000 -> 45.33.10.7:443 established\n14:05:00 conn: 10.0.2.15:51010 -> 45.33.10.7:443 established\n14:10:00 conn: 10.0.2.15:51020 -> 45.33.10.7:443 established\n14:15:00 conn: 10.0.2.15:51030 -> 45.33.10.7:443 established',
+   options:['C2 beaconing to a remote host','Normal web browsing traffic','A distributed denial-of-service attack','A failed login attempt'],
+   correct:0,
+   exp:'The same internal host connecting to the same external IP at a fixed 5-minute interval, every time, is the signature of C2 (Command and Control) beaconing — malware checking in with its controller — not organic human browsing, which is irregular.'},
+  {type:'logread',title:'Log Analysis: Data Transfer',
+   desc:'Review the log below, then identify what it indicates.',
+   log:'02:14:00 net: 10.0.5.20 -> 198.51.100.9:443 bytes_out=3.2GB duration=45s\nuser last login record: 09:00:00-17:00:00 business hours only, no prior after-hours activity on this account',
+   options:['Data exfiltration occurring during off-hours','A scheduled overnight backup job','A normal software update download','A routine vulnerability scan'],
+   correct:0,
+   exp:'3.2GB leaving the network at 2:14 AM from an account with no history of any after-hours activity is a strong exfiltration indicator — the combination of high volume, off-hours timing, and behavioral deviation from baseline is what matters, not any single factor alone.'},
+  {type:'logread',title:'Log Analysis: Recognizing Normal Activity',
+   desc:'Review the log below, then identify what it indicates.',
+   log:'09:01:00 auth: user "mgarcia" login SUCCESS from 10.0.1.44\nbadge system: mgarcia badge-in recorded 08:58:00, same building, same subnet\nno prior failed attempts on this account in the last 90 days',
+   options:['Expected, authorized activity — not an indicator of compromise','A brute-force attack in progress','Lateral movement between internal systems','C2 beaconing'],
+   correct:0,
+   exp:'A successful login from an internal subnet, occurring 3 minutes after a matching physical badge-in, with no history of failed attempts, is exactly what legitimate activity looks like. Not every log entry is an indicator of compromise — recognizing normal behavior is as important as spotting anomalies.'},
+
+  // ── v4 GAP CLOSE: firewall/ACL rule-ordering PBQs (top-down evaluation, implicit/explicit deny) ──────────────────────────────
+  {type:'aclrule',title:'Firewall Rule Evaluation: HTTPS Traffic',
+   desc:'Firewall rules are evaluated top-down; the first matching rule applies. Which rule applies to the traffic described below?',
+   rules:[
+     {num:1,action:'DENY',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'23'},
+     {num:2,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'443'},
+     {num:3,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'80'},
+     {num:4,action:'DENY',proto:'ANY',src:'ANY',dst:'ANY',port:'ANY'},
+   ],
+   scenario:'An external host connects to an internal server on 10.0.0.5 via HTTPS (port 443).',
+   correctRule:2,
+   exp:'HTTPS traffic (port 443) matches Rule 2 and is allowed. Rules are evaluated top-down and stop at the first match — this traffic never reaches the final deny-all rule.'},
+  {type:'aclrule',title:'Firewall Rule Evaluation: Telnet Traffic',
+   desc:'Firewall rules are evaluated top-down; the first matching rule applies. Which rule applies to the traffic described below?',
+   rules:[
+     {num:1,action:'DENY',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'23'},
+     {num:2,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'443'},
+     {num:3,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'80'},
+     {num:4,action:'DENY',proto:'ANY',src:'ANY',dst:'ANY',port:'ANY'},
+   ],
+   scenario:'An external host attempts to connect via Telnet (port 23) to an internal server.',
+   correctRule:1,
+   exp:'Rule 1 explicitly denies Telnet (port 23) to the internal subnet. Since rules are evaluated top-down, this traffic is blocked at Rule 1 — it never even reaches the final deny-all rule, even though the outcome would be the same either way.'},
+  {type:'aclrule',title:'Firewall Rule Evaluation: Unlisted Port',
+   desc:'Firewall rules are evaluated top-down; the first matching rule applies. Which rule applies to the traffic described below?',
+   rules:[
+     {num:1,action:'DENY',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'23'},
+     {num:2,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'443'},
+     {num:3,action:'ALLOW',proto:'TCP',src:'ANY',dst:'10.0.0.0/24',port:'80'},
+     {num:4,action:'DENY',proto:'ANY',src:'ANY',dst:'ANY',port:'ANY'},
+   ],
+   scenario:'An external host attempts to connect via SSH (port 22) to an internal server.',
+   correctRule:4,
+   exp:'No rule explicitly allows or denies port 22, so the traffic falls through every rule above and is caught by the final explicit deny-all. This is why default-deny matters: anything not explicitly permitted is blocked.'},
 ];
 
-let pbqIdx=0,pbqOrder=[],pbqMatchSel=null,pbqMatchAns={},pbqClassAns={};
+let pbqIdx=0,pbqOrder=[],pbqMatchSel=null,pbqMatchAns={},pbqClassAns={},pbqLogSel=null,pbqAclSel=null;
 document.getElementById('pbqCheckBtn').addEventListener('click',checkPBQ);
 document.getElementById('pbqNextBtn').addEventListener('click',()=>{pbqIdx=(pbqIdx+1)%PBQS.length;renderPBQ();});
 
 function renderPBQ(){
-  const p=PBQS[pbqIdx];pbqOrder=[];pbqMatchSel=null;pbqMatchAns={};pbqClassAns={};
+  const p=PBQS[pbqIdx];pbqOrder=[];pbqMatchSel=null;pbqMatchAns={};pbqClassAns={};pbqLogSel=null;pbqAclSel=null;
   document.getElementById('pbqTitle').textContent=p.title;document.getElementById('pbqDesc').textContent=p.desc;document.getElementById('pbqCtr').textContent=`${pbqIdx+1}/${PBQS.length}`;document.getElementById('pbqResult').style.display='none';
   const c=document.getElementById('pbqContent');
-  if(p.type==='order'){const sh=[...p.items].sort(()=>Math.random()-.5);c.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">TAP in correct order:</div><div id="pbqItems">${sh.map(it=>`<div class="pbq-item" onclick="pbqTap(this,'${it.replace(/'/g,"\\'")}')" style="margin-bottom:6px">${it}</div>`).join('')}</div><div style="font-size:11px;color:var(--text3);margin:10px 0 4px">Your order:</div><div id="pbqOrderDisplay" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>`;}
-  else if(p.type==='match'){const ls=[...p.pairs].sort(()=>Math.random()-.5);const rs=[...p.pairs].sort(()=>Math.random()-.5);c.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">SELECT →</div>${ls.map(x=>`<div class="pbq-item" id="ml_${x.l.replace(/[\s\/]/g,'_')}" onclick="pbqML(this,'${x.l.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.l}</div>`).join('')}</div><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">THEN MATCH →</div>${rs.map(x=>`<div class="pbq-item" id="mr_${x.r.replace(/[\s\/]/g,'_')}" onclick="pbqMR(this,'${x.r.replace(/'/g,"\\'")}',event)" style="margin-bottom:6px">${x.r}</div>`).join('')}</div></div><div id="matchStatus" style="font-size:11px;color:var(--text3);margin-top:8px">Select left item first.</div>`;}
+  if(p.type==='order'){const sh=[...p.items].sort(()=>Math.random()-.5);c.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">TAP in correct order:</div><div id="pbqItems">${sh.map(it=>`<div class="pbq-item" onclick="pbqTap(this,'${it.replace(/'/g,"\'")}')" style="margin-bottom:6px">${it}</div>`).join('')}</div><div style="font-size:11px;color:var(--text3);margin:10px 0 4px">Your order:</div><div id="pbqOrderDisplay" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px"></div>`;}
+  else if(p.type==='match'){const ls=[...p.pairs].sort(()=>Math.random()-.5);const rs=[...p.pairs].sort(()=>Math.random()-.5);c.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">SELECT →</div>${ls.map(x=>`<div class="pbq-item" id="ml_${x.l.replace(/[\s\/]/g,'_')}" onclick="pbqML(this,'${x.l.replace(/'/g,"\'")}',event)" style="margin-bottom:6px">${x.l}</div>`).join('')}</div><div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">THEN MATCH →</div>${rs.map(x=>`<div class="pbq-item" id="mr_${x.r.replace(/[\s\/]/g,'_')}" onclick="pbqMR(this,'${x.r.replace(/'/g,"\'")}',event)" style="margin-bottom:6px">${x.r}</div>`).join('')}</div></div><div id="matchStatus" style="font-size:11px;color:var(--text3);margin-top:8px">Select left item first.</div>`;}
   else if(p.type==='classify'){c.innerHTML=p.items.map((it,i)=>`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px"><div style="flex:1;min-width:120px;font-size:13px;color:var(--text2);font-weight:600">${it.n}</div><div class="classify-opts">${p.cats.map(cat=>`<button class="clab" onclick="pbqCL(${i},'${cat}',this)">${cat}</button>`).join('')}</div></div>`).join('');}
+  else if(p.type==='logread'){c.innerHTML=`<div style="background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:12px;margin-bottom:12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);white-space:pre-wrap;line-height:1.7;overflow-x:auto">${p.log}</div>${p.options.map((o,i)=>`<div class="pbq-item" id="lr_${i}" onclick="pbqLogSelect(${i})" style="margin-bottom:6px">${o}</div>`).join('')}`;}
+  else if(p.type==='aclrule'){const ruleRows=p.rules.map(r=>`<tr><td>${r.num}</td><td style="color:${r.action==='DENY'?'var(--red)':'var(--green)'}">${r.action}</td><td>${r.proto}</td><td>${r.src}</td><td>${r.dst}</td><td>${r.port}</td></tr>`).join('');c.innerHTML=`<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px"><table class="port-table"><thead><tr><th>#</th><th>ACTION</th><th>PROTO</th><th>SRC</th><th>DST</th><th>PORT</th></tr></thead><tbody>${ruleRows}</tbody></table></div><div style="font-size:13px;color:var(--text2);margin-bottom:10px;font-style:italic">${p.scenario}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${p.rules.map(r=>`<div class="pbq-item" id="acl_${r.num}" onclick="pbqAclSelect(${r.num})" style="min-width:70px;text-align:center">Rule ${r.num}</div>`).join('')}</div>`;}
 }
+function pbqLogSelect(i){document.querySelectorAll('[id^="lr_"]').forEach(el=>el.classList.remove('match-active'));document.getElementById('lr_'+i).classList.add('match-active');pbqLogSel=i;}
+function pbqAclSelect(n){document.querySelectorAll('[id^="acl_"]').forEach(el=>el.classList.remove('match-active'));document.getElementById('acl_'+n).classList.add('match-active');pbqAclSel=n;}
+
 
 function pbqTap(el,val){if(el.classList.contains('sel'))return;el.classList.add('sel');pbqOrder.push(val);const d=document.getElementById('pbqOrderDisplay');if(d)d.innerHTML=pbqOrder.map((v,i)=>`<span style="background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:3px 8px;font-size:11px">${i+1}. ${v}</span>`).join('');}
 function pbqML(el,val,e){e.stopPropagation();document.querySelectorAll('.pbq-item[id^="ml_"]').forEach(b=>b.classList.remove('match-active'));el.classList.add('match-active');pbqMatchSel=val;document.getElementById('matchStatus').textContent=`"${val}" selected — now pick its match →`;}
@@ -1102,8 +1297,117 @@ function checkPBQ(){
   if(p.type==='order'){ok=JSON.stringify(pbqOrder)===JSON.stringify(p.correct);fb=ok?'Perfect!':'Correct order: '+p.correct.join(' → ');}
   else if(p.type==='match'){ok=p.pairs.every(x=>pbqMatchAns[x.l]===x.r);fb=ok?'All matched correctly!':'Correct: '+p.pairs.map(x=>`${x.l} = ${x.r}`).join(', ');}
   else if(p.type==='classify'){ok=p.items.every((it,i)=>pbqClassAns[i]===it.c);fb=ok?'All classified correctly!':'Correct: '+p.items.map(it=>`${it.n} = ${it.c}`).join(', ');}
+  else if(p.type==='logread'){ok=pbqLogSel===p.correct;fb=ok?'Correct!':'Correct answer: '+p.options[p.correct];}
+  else if(p.type==='aclrule'){ok=pbqAclSel===p.correctRule;fb=ok?'Correct!':'Correct answer: Rule '+p.correctRule;}
   const r=document.getElementById('pbqResult');r.style.display='block';r.style.border=`1px solid ${ok?'var(--green)':'var(--red)'}`;r.style.background=ok?'rgba(0,255,157,.06)':'rgba(255,45,85,.06)';r.style.padding='12px';r.style.borderRadius='10px';
   r.innerHTML=`<div style="color:${ok?'var(--green)':'var(--red)'};font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px">${ok?'✓ CORRECT':'✗ INCORRECT'}</div><div style="font-size:12px;color:var(--text2)">${fb}</div>${p.exp?`<div style="font-size:11px;color:var(--text3);margin-top:6px">${p.exp}</div>`:''}`;
+}
+
+// ── EXAM SIMULATION MODE ──────────────────────────────
+let examQueue=[],examIdx=0,examAnswers={},examFlags=new Set(),examTimeLeft=5400,examTimerHandle=null,examActive=false;
+
+function startExamSim(){
+  examQueue=[...QB].sort(()=>Math.random()-.5).slice(0,Math.min(90,QB.length));
+  examIdx=0;examAnswers={};examFlags=new Set();examTimeLeft=5400;examActive=true;
+  S.studyDays[new Date().toISOString().slice(0,10)]=true;saveS();
+  document.getElementById('quizSetup').style.display='none';
+  document.getElementById('quizGame').style.display='block';
+  document.getElementById('quizScore').style.display='none';
+  document.getElementById('examReview').style.display='none';
+  document.getElementById('examTimerBar').style.display='block';
+  document.getElementById('examControls').style.display='flex';
+  document.getElementById('examReviewBtn').style.display='block';
+  document.getElementById('qNextBtn').style.display='none';
+  document.getElementById('qSubmitMultiBtn').style.display='none';
+  document.getElementById('ckptBanner').style.display='none';
+  if(examTimerHandle)clearInterval(examTimerHandle);
+  examTimerHandle=setInterval(examTick,1000);
+  examRenderQ();
+}
+function examTick(){
+  examTimeLeft--;
+  const m=Math.floor(Math.max(examTimeLeft,0)/60),s=Math.max(examTimeLeft,0)%60;
+  const bar=document.getElementById('examTimerBar');
+  bar.textContent=`⏱ ${m}:${s.toString().padStart(2,'0')} REMAINING`;
+  bar.style.color=examTimeLeft<=300?'var(--red)':'var(--accent)';
+  if(examTimeLeft<=0){clearInterval(examTimerHandle);examSubmit();}
+}
+function examRenderQ(){
+  const q=examQueue[examIdx];
+  document.getElementById('qProgFill').style.width=Math.round(examIdx/examQueue.length*100)+'%';
+  document.getElementById('qCat').textContent=q.dom.toUpperCase();
+  document.getElementById('qDiffEl').textContent='⬢'.repeat(q.d)+'⬡'.repeat(3-q.d);
+  document.getElementById('qNum').textContent=`Q ${examIdx+1} / ${examQueue.length}`+(q.type==='multi'?' — SELECT ALL THAT APPLY':'');
+  document.getElementById('qText').textContent=q.q;
+  const saved=examAnswers[examIdx];
+  document.getElementById('qOpts').innerHTML=q.o.map((o,i)=>{
+    const sel=q.type==='multi'?(Array.isArray(saved)&&saved.includes(i)):(saved===i);
+    return `<button class="opt" id="examOpt${i}" style="${sel?'border-color:var(--accent);background:rgba(0,229,255,.08)':''}" onclick="examSelect(${i})"><span class="opt-letter">${'ABCD'[i]}</span><span>${o}</span></button>`;
+  }).join('');
+  document.getElementById('qFeedback').style.display='none';
+  const flagBtn=document.getElementById('examFlagBtn');
+  const isFlagged=examFlags.has(examIdx);
+  flagBtn.textContent=isFlagged?'🚩 FLAGGED':'🚩 FLAG';
+  flagBtn.style.color=isFlagged?'var(--yellow)':'';
+  flagBtn.style.borderColor=isFlagged?'var(--yellow)':'';
+}
+function examSelect(i){
+  const q=examQueue[examIdx];
+  if(q.type==='multi'){
+    let cur=Array.isArray(examAnswers[examIdx])?[...examAnswers[examIdx]]:[];
+    if(cur.includes(i))cur=cur.filter(x=>x!==i);else cur.push(i);
+    examAnswers[examIdx]=cur;
+  }else{
+    examAnswers[examIdx]=i;
+  }
+  examRenderQ();
+}
+function examToggleFlag(){if(examFlags.has(examIdx))examFlags.delete(examIdx);else examFlags.add(examIdx);examRenderQ();}
+function examGoNext(){if(examIdx<examQueue.length-1){examIdx++;examRenderQ();}else examShowReview();}
+function examGoPrev(){if(examIdx>0){examIdx--;examRenderQ();}}
+function examBackToExam(){document.getElementById('examReview').style.display='none';document.getElementById('quizGame').style.display='block';examRenderQ();}
+function examShowReview(){
+  document.getElementById('quizGame').style.display='none';
+  document.getElementById('examReview').style.display='block';
+  let answeredCount=0;
+  examQueue.forEach((q,i)=>{const a=examAnswers[i];if(Array.isArray(a)?a.length>0:a!==undefined)answeredCount++;});
+  document.getElementById('examReviewSummary').textContent=`${answeredCount}/${examQueue.length} answered · ${examFlags.size} flagged`;
+  document.getElementById('examReviewGrid').innerHTML=examQueue.map((q,i)=>{
+    const a=examAnswers[i];const isAns=Array.isArray(a)?a.length>0:a!==undefined;const isFlag=examFlags.has(i);
+    const bg=isFlag?'var(--yellow)':isAns?'var(--green)':'var(--border2)';
+    const col=isFlag||isAns?'#000':'var(--text2)';
+    return `<div onclick="examJumpTo(${i})" style="width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:${bg};color:${col};font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;cursor:pointer">${i+1}</div>`;
+  }).join('');
+}
+function examJumpTo(i){examIdx=i;document.getElementById('examReview').style.display='none';document.getElementById('quizGame').style.display='block';examRenderQ();}
+function examSubmit(){
+  if(examTimerHandle)clearInterval(examTimerHandle);
+  examActive=false;
+  let correct=0;const domTally={};DOMS.forEach(d=>domTally[d]={q:0,c:0});
+  examQueue.forEach((q,i)=>{
+    const ans=examAnswers[i];let ok=false;
+    if(q.type==='multi'){const sel=Array.isArray(ans)?[...ans].sort((x,y)=>x-y):[];const cor=[...q.correct].sort((x,y)=>x-y);ok=JSON.stringify(sel)===JSON.stringify(cor);}
+    else{ok=ans===q.a;}
+    S.totalQ++;S.domains[q.dom].q++;domTally[q.dom].q++;
+    if(ok){S.correct++;correct++;S.domains[q.dom].c++;domTally[q.dom].c++;}
+  });
+  const pct=Math.round(correct/examQueue.length*100);
+  const timeUsed=5400-Math.max(examTimeLeft,0);
+  const tm=Math.floor(timeUsed/60),ts=timeUsed%60;
+  S.sessions.push({mode:'Exam Simulation',pct,date:new Date().toLocaleDateString(),correct,total:examQueue.length});
+  saveS();
+  document.getElementById('examReview').style.display='none';
+  document.getElementById('quizGame').style.display='none';
+  document.getElementById('examTimerBar').style.display='none';
+  document.getElementById('examControls').style.display='none';
+  document.getElementById('examReviewBtn').style.display='none';
+  document.getElementById('quizScore').style.display='block';
+  const col=pct>=85?'#00ff9d':pct>=70?'#ffc107':'#ff2d55';const circ=2*Math.PI*64;const sfg=document.getElementById('scoreRingFg');
+  sfg.style.stroke=col;sfg.style.strokeDasharray=circ;sfg.style.strokeDashoffset=circ-circ*pct/100;
+  document.getElementById('scorePct').textContent=pct+'%';document.getElementById('scorePct').style.color=col;
+  document.getElementById('scoreDetail').textContent=`${correct} / ${examQueue.length} CORRECT · TIME USED ${tm}:${ts.toString().padStart(2,'0')}`;
+  document.getElementById('scoreStatus').textContent=pct>=85?'🔥 EXAM READY':pct>=70?'💪 KEEP DRILLING':'📚 REVIEW WEAK DOMAINS';document.getElementById('scoreStatus').style.color=col;
+  document.getElementById('scoreDomains').innerHTML=DOMS.map((d,i)=>{const dd=domTally[d];const p=dd.q?Math.round(dd.c/dd.q*100):0;return`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2)">${d}</span><span style="font-family:'Share Tech Mono',monospace;color:${p>=75?'#00ff9d':p>=60?'#ffc107':'#ff2d55'}">${p}%</span></div>`;}).join('');
 }
 
 loadS();initCd();refreshDash();renderPBQ();
